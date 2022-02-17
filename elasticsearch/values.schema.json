@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "ElasticSearch容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "ElasticSearch服务名",
+      "form": true
+    },
+    "replicas": {
+      "type": "integer",
+      "title": "ES副本数",
+      "default": 1,
+      "form": true
+    },
+    "minimumMasterNodes": {
+      "type": "integer",
+      "title": "Master最小数，不超过副本数",
+      "default": 1,
+      "form": true
+    },
+    "volumeClaimTemplate": {
+      "type": "object",
+      "title": "持久化存储设置",
+      "form": true,
+      "properties": {
+        "storageClassName": {
+          "type": "string",
+          "title": "存储卷类型",
+          "form": true
+        }
+      }
+    }
+  }
+}

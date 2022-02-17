@@ -1,0 +1,26 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "vmware-exporter.fullname" . }}
+  labels: 
+    app: {{ template "vmware-exporter.name" . }}
+    chart: {{ template "vmware-exporter.chart" . }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.service.annotations }} 
+  annotations: 
+{{ toYaml . | indent 4 }} 
+{{- end }}
+spec:
+  endpoints:
+    - port: http-metrics
+      interval: 30s
+      scrapeTimeout: 10s
+  namespaceSelector:
+    matchNames:
+      - "{{ .Release.Namespace }}"
+  selector:
+    matchLabels: 
+      app: {{ template "vmware-exporter.name" . }}
+      chart: {{ template "vmware-exporter.chart" . }}
+{{- end }}

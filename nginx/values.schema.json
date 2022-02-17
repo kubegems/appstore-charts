@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Nginx容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Nginx服务名",
+      "form": true
+    },
+    "replicaCount": {
+      "tyoe": "integer",
+      "title": "容器副本数",
+      "default": 1,
+      "form": true
+    },
+    "cloneStaticSiteFromGit": {
+      "type": "object",
+      "title": "静态资源设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "使用Git后台服务下载静态资源",
+          "form": true,
+          "default": false
+        },
+        "repository": {
+          "type": "string",
+          "title": "仓库地址",
+          "form": true,
+          "hidden": {
+            "path": "cloneStaticSiteFromGit/enabled",
+            "value": false
+          }
+        },
+        "branch": {
+          "type": "string",
+          "title": "仓库分支",
+          "form": true,
+          "hidden": {
+            "path": "cloneStaticSiteFromGit/enabled",
+            "value": false
+          }
+        },
+        "gitClone": {
+          "type": "object",
+          "title": "Git clone设置",
+          "form": true,
+          "hidden": {
+            "path": "cloneStaticSiteFromGit/enabled",
+            "value": false
+          },
+          "properties": {
+            "command": {
+              "type": "array",
+              "title": "git clone命令",
+              "form": true
+            }
+          }
+        },
+        "gitSync": {
+          "type": "object",
+          "title": "Git sync设置",
+          "form": true,
+          "hidden": {
+            "path": "cloneStaticSiteFromGit/enabled",
+            "value": false
+          },
+          "properties": {
+            "command": {
+              "type": "array",
+              "title": "git clone命令",
+              "form": true
+            }
+          }
+        }
+      }
+    },
+    "autoscaling": {
+      "type": "object",
+      "title": "弹性伸缩设置",
+      "enabled": {
+        "type": "boolean",
+        "title": "启用弹性伸缩",
+        "form": true
+      },
+      "targetCPU": {
+        "type": "integer",
+        "title": "CPU使用率阈值",
+        "form": true,
+        "default": 50,
+        "hidden": {
+          "path": "autoscaling/enabled",
+          "value": false
+        }
+      },
+      "minReplicas": {
+        "type": "integer",
+        "title": "最小副本",
+        "form": true,
+        "default": 1,
+        "hidden": {
+          "path": "autoscaling/enabled",
+          "value": false
+        }
+      },
+      "maxReplicas": {
+        "type": "integer",
+        "title": "最大副本",
+        "form": true,
+        "default": 3,
+        "hidden": {
+          "path": "autoscaling/enabled",
+          "value": false
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "title": "监控服务",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": true,
+          "form": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: 4.4.1
+descriptio: DEPRECATED Neo4j is the world's leading graph database
+home: https://www.neo4j.com
+icon: http://info.neo4j.com/rs/773-GON-065/images/neo4j_logo.png
+name: neo4j
+keywords:
+- nosql
+sources:
+- https://github.com/neo4j/neo4j
+version: 4.4.1
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems

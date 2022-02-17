@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Redis容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Redis服务名",
+      "form": true
+    },
+    "usePassword": {
+      "type": "boolean",
+      "title": "启用访问密码",
+      "form": true
+    },
+    "password": {
+      "type": "string",
+      "title": "Redis密码",
+      "form": true,
+      "default": "cloud1688",
+      "hidden": {
+        "value": false,
+        "path": "usePassword"
+      }
+    },
+    "cluster": {
+      "type": "object",
+      "title": "主从集群设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用集群"
+        },
+        "slaveCount": {
+          "type": "integer",
+          "title": "从节点副本数",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "cluster/enabled"
+          }
+        }
+      }
+    },
+    "master": {
+      "type": "object",
+      "title": "主节点设置",
+      "form": true,
+      "properties": {
+        "persistence": {
+          "type": "object",
+          "title": "数据持久化设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "form": true,
+              "title": "启用存储卷"
+            },
+            "storageClass": {
+              "type": "string",
+              "title": "存储卷类型",
+              "form": true,
+              "hidden": {
+                "value": false,
+                "path": "master/persistence/enabled"
+              }
+            },
+            "size": {
+              "type": "string",
+              "title": "存储卷容量",
+              "form": true,
+              "render": "slider",
+              "sliderMin": 1,
+              "sliderMax": 100,
+              "sliderUnit": "Gi",
+              "hidden": {
+                "value": false,
+                "path": "master/persistence/enabled"
+              }
+            }
+          }
+        }
+      }
+    },
+    "slave": {
+      "type": "object",
+      "title": "从节点设置",
+      "form": true,
+      "hidden": {
+        "value": false,
+        "path": "cluster/enabled"
+      },
+      "properties": {
+        "persistence": {
+          "type": "object",
+          "title": "数据持久化设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "form": true,
+              "title": "启用存储卷"
+            },
+            "storageClass": {
+              "type": "string",
+              "form": true,
+              "title": "存储卷类型",
+              "hidden": {
+                "value": false,
+                "path": "slave/persistence/enabled"
+              }
+            },
+            "size": {
+              "type": "string",
+              "title": "存储卷容量",
+              "form": true,
+              "render": "slider",
+              "sliderMin": 1,
+              "sliderMax": 100,
+              "sliderUnit": "Gi",
+              "hidden": {
+                "value": false,
+                "path": "slave/persistence/enabled"
+              }
+            }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "form": true
+        }
+      }
+    }
+  }
+}

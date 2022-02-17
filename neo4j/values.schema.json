@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Neo4j实例名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Neo4j服务名",
+      "form": true
+    },
+    "authEnabled": {
+      "type": "boolean",
+      "title": "启用访问认证",
+      "default": true,
+      "form": true
+    },
+    "neo4jPassword": {
+      "type": "string",
+      "title": "Neo4j访问密码",
+      "form": true,
+      "default": "cloud1688",
+      "hidden": {
+        "value": false,
+        "path": "authEnabled"
+      }
+    },
+    "useAPOC": {
+      "type": "boolean",
+      "title": "启用APOC,请参考https://neo4j.com/labs/apoc/",
+      "form": true,
+      "default": false
+    },
+    "core": {
+      "type": "object",
+      "title": "Neo4j核心服务配置",
+      "form": true,
+      "properties": {
+        "numberOfServers": {
+          "type": "integer",
+          "title": "Neo4j容器副本数",
+          "default": 1,
+          "form": true
+        },
+        "persistentVolume": {
+          "type": "object",
+          "title": "数据持久化设置",
+          "form": true,
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "title": "启用数据卷",
+              "form": true,
+              "default": true
+            },
+            "storageClass": {
+              "type": "string",
+              "title": "存储卷类型",
+              "form": true,
+              "hidden": {
+                "path": "core/persistentVolume/enabled",
+                "value": false
+              }
+            },
+            "size": {
+              "type": "string",
+              "title": "存储卷容量",
+              "form": true,
+              "render": "slider",
+              "sliderMin": 1,
+              "sliderMax": 100,
+              "sliderUnit": "Gi",
+              "default": "10Gi",
+              "hidden": {
+                "path": "core/persistentVolume/enabled",
+                "value": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

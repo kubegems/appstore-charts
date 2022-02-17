@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "bookifno服务组名称",
+      "default": "bookinfo",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "bookinfo服务组名",
+      "default": "bookinfo",
+      "form": true
+    }
+  }
+}

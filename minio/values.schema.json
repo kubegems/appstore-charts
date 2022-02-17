@@ -1,0 +1,261 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Minio容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Mino服务名",
+      "form": true
+    },
+    "mode": {
+      "type": "string",
+      "title": "集群模式",
+      "enum": [
+        "standalone",
+        "distributed"
+      ],
+      "form": true
+    },
+    "statefulset": {
+      "type": "object",
+      "title": "分布式部署设置",
+      "form": true,
+      "hidden": {
+        "path": "mode",
+        "value": "standalone"
+      },
+      "properties": {
+        "replicaCount": {
+          "type": "integer",
+          "title": "minio容器副本数",
+          "form": true,
+          "default": 4
+        },
+        "zones": {
+          "type": "integer",
+          "title": "minio Zone数量",
+          "form": true,
+          "default": 1
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "form": true
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "10Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储卷类型",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "gateway": {
+      "type": "object",
+      "title": "对象存储网关设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用对象存储网关",
+          "form": true
+        },
+        "type": {
+          "type": "string",
+          "title": "网关类型",
+          "enum": [
+            "azure",
+            "gcs",
+            "nas",
+            "s3"
+          ],
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "gateway/enabled"
+          }
+        },
+        "replicaCount": {
+          "type": "integer",
+          "title": "网关副本数",
+          "form": true,
+          "default": 1,
+          "hidden": {
+            "value": false,
+            "path": "gateway/enabled"
+          }
+        },
+        "auth": {
+          "type": "object",
+          "title": "认证设置",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "gateway/enabled"
+          },
+          "properties": {
+            "azure": {
+              "type": "object",
+              "title": "azure认证",
+              "form": true,
+              "hidden": {
+                "conditions": [
+                  {
+                    "value": "azure",
+                    "path": "gateway/type"
+                  }
+                ],
+                "operator": "not"
+              },
+              "properties": {
+                "accessKey": {
+                  "type": "string",
+                  "title": "accessKey",
+                  "form": true
+                },
+                "secretKey": {
+                  "type": "string",
+                  "title": "secretKey",
+                  "form": true
+                },
+                "storageAccountName": {
+                  "type": "string",
+                  "title": "storageAccountName",
+                  "form": true
+                },
+                "storageAccountKey": {
+                  "type": "string",
+                  "title": "storageAccountKey",
+                  "form": true
+                }
+              }
+            },
+            "gcs": {
+              "type": "object",
+              "title": "gcs认证",
+              "form": true,
+              "hidden": {
+                "conditions": [
+                  {
+                    "value": "gcs",
+                    "path": "gateway/type"
+                  }
+                ],
+                "operator": "not"
+              },
+              "properties": {
+                "accessKey": {
+                  "type": "string",
+                  "title": "accessKey",
+                  "form": true
+                },
+                "secretKey": {
+                  "type": "string",
+                  "title": "secretKey",
+                  "form": true
+                },
+                "keyJSON": {
+                  "type": "string",
+                  "title": "keyJSON",
+                  "form": true
+                },
+                "projectID": {
+                  "type": "string",
+                  "title": "projectID",
+                  "form": true
+                }
+              }
+            },
+            "nas": {
+              "type": "object",
+              "title": "nas认证",
+              "form": true,
+              "hidden": {
+                "conditions": [
+                  {
+                    "value": "nas",
+                    "path": "gateway/type"
+                  }
+                ],
+                "operator": "not"
+              },
+              "properties": {
+                "accessKey": {
+                  "type": "string",
+                  "title": "accessKey",
+                  "form": true
+                },
+                "secretKey": {
+                  "type": "string",
+                  "title": "secretKey",
+                  "form": true
+                }
+              }
+            },
+            "s3": {
+              "type": "object",
+              "title": "AWS S3认证",
+              "form": true,
+              "hidden": {
+                "conditions": [
+                  {
+                    "value": "s3",
+                    "path": "gateway/type"
+                  }
+                ],
+                "operator": "not"
+              },
+              "properties": {
+                "accessKey": {
+                  "type": "string",
+                  "title": "accessKey",
+                  "form": true
+                },
+                "secretKey": {
+                  "type": "string",
+                  "title": "secretKey",
+                  "form": true
+                },
+                "serviceEndpoint": {
+                  "type": "string",
+                  "title": "serviceEndpoint",
+                  "form": true,
+                  "default": "https://s3.amazonaws.com"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

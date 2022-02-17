@@ -1,0 +1,25 @@
+annotations:
+  category: ApplicationServer
+apiVersion: v2
+appVersion: 10.0.8
+dependencies:
+- name: common
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - bitnami-common
+  version: 1.x.x
+description: Chart for Apache Tomcat
+home: https://github.com/bitnami/charts/tree/master/bitnami/tomcat
+icon: https://bitnami.com/assets/stacks/tomcat/img/tomcat-stack-220x234.png
+keywords:
+- web
+maintainers:
+- email: containers@bitnami.com
+  name: Bitnami
+- email: support@kubegems.io
+  name: KubeGems
+name: tomcat
+sources:
+- https://github.com/bitnami/bitnami-docker-tomcat
+- http://tomcat.apache.org
+version: 9.2.15

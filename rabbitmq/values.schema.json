@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "RabbitMQ容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "RabbitMQ服务名",
+      "form": true
+    },
+    "replicas": {
+      "type": "integer",
+      "title": "容器副本数",
+      "form": true
+    },
+    "rabbitmq": {
+      "type": "object",
+      "title": "RabbitMQ服务设置",
+      "form": true,
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "用户名",
+          "default": "gems",
+          "form": true
+        },
+        "password": {
+          "type": "string",
+          "title": "密码",
+          "default": "cloud1688",
+          "form": true
+        },
+        "plugins": {
+          "type": "array",
+          "title": "plugins设置，逗号分隔",
+          "form": true,
+          "default": ["rabbitmq_management", "rabbitmq_peer_discovery_k8s"],
+          "items": {
+            "type": "string",
+            "enum": [
+              "rabbitmq_random_exchange",
+              "rabbitmq_event_exchange",
+              "rabbitmq_consistent_hash_exchange",
+              "rabbitmq_jms_topic_exchange",
+              "rabbitmq_management",
+              "rabbitmq_management_agent",
+              "rabbitmq_peer_discovery_common",
+              "rabbitmq_peer_discovery_k8s",
+              "rabbitmq_stomp",
+              "rabbitmq_web_dispatch",
+              "rabbitmq_web_stomp",
+              "rabbitmq_web_stomp_examples",
+              "rabbitmq_web_mqtt",
+              "rabbitmq_sharding",
+              "rabbitmq_tracing",
+              "rabbitmq_mqtt",
+              "rabbitmq_top",
+              "rabbitmq_trust_store"
+            ]
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "数据持久化设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "form": true
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "5Gi",
+          "hidden": {
+            "path": "persistence/enabled",
+            "value": false
+          }
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类型",
+          "form": true,
+          "hidden": {
+            "path": "persistence/enabled",
+            "value": false
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": true,
+          "form": true
+        }
+      }
+    }
+  }
+}

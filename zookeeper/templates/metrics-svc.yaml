@@ -1,0 +1,20 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "zookeeper.fullname" . }}-exporter
+  namespace: {{ .Release.Namespace }}
+  labels: 
+{{- include "zookeeper.labels" . | nindent 4 }}
+    app.kubernetes.io/component: metrics
+spec:
+  type: ClusterIP
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: metrics
+  selector: {{- include "zookeeper.matchLabels" . | nindent 4 }}
+    {{- if .Values.metrics.podLabels }}
+    {{- toYaml .Values.metrics.podLabels | nindent 4 }}
+    {{- end }}
+{{- end }}

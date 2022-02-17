@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "LogStash容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "LogStash服务名",
+      "form": true
+    },
+    "replicaCount": {
+      "type": "integer",
+      "title": "容器副本数",
+      "form": true,
+      "default": 1
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "form": true
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储卷类型",
+          "form": true,
+          "hidden": {
+            "path": "persistence/enabled",
+            "value": false
+          }
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "10Gi",
+          "hidden": {
+            "path": "persistence/enabled",
+            "value": false
+          }
+        }
+      }
+    }
+  }
+}

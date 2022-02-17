@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "MongoDB容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "MongoDB服务名",
+      "form": true
+    },
+    "architecture": {
+      "type": "string",
+      "title": "MongoDB架构",
+      "enum": [
+        "standalone",
+        "replicaset"
+      ],
+      "form": true
+    },
+    "replicaCount": {
+      "type": "integer",
+      "form": true,
+      "title": "MongoDB副本数",
+      "hidden": {
+        "value": "standalone",
+        "path": "architecture"
+      }
+    },
+    "auth": {
+      "type": "object",
+      "title": "用户认证设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用密码访问",
+          "form": true,
+          "default": true
+        },
+        "rootPassword": {
+          "type": "string",
+          "title": "Root密码",
+          "form": true,
+          "default": "cloud1688",
+          "hidden": {
+            "value": false,
+            "path": "auth/enabled"
+          }
+        },
+        "database": {
+          "type": "string",
+          "title": "默认DB名",
+          "form": true,
+          "default": "gems",
+          "hidden": {
+            "value": false,
+            "path": "auth/enabled"
+          }
+        },
+        "username": {
+          "type": "string",
+          "title": "普通用户",
+          "default": "gems",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "auth/enabled"
+          }
+        },
+        "password": {
+          "type": "string",
+          "title": "普通用户密码",
+          "form": true,
+          "default": "93WrNBCT",
+          "hidden": {
+            "value": false,
+            "path": "auth/enabled"
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "数据持久化设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用存储卷"
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "10Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类型",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": true,
+          "form": true
+        }
+      }
+    }
+  }
+}

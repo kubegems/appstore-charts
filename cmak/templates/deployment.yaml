@@ -1,0 +1,86 @@
+{{- $nm := include "cmak.name" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cmak.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cmak.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cmak.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cmak.labels" . | nindent 8 }}
+    spec:
+      {{- if or .Values.ui.consumerProperties .Values.ui.consumerPropertiesSsl }}
+      volumes:
+      {{- if .Values.ui.consumerProperties }}
+        - name: {{ $nm }}-consumer-properties
+          configMap:
+            name: {{ $nm }}-consumer-properties
+      {{- end -}}
+      {{ if .Values.ui.consumerPropertiesSsl }}
+        - name: {{ $nm }}-ssl
+          secret:
+            secretName: {{ include "cmak.name" . }}-ssl
+      {{- end -}}
+      {{- end }}
+      containers:
+        - name: ui
+          image: {{ .Values.imageRegistry | quote }}
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: http
+            containerPort: {{ .Values.ui.port }}
+            protocol: TCP
+          args:
+          - "-Dcmak.zkhosts={{ .Values.zookeeper }}"
+          - "-Dhttp.port={{ .Values.ui.port }}"
+          {{- range .Values.ui.extraArgs }}
+          - {{ . | quote }}
+          {{- end }}
+          {{ if .Values.ui.consumerProperties }}
+          env:
+            - name: CONSUMER_PROPERTIES_FILE
+              value:  /conf/consumer.properties
+          {{- end }}
+          readinessProbe:
+            httpGet:
+              path: {{ include "cmak.healthUi" . }}
+              port: http
+            failureThreshold: 7
+            initialDelaySeconds: 15
+            timeoutSeconds: 15
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: {{ include "cmak.healthUi" . }}
+              port: http
+            failureThreshold: 7
+            initialDelaySeconds: 45
+            timeoutSeconds: 15
+            periodSeconds: 30
+          {{- if or .Values.ui.consumerProperties .Values.ui.consumerPropertiesSsl }}
+          volumeMounts:
+          {{- if .Values.ui.consumerProperties }}
+            - name: {{ $nm }}-consumer-properties
+              mountPath: /conf/consumer.properties
+              subPath: consumer.properties
+          {{- end -}}
+          {{ if .Values.ui.consumerPropertiesSsl }}
+            - name: {{ $nm }}-ssl
+              mountPath: "/conf/ssl"
+          {{- end -}}
+          {{- end }}
+          {{- if or (.Values.ui.resources.limits | empty | not) (.Values.ui.resources.requests | empty | not) }}
+          resources:
+            {{- with .Values.ui.resources.requests }}
+            requests: {{ . | toYaml | nindent 14 }}
+            {{- end }}
+            {{- with .Values.ui.resources.limits }}
+            limits: {{ . | toYaml | nindent 14 }}
+            {{- end }}
+          {{- end }}

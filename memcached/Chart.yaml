@@ -1,0 +1,12 @@
+apiVersion: v1
+appVersion: 1.5.22
+description: Memcached Service, it is a single node service.
+home: http://memcached.org/
+icon: https://bitnami.com/assets/stacks/memcached/img/memcached-stack-110x117.png
+keywords:
+- cache
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems
+name: memcached
+version: 2.0.0

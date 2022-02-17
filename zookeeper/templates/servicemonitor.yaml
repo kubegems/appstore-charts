@@ -1,0 +1,24 @@
+# zookeeper
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+{{- include "zookeeper.labels" . | nindent 4 }}
+  name: {{ template "zookeeper.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - targetPort: metrics
+    interval: 30s
+    path: /metrics
+    scrapeTimeout: 10s
+  jobLabel: {{ template "zookeeper.name" . }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "zookeeper.labels" . | nindent 6 }}
+      app.kubernetes.io/component: metrics
+{{- end }}

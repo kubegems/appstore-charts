@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "APISIX容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "APISIX服务名",
+      "form": true
+    },
+    "apisix": {
+      "type": "object",
+      "title": "APISIX服务设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用APISIX",
+          "form": true,
+          "default": true
+        },
+        "replicaCount": {
+          "type": "integer",
+          "hidden": {
+            "path": "apisix/enabled",
+            "value": false
+          },
+          "title": "APISIX副本数",
+          "form": true,
+          "default": 1
+        }
+      }
+    },
+    "etcd": {
+      "type": "object",
+      "title": "APISIX存储Etcd设置",
+      "form": true,
+      "properties": {
+        "host": {
+          "type": "string",
+          "title": "外部etcd服务地址",
+          "form": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "user": {
+          "type": "string",
+          "title": "用户名",
+          "form": true
+        },
+        "password": {
+          "type": "string",
+          "title": "用户密码",
+          "form": true
+        }
+      }
+    },
+    "gateway": {
+      "type": "object",
+      "title": "APISIX网关设置",
+      "form": true,
+      "properties": {
+        "tls": {
+          "type": "object",
+          "title": "TLS设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "启用TLS",
+              "form": true
+            }
+          }
+        },
+        "stream": {
+          "type": "object",
+          "title": "Stream设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "启用4层代理",
+              "form": true
+            }
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "type": "object",
+      "title": "Dashboard设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用Dashboard界面",
+          "form": true,
+          "default": true
+        }
+      }
+    },
+    "ingress-controller": {
+      "type": "object",
+      "title": "Ingress设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用Ingress-Controller",
+          "form": true,
+          "default": true
+        }
+      }
+    },
+    "admin": {
+      "type": "object",
+      "title": "Admin API设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用管理API功能",
+          "form": true,
+          "default": true
+        }
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "title": "APISIX插件设置",
+      "form": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "api-breaker",
+          "authz-keycloak",
+          "basic-auth",
+          "batch-requests",
+          "consumer-restriction",
+          "cors",
+          "echo",
+          "fault-injection",
+          "grpc-transcode",
+          "hmac-auth",
+          "http-logger",
+          "ip-restriction",
+          "jwt-auth",
+          "kafka-logger",
+          "key-auth",
+          "limit-conn",
+          "limit-count",
+          "limit-req",
+          "node-status",
+          "openid-connect",
+          "prometheus",
+          "proxy-cache",
+          "proxy-mirror",
+          "proxy-rewrite",
+          "redirect",
+          "referer-restriction",
+          "request-id",
+          "request-validation",
+          "response-rewrite",
+          "serverless-post-function",
+          "serverless-pre-function",
+          "sls-logger",
+          "syslog",
+          "tcp-logger",
+          "udp-logger",
+          "uri-blocker",
+          "wolf-rbac",
+          "zipkin",
+          "traffic-split"
+        ]
+      }
+    },
+    "stream_plugins": {
+      "type": "array",
+      "title": "APISIX Stream插件设置",
+      "form": true,
+      "items": {
+        "type": "string",
+        "enum": ["mqtt-proxy"]
+      }
+    },
+    "autoscaling": {
+      "type": "object",
+      "title": "弹性扩缩容设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用HPA",
+          "form": true
+        },
+        "minReplicas": {
+          "type": "integer",
+          "title": "最小副本",
+          "form": true,
+          "default": 1,
+          "hidden": {
+            "path": "autoscaling/enabled",
+            "value": false
+          }
+        },
+        "maxReplicas": {
+          "type": "integer",
+          "title": "最大副本",
+          "form": true,
+          "default": 100,
+          "hidden": {
+            "path": "autoscaling/enabled",
+            "value": false
+          }
+        },
+        "targetCPUUtilizationPercentage": {
+          "type": "integer",
+          "title": "CPU扩容阈值",
+          "form": true,
+          "default": 80,
+          "hidden": {
+            "path": "autoscaling/enabled",
+            "value": false
+          }
+        },
+        "targetMemoryUtilizationPercentage": {
+          "type": "integer",
+          "title": "MEM扩容阈值",
+          "form": true,
+          "default": 80,
+          "hidden": {
+            "path": "autoscaling/enabled",
+            "value": false
+          }
+        }
+      }
+    }
+  }
+}

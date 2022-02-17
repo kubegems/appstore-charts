@@ -1,0 +1,452 @@
+---
+# Source: cloud-rabbitmq/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloud-rabbitmq
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+---
+# Source: cloud-rabbitmq/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-rabbitmq
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+type: Opaque
+data:
+  
+  rabbitmq-password: "cXpobTdkbktwbA=="
+  
+  
+  rabbitmq-erlang-cookie: "aUd3bUJSVFFlelhEaVdQS2VqbFBOaG1hV2hsRmhyWDI="
+---
+# Source: cloud-rabbitmq/templates/configuration.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloud-rabbitmq-config
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+data:
+  enabled_plugins: |-
+    [rabbitmq_management,rabbitmq_management_agent,rabbitmq_peer_discovery_common,rabbitmq_peer_discovery_k8s,rabbitmq_stomp,rabbitmq_web_dispatch,rabbitmq_web_stomp,rabbitmq_web_stomp_examples].
+  rabbitmq.conf: |-
+    ##username and password
+    default_user=
+    default_pass=CHANGEME
+    ## Clustering
+    cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
+    cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
+    cluster_formation.node_cleanup.interval = 10
+    cluster_formation.node_cleanup.only_log_warning = true
+    cluster_partition_handling = autoheal
+    # queue master locator
+    queue_master_locator=min-masters
+    # enable guest user
+    loopback_users.guest = false
+    #disk_free_limit.absolute = 50MB
+    #management.load_definitions = /app/load_definition.json
+---
+# Source: cloud-rabbitmq/templates/role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cloud-rabbitmq-endpoint-reader
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get"]
+---
+# Source: cloud-rabbitmq/templates/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cloud-rabbitmq-endpoint-reader
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+subjects:
+- kind: ServiceAccount
+  name: cloud-rabbitmq
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cloud-rabbitmq-endpoint-reader
+---
+# Source: cloud-rabbitmq/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-rabbitmq-headless
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+spec:
+  clusterIP: None
+  ports:
+  - name: epmd
+    port: 4369
+    targetPort: epmd
+  - name: amqp
+    port: 5672
+    targetPort: amqp
+  - name: dist
+    port: 25672
+    targetPort: dist
+  - name: stats
+    port: 15672
+    targetPort: stats
+  selector:
+    app: cloud-rabbitmq
+---
+# Source: cloud-rabbitmq/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-rabbitmq
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+  annotations:
+    prometheus.io/port: "9090"
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+  - name: epmd
+    port: 4369
+    targetPort: epmd
+    nodePort: null
+  - name: amqp
+    port: 5672
+    targetPort: amqp
+    nodePort: null
+  - name: dist
+    port: 25672
+    targetPort: dist
+    nodePort: null
+  - name: stats
+    port: 15672
+    targetPort: stats
+    nodePort: null
+  - name: metrics
+    port: 9419
+    targetPort: 9090
+    nodePort: null
+  selector:
+    app: cloud-rabbitmq
+---
+# Source: cloud-rabbitmq/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cloud-rabbitmq
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    helm.sh/chart: cloud-rabbitmq-3.7.17
+    app.kubernetes.io/managed-by: Helm
+    app.instance: cloud-rabbitmq
+spec:
+  serviceName: cloud-rabbitmq-headless
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: cloud-rabbitmq
+      app.instance: cloud-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: cloud-rabbitmq
+        helm.sh/chart: cloud-rabbitmq-3.7.17
+        app.kubernetes.io/managed-by: Helm
+        app.instance: cloud-rabbitmq
+    spec:      
+      serviceAccountName: cloud-rabbitmq
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
+      terminationGracePeriodSeconds: 10
+      initContainers:
+      - name: volume-permissions
+        image: "docker.io/bitnami/minideb:stretch"
+        imagePullPolicy: "Always"
+        command: ["/bin/chown", "-R", "1001:1001", "/opt/bitnami/rabbitmq/var/lib/rabbitmq"]
+        securityContext:
+          runAsUser: 0
+        resources:
+          {}
+        volumeMounts:
+        - name: data
+          mountPath: "/opt/bitnami/rabbitmq/var/lib/rabbitmq"
+      containers:
+      - name: rabbitmq
+        image: docker.io/bitnami/rabbitmq:3.7.17-debian-9-r37
+        imagePullPolicy: "IfNotPresent"
+        command:
+         - bash
+         - -ec
+         - |
+            mkdir -p /opt/bitnami/rabbitmq/.rabbitmq/
+            mkdir -p /opt/bitnami/rabbitmq/etc/rabbitmq/
+            touch /opt/bitnami/rabbitmq/var/lib/rabbitmq/.start
+            #persist the erlang cookie in both places for server and cli tools
+            echo $RABBITMQ_ERL_COOKIE > /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie
+            cp /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie /opt/bitnami/rabbitmq/.rabbitmq/
+            #change permission so only the user has access to the cookie file
+            chmod 600 /opt/bitnami/rabbitmq/.rabbitmq/.erlang.cookie /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie
+            #copy the mounted configuration to both places
+            cp  /opt/bitnami/rabbitmq/conf/* /opt/bitnami/rabbitmq/etc/rabbitmq
+            # Apply resources limits
+            ulimit -n "${RABBITMQ_ULIMIT_NOFILES}"
+            #replace the default password that is generated
+            sed -i "/CHANGEME/cdefault_pass=${RABBITMQ_PASSWORD//\\/\\\\}" /opt/bitnami/rabbitmq/etc/rabbitmq/rabbitmq.conf
+            #api check for probes
+            cat > /opt/bitnami/rabbitmq/sbin/rabbitmq-api-check <<EOF
+            #!/bin/sh
+            set -e
+            URL=\$1
+            EXPECTED=\$2
+            ACTUAL=\$(curl --silent --show-error --fail "\${URL}")
+            echo "\${ACTUAL}"
+            test "\${EXPECTED}" = "\${ACTUAL}"
+            EOF
+            chmod a+x /opt/bitnami/rabbitmq/sbin/rabbitmq-api-check
+            #health check for probes, handle period during rabbtmq sync
+            cat > /opt/bitnami/rabbitmq/sbin/rabbitmq-health-check <<EOF
+            #!/bin/sh
+            START_FLAG=/opt/bitnami/rabbitmq/var/lib/rabbitmq/.start
+            if [ -f \${START_FLAG} ]; then
+               rabbitmqctl node_health_check
+               RESULT=\$?
+               if [ \$RESULT -ne 0 ]; then
+                  rabbitmqctl status
+                  exit $?
+               fi
+               rm -f \${START_FLAG}
+               exit \${RESULT}
+            fi
+            rabbitmq-api-check \$1 \$2
+            EOF
+            chmod a+x /opt/bitnami/rabbitmq/sbin/rabbitmq-health-check
+            exec rabbitmq-server
+        resources:
+          limits:
+            cpu: "8"
+            memory: 16Gi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        volumeMounts:
+          - name: config-volume
+            mountPath: /opt/bitnami/rabbitmq/conf
+          - name: data
+            mountPath: "/opt/bitnami/rabbitmq/var/lib/rabbitmq"
+        ports:
+        - name: epmd
+          containerPort: 4369
+        - name: amqp
+          containerPort: 5672
+        - name: dist
+          containerPort: 25672
+        - name: stats
+          containerPort: 15672
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - rabbitmq-api-check "http://:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node" '{"status":"ok"}'
+          initialDelaySeconds: 120
+          timeoutSeconds: 20
+          periodSeconds: 30
+          failureThreshold: 6
+          successThreshold: 1
+        readinessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - rabbitmq-health-check "http://:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node" '{"status":"ok"}'
+          initialDelaySeconds: 10
+          timeoutSeconds: 20
+          periodSeconds: 30
+          failureThreshold: 3
+          successThreshold: 1
+        env:
+          - name: BITNAMI_DEBUG
+            value: "false"
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: K8S_SERVICE_NAME
+            value: "cloud-rabbitmq-headless"
+          - name: K8S_ADDRESS_TYPE
+            value: hostname
+          - name: RABBITMQ_NODENAME
+            value: "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+          - name: K8S_HOSTNAME_SUFFIX
+            value: ".$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+          - name: RABBITMQ_LOGS
+            value: "-"
+          - name: RABBITMQ_ULIMIT_NOFILES
+            value: "65536"
+          - name: RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS
+            value: +S 2:1
+          - name: RABBITMQ_USE_LONGNAME
+            value: "true"
+          - name: RABBITMQ_ERL_COOKIE
+            valueFrom:
+              secretKeyRef:
+                name: cloud-rabbitmq
+                key: rabbitmq-erlang-cookie
+          - name: RABBITMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cloud-rabbitmq
+                key: rabbitmq-password
+      - name: metrics
+        image: docker.io/bitnami/rabbitmq-exporter:0.29.0-debian-9-r23
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: RABBIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cloud-rabbitmq
+              key: rabbitmq-password
+        - name: RABBIT_URL
+          value: "http://127.0.0.1:15672"
+        - name: RABBIT_USER
+          value: 
+        
+        - name: RABBIT_CAPABILITIES
+          value: "bert,no_sort"
+        ports:
+        - name: metrics
+          containerPort: 9090
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: metrics
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: metrics
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        resources:
+          {}
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      volumes:
+        - name: config-volume
+          configMap:
+            name: cloud-rabbitmq-config
+            items:
+            - key: rabbitmq.conf
+              path: rabbitmq.conf
+            - key: enabled_plugins
+              path: enabled_plugins
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: cloud-rabbitmq
+          helm.sh/chart: cloud-rabbitmq-3.7.17
+          app.kubernetes.io/managed-by: Helm
+          app.instance: cloud-rabbitmq
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+            requests:
+              storage: "5Gi"
+---
+# Source: cloud-rabbitmq/templates/prometheusrule.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cloud-rabbitmq
+  namespace: cloud-rabbitmq-test
+  labels:
+    app: cloud-rabbitmq
+    release: "cloud-rabbitmq"
+    heritage: "Helm"
+spec:
+  groups:
+    - name: cloud-rabbitmq
+      rules: 
+        - alert: mongodb可用事务ticket
+          annotations:
+            description: mongoDB可用ticket过少，app名称 {{ $labels.pod }}，命名空间 {{ $labels.namespace }}，当前值 {{ $value }}
+            key: middleware.mongodb.ticket
+            summary: mongoDB可用ticket过少，app名称 {{ $labels.pod }}，命名空间 {{ $labels.namespace }}
+            trigger: '{{ $value }}'
+          expr: mongodb_mongod_wiredtiger_concurrent_transactions_available_tickets{} < 10
+          for: 60s
+          labels:
+            alertname: mongodb可用事务ticket
+            type: middleware.mongodb
+---
+# Source: cloud-rabbitmq/templates/servicemonitor.yaml
+# stolon-proxy
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloud-rabbitmq
+  namespace: cloud-rabbitmq-test
+spec:
+  endpoints:
+  - targetPort: 9419
+    interval: 30s
+    path: /metrics
+    scrapeTimeout: 10s
+  jobLabel: cloud-rabbitmq
+  namespaceSelector:
+    matchNames:
+    - cloud-rabbitmq-test
+  selector:
+    matchLabels:
+      app: cloud-rabbitmq

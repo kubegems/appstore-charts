@@ -1,0 +1,22 @@
+annotations:
+  artifacthub.io/changes: |
+    - Added support for sonarqube 7.9 LTS
+apiVersion: v2
+appVersion: 8.7.1
+description: A Helm chart for deploying SonarQube.
+home: https://www.sonarqube.org/
+icon: https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg
+keywords:
+- security
+- ci
+maintainers:
+- email: jordi.prats@gmail.com
+  name: jordiprats
+- email: support@kubegems.io
+  name: KubeGems
+name: sonarqube
+sources:
+- https://github.com/SonarSource/sonarqube
+- https://github.com/SonarSource/docker-sonarqube
+type: application
+version: 1.3.1

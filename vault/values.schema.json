@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Vault容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Vault服务名",
+      "form": true
+    },
+    "server": {
+      "type": "object",
+      "title": "Server设置",
+      "form": true,
+      "properties": {
+        "dev": {
+          "type": "object",
+          "title": "开发模式设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "开启开发者模式，需手动初始化vault",
+              "form": true
+            },
+            "devRootToken": {
+              "type": "string",
+              "title": "devRootToken",
+              "form": true,
+              "default": "gems",
+              "hidden": {
+                "path": "server/dev/enabled",
+                "value": false
+              }
+            }
+          }
+        },
+        "standalone": {
+          "type": "boolean",
+          "title": "单服务模式",
+          "form": true
+        },
+        "ha": {
+          "type": "object",
+          "title": "高可用模式设置",
+          "form": true,
+          "hidden": {
+            "path": "server/standalone",
+            "value": true
+          },
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "启用高可用模式",
+              "form": true
+            },
+            "replicas": {
+              "type": "integer",
+              "title": "vault副本数",
+              "form": true,
+              "default": 3,
+              "hidden": {
+                "path": "server/ha/enabled",
+                "value": false
+              }
+            },
+            "mode": {
+              "type": "string",
+              "title": "数据一致性模式",
+              "form": true,
+              "emun": [
+                "raft",
+                "consul"
+              ]
+            },
+            "raft": {
+              "type": "object",
+              "title": "Raft设置",
+              "form": true,
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "启用raft协议同步数据",
+                  "form": true
+                },
+                "setNodeId": {
+                  "type": "boolean",
+                  "title": "设置NodeID为Pod名字",
+                  "form": true,
+                  "hidden": {
+                    "path": "server/ha/mode",
+                    "value": "consul"
+                  }
+                }
+              }
+            },
+            "consulAddress": {
+              "type": "string",
+              "title": "启用Consul存储数据",
+              "form": true,
+              "default": "consul:8500",
+              "hidden": {
+                "path": "server/ha/mode",
+                "value": "raft"
+              }
+            }
+          }
+        },
+        "dataStorage": {
+          "type": "object",
+          "title": "持久化数据设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "form": true,
+              "title": "启用存储卷"
+            },
+            "storageClass": {
+              "type": "string",
+              "form": true,
+              "title": "存储卷类型",
+              "hidden": {
+                "value": false,
+                "path": "server/dataStorage/enabled"
+              }
+            },
+            "size": {
+              "type": "string",
+              "title": "存储卷容量",
+              "form": true,
+              "render": "slider",
+              "sliderMin": 1,
+              "sliderMax": 100,
+              "sliderUnit": "Gi",
+              "default": "20Gi",
+              "hidden": {
+                "value": false,
+                "path": "server/dataStorage/enabled"
+              }
+            }
+          }
+        },
+        "auditStorage": {
+          "type": "object",
+          "title": "审计数据设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "form": true,
+              "title": "启用存储卷"
+            },
+            "storageClass": {
+              "type": "string",
+              "form": true,
+              "title": "存储卷类型",
+              "hidden": {
+                "value": false,
+                "path": "server/auditStorage/enabled"
+              }
+            },
+            "size": {
+              "type": "string",
+              "title": "存储卷容量",
+              "form": true,
+              "render": "slider",
+              "sliderMin": 1,
+              "sliderMax": 100,
+              "sliderUnit": "Gi",
+              "default": "20Gi",
+              "hidden": {
+                "value": false,
+                "path": "server/auditStorage/enabled"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "title": "UI设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用UI"
+        }
+      }
+    },
+    "csi": {
+      "type": "object",
+      "title": "Kubernetes CSI设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用CSI插件"
+        }
+      }
+    },
+    "injector": {
+      "type": "object",
+      "title": "Kubernetes injector设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用vault自动注入器"
+        },
+        "replicas": {
+          "type": "integer",
+          "form": true,
+          "title": "injector副本数",
+          "default": 1,
+          "hidden": {
+            "path": "injector/enabled",
+            "value": false
+          }
+        },
+        "leaderElector": {
+          "type": "object",
+          "title": "Leader选举设置",
+          "form": true,
+          "hidden": {
+            "path": "injector/enabled",
+            "value": false
+          },
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "form": true,
+              "title": "启用leader选举"
+            }
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "title": "监控设置",
+          "form": true,
+          "hidden": {
+            "path": "injector/enabled",
+            "value": false
+          },
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "form": true,
+              "title": "启用监控服务"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "kibana容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "kibana服务名",
+      "form": true
+    },
+    "elasticsearchHosts": {
+      "type": "string",
+      "title": "ElasicSearch地址",
+      "form": true,
+      "default": "http://elasticsearch:9200"
+    }
+  }
+}

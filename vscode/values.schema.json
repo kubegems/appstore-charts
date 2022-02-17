@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "VsCode容器名",
+      "default": "code",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "VsCode服务名",
+      "default": "code",
+      "form": true
+    },
+    "password": {
+      "type": "string",
+      "title": "VsCode 访问密码",
+      "default": "cloud1688",
+      "form": true
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用存储卷"
+        },
+        "storageClass": {
+          "type": "string",
+          "form": true,
+          "title": "存储卷类型",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "10Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    }
+  }
+}
