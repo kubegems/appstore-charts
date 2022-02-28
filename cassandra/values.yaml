@@ -499,7 +499,7 @@ pdb:
 ## ref: https://hub.docker.com/r/bitnami/cassandra-exporter/tags/
 ##
 metrics:
-  enabled: true
+  enabled: false
   image:
     registry: docker.io
     pullPolicy: IfNotPresent
@@ -535,7 +535,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Namespace in which Prometheus is running
     ##
     # namespace: monitoring

@@ -67,6 +67,7 @@
         "enabled": {
           "type": "boolean",
           "title": "启用监控采集端",
+          "default": false,
           "form": true
         }
       }

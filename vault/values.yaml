@@ -44,7 +44,7 @@ injector:
 
   # If true, will enable a node exporter metrics endpoint at /metrics.
   metrics:
-    enabled: true
+    enabled: false
 
   # External vault server address for the injector to use. Setting this will
   # disable deployment of a vault server along with the injector.

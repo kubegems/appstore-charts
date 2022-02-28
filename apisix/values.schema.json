@@ -41,7 +41,7 @@
       "form": true,
       "properties": {
         "host": {
-          "type": "string",
+          "type": "array",
           "title": "外部etcd服务地址",
           "form": true,
           "items": {

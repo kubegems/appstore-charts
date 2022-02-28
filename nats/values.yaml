@@ -517,7 +517,7 @@ pdb:
 ## ref: https://github.com/nats-io/prometheus-nats-exporter
 ##
 metrics:
-  enabled: true
+  enabled: false
   image:
     registry: docker.io
     repository: kubegemsapp/nats-exporter
@@ -558,7 +558,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Specify a namespace if needed
     # namespace: monitoring
     # fallback to the prometheus default unless specified

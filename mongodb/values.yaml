@@ -1122,7 +1122,7 @@ volumePermissions:
 ## Prometheus Exporter / Metrics
 ##
 metrics:
-  enabled: true
+  enabled: false
   ## Bitnami MongoDB(R) Promtheus Exporter image
   ## ref: https://hub.docker.com/r/bitnami/mongodb-exporter/tags/
   ##
@@ -1205,7 +1205,7 @@ metrics:
   serviceMonitor:
     ## If the operator is installed in your cluster, set to true to create a Service Monitor Entry
     ##
-    enabled: true
+    enabled: false
 
     ## Specify the namespace where Prometheus Operator is running
     ##

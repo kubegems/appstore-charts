@@ -40,16 +40,24 @@
           }
         },
         "standalone": {
-          "type": "boolean",
+          "type": "object",
           "title": "单服务模式",
-          "form": true
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "启用单服务模式",
+              "form": true
+            }
+          }
         },
         "ha": {
           "type": "object",
           "title": "高可用模式设置",
           "form": true,
           "hidden": {
-            "path": "server/standalone",
+            "path": "server/standalone/enabled",
             "value": true
           },
           "properties": {
@@ -254,6 +262,7 @@
             "enabled": {
               "type": "boolean",
               "form": true,
+              "default": false,
               "title": "启用监控服务"
             }
           }

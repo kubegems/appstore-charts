@@ -323,7 +323,7 @@ readinessProbe:
   successThreshold: 1
 
 metrics:
-  enabled: true
+  enabled: false
   rabbitmqAddress: 127.0.0.1
   image:
     registry:  docker.io

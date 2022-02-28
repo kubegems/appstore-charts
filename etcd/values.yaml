@@ -540,7 +540,7 @@ volumePermissions:
 ## etcd metrics configuration
 ##
 metrics:
-  enabled: true
+  enabled: false
   ## Annotations for the Prometheus metrics on etcd pods
   ##
   podAnnotations: {}

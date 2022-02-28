@@ -472,7 +472,7 @@ ingress:
 ## Prometheus metrics
 ##
 metrics:
-  enabled: true
+  enabled: false
   ## Bitnami Logstash Promtheus Exporter image
   ## ref: https://hub.docker.com/r/bitnami/logstash-exporter/tags/
   ##
@@ -508,7 +508,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Namespace in which Prometheus is running
     ##
     # namespace: monitoring

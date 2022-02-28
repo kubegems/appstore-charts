@@ -651,7 +651,7 @@ ingress:
 ## ref: https://docs.influxdata.com/influxdb/v1.7/administration/server_monitoring/#influxdb-metrics-http-endpoint
 ##
 metrics:
-  enabled: true
+  enabled: false
   service:
     ## Service type
     ##
@@ -686,7 +686,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Namespace in which Prometheus is running
     ##
     # namespace: monitoring

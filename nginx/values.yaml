@@ -711,7 +711,7 @@ healthIngress:
 ## Prometheus Exporter / Metrics
 ##
 metrics:
-  enabled: true
+  enabled: false
 
 
   ## Specify which port is used by the exporter to retrieve the NGINX status.
@@ -775,7 +775,7 @@ metrics:
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
-    enabled: true
+    enabled: false
     ## Namespace in which Prometheus is running
     ##
     # namespace: monitoring
