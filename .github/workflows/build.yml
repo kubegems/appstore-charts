@@ -81,7 +81,7 @@ jobs:
 
       - name: Build Helm Package
         run: |
-          make packages
+          make package
 
       - name: Build and push Docker image
         id: build-and-push
@@ -99,6 +99,9 @@ jobs:
 
       - name: Apply Charts job
         run: |
-          kubectl create job charts-uploader --image=${{ steps.meta.outputs.tags }}
+          kubectl create job charts-uploader -n default --image=${{ steps.meta.outputs.tags }}
           sleep 60
-          kubectl get pod |grep charts |awk '{print $1}' | xargs kubectl logs
+
+      - name: Job Logs
+        run: |
+          kubectl get pod -n default |grep charts |awk '{print $1}' | xargs kubectl logs -n default

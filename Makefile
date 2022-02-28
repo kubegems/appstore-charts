@@ -14,9 +14,9 @@ build-push:
 	 docker build -t $(CHARTS_UPLOADER) -f Dockerfile .
 	 docker push $(CHARTS_UPLOADER)
 
-init-chartmusem:
+init-chartmuseum:
 	 bash init_chartmuseum.sh
 
 apply:
-	#kubectl delete -f kubegemsapp-charts-uploader.yaml
-	kubectl apply -f kubegemsapp-charts-uploader.yaml
+	#kubectl delete job charts-uploader
+	kubectl create job charts-uploader --image=$(CHARTS_UPLOADER)

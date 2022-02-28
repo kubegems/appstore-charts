@@ -7,6 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/name: gems-chartmuseum
   name: gems-chartmuseum
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -42,6 +43,7 @@ metadata:
   labels:
     app.kubernetes.io/name: gems-chartmuseum
   name: gems-chartmuseum
+  namespace: default
 spec:
   ports:
   - name: http-8030
