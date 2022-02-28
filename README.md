@@ -1,4 +1,4 @@
-# Helm (v3)Charts for KubeGems Application Stores Helm (v3)Charts
+# Helm (v3)Charts for KubeGems Application Stores
 
 这个仓库主要为 **KubeGems应用商店** 提供基于 Helm(v3) charts 的托管，这里面大部分都来源于 Bitnami、helm offical以及部分自写的 charts 包。由于 KubeGems2.3（包含）以下的版本不支持在界面上传自定义Charts，所以需要将本仓库构建出镜像，并提交charts-updater任务触发应用商店更新。
 
