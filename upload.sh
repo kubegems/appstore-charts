@@ -13,7 +13,7 @@ usage() {
     echo "Usage: $0 [options...] <charts_dir>"
     echo ""
     echo "Options:"
-    echo "-s,--servr            server address of chartmuseum. Default: $CHARTMUSEUM_ADDR"
+    echo "-s,--server           server address of chartmuseum. Default: $CHARTMUSEUM_ADDR"
     echo "-r,--repo             repo to upload charts. Default: $REPO"
     echo "-w,--wait             wait util chartmuseum available."
     echo "-h,--help             show help message."
@@ -35,7 +35,7 @@ upload() {
     echo "uploading ${1} to server ${2} repo ${3}"
     for file in $(find ${1} -name "*.tgz"); do
         echo "uploading ${file}"
-        curl --data-binary "@${file}" -w "%{stdout}\n" ${2}/api/${3}/charts -s
+        curl --data-binary "@${file}" -w "%{stdout}\n" ${2}/api/${3}/charts
     done
 }
 
