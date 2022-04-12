@@ -1,0 +1,14 @@
+apiVersion: v2
+name: vscode
+description: a helm charts for VsCode webserver
+version: 1.0.5
+appVersion: 3.12.0
+icon: https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Visual_Studio_Code_1.18_icon.svg/241px-Visual_Studio_Code_1.18_icon.svg.png
+keywords:
+- demo
+- web
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems
+sources:
+- https://github.com/cdr/code-server

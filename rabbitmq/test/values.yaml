@@ -1,0 +1,23 @@
+nameOverride: rabbitmq
+fullnameOverride: rabbitmq
+rbacEnabled: true
+podManagementPolicy: OrderedReady
+rabbitmq:
+  username: gems
+  password: cloud1688
+persistence:
+  enabled: true
+  storageClass: "local-path"
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  path: /opt/bitnami/rabbitmq/var/lib/rabbitmq
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 8Gi
+    cpu: "4"
+replicas: 1
+metrics:
+  enabled: true

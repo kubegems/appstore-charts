@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Etcd容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Etcd服务名",
+      "form": true
+    },
+    "replicaCount": {
+      "type": "integer",
+      "title": "容器副本数",
+      "form": true,
+      "default": 1
+    },
+    "auth": {
+      "type": "object",
+      "title": "认证",
+      "form": true,
+      "properties": {
+        "rbac": {
+          "type": "object",
+          "title": "RBAC设置",
+          "form": true,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "启用RBAC",
+              "form": true
+            },
+            "rootPassword": {
+              "type": "string",
+              "title": "设置用户密码",
+              "form": true,
+              "hidden": {
+                "path": "auth/rbac/enabled",
+                "value": false
+              }
+            },
+            "allowNoneAuthentication": {
+              "type": "boolean",
+              "title": "允许无认证请求",
+              "form": true
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用存储卷"
+        },
+        "storageClass": {
+          "type": "string",
+          "form": true,
+          "title": "存储卷类型",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "20Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": false,
+          "form": true
+        }
+      }
+    }
+  }
+}

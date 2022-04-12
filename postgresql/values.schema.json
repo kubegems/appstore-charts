@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "PostgreSQL容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "PostgreSQL服务名",
+      "form": true
+    },
+    "postgresqlDatabase": {
+      "type": "string",
+      "title": "初始数据库",
+      "default": "gems",
+      "form": true
+    },
+    "postgresqlUsername": {
+      "type": "string",
+      "title": "管理员账号",
+      "default": "gems",
+      "form": true
+    },
+    "postgresqlPassword": {
+      "type": "string",
+      "title": "管理员密码",
+      "default": "cloud1688",
+      "form": true
+    },
+    "postgresqlMaxConnections": {
+      "type": "integer",
+      "title": "设置最大连接数",
+      "default": 1000,
+      "form": true
+    },
+    "postgresqlTcpKeepalivesInterval": {
+      "type": "string",
+      "title": "TCP心跳保持时间",
+      "default": "30s",
+      "form": true
+    },
+    "shmVolume": {
+      "type": "object",
+      "title": "内存设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用内存加速，默认分配1G内存",
+          "form": true
+        }
+      }
+    },
+    "replication": {
+      "type": "object",
+      "form": true,
+      "title": "复制模式设置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用复制节点",
+          "form": true
+        },
+        "readReplicas": {
+          "type": "integer",
+          "title": "复制节点副本",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "replication/enabled"
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "form": true
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "10Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储卷类型",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "title": "监控服务",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": false,
+          "form": true
+        }
+      }
+    }
+  }
+}

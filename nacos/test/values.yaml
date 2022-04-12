@@ -1,0 +1,23 @@
+global:
+  mode: cluster
+nameOverride: nacos
+fullnameOverride: nacos
+nacos:
+  replicaCount: 3
+  storage:
+    type: embedded
+    db:
+      host: cms
+      name: my-database
+      port: 3306
+      username: root
+      password: cloud1688
+      param: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false
+
+persistence:
+  enabled: true
+  data:
+    storageClassName: local-path
+    resources:
+      requests:
+        storage: 1Gi

@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Cassandra容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Cassandra服务名",
+      "form": true
+    },
+    "replicaCount": {
+      "type": "integer",
+      "title": "容器副本数",
+      "form": true
+    },
+    "dbUser": {
+      "type": "object",
+      "title": "认证设置",
+      "form": true,
+      "properties": {
+        "user": {
+          "type": "string",
+          "title": "设置用户",
+          "default": "gems",
+          "form": true
+        },
+        "password": {
+          "type": "string",
+          "title": "设置访问密码",
+          "default": "cloud1688",
+          "form": true
+        }
+      }
+    },
+    "cluster": {
+      "type": "object",
+      "title": "服务设置",
+      "form": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Cassandra名称",
+          "form": true,
+          "default": "cassandra"
+        },
+        "seedCount": {
+          "type": "integer",
+          "title": "数据副本,小于服务副本数",
+          "form": true,
+          "default": 1
+        },
+        "numTokens": {
+          "type": "integer",
+          "title": "服务Tokens数",
+          "form": true,
+          "default": 256
+        },
+        "datacenter": {
+          "type": "string",
+          "title": "datacenter",
+          "form": true,
+          "default": "dc1"
+        },
+        "enableRPC": {
+          "type": "boolean",
+          "title": "启用RPC",
+          "form": true,
+          "default": true
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用存储卷"
+        },
+        "storageClass": {
+          "type": "string",
+          "form": true,
+          "title": "存储卷类型",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "20Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": false,
+          "form": true
+        }
+      }
+    }
+  }
+}

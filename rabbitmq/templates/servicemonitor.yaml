@@ -1,0 +1,25 @@
+# stolon-proxy
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: {{ template "rabbitmq.name" . }}
+    helm.sh/chart: {{ template "rabbitmq.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  name: {{ template "rabbitmq.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - targetPort: metrics
+    interval: 30s
+    path: /metrics
+    scrapeTimeout: 10s
+  jobLabel: {{ template "rabbitmq.name" . }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "rabbitmq.name" . }}
+{{- end }}

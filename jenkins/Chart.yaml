@@ -1,0 +1,26 @@
+annotations:
+  category: Infrastructure
+apiVersion: v2
+appVersion: 2.289.1
+dependencies:
+- name: common
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - bitnami-common
+  version: 1.x.x
+description: The leading open source automation server
+home: https://github.com/bitnami/charts/tree/master/bitnami/jenkins
+icon: https://bitnami.com/assets/stacks/jenkins/img/jenkins-stack-220x234.png
+keywords:
+- ci
+- cd
+maintainers:
+- email: containers@bitnami.com
+  name: Bitnami
+- email: support@kubegems.io
+  name: KubeGems
+name: jenkins
+sources:
+- https://github.com/bitnami/bitnami-docker-jenkins
+- https://jenkins.io/
+version: 8.0.1

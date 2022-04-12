@@ -1,0 +1,23 @@
+nameOverride: mysql
+fullnameOverride: mysql
+root:
+  password: cloud1688
+replication:
+  enabled: false
+  user: replicator
+  password: 93WrNBCT
+  forcePassword: true
+
+master:
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi
+slave:
+  replicas: 1
+  persistence:
+    enabled: true
+    size: 1Gi
+
+metrics:
+  enabled: true

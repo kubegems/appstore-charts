@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "kibana容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "kibana服务名",
+      "form": true
+    },
+    "elasticsearchHosts": {
+      "type": "string",
+      "title": "ElasicSearch地址",
+      "form": true,
+      "default": "http://elasticsearch:9200"
+    },
+    "apmConfig": {
+      "type": "object",
+      "title": "apm配置文件",
+      "form": true,
+      "properties": {
+        "apm-server.yml": {
+          "type": "string",
+          "title": "apm-server配置",
+          "form": true,
+          "default": "配置请参考 https://github.com/elastic/helm-charts/blob/7.13/apm-server/values.yaml",
+          "render": "textArea"
+        }
+      }
+    },
+    "autoscaling": {
+      "enabled": {
+        "type": "boolean",
+        "title": "启用弹性伸缩",
+        "form": true
+      },
+      "averageCpuUtilization": {
+        "type": "integer",
+        "title": "CPU使用率阈值",
+        "form": true,
+        "default": 50,
+        "hidden": {
+          "path": "autoscaling/enabled",
+          "value": false
+        }
+      },
+      "minReplicas": {
+        "type": "integer",
+        "title": "最小副本",
+        "form": true,
+        "default": 1,
+        "hidden": {
+          "path": "autoscaling/enabled",
+          "value": false
+        }
+      },
+      "maxReplicas": {
+        "type": "integer",
+        "title": "最大副本",
+        "form": true,
+        "default": 3,
+        "hidden": {
+          "path": "autoscaling/enabled",
+          "value": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "nameOverride": {
+        "type": "string",
+        "title": "Vmware Exporter容器名",
+        "form": true
+      },
+      "fullnameOverride": {
+        "type": "string",
+        "title": "Vmware Exporter服务名",
+        "form": true
+      },
+      "replicaCount": {
+        "type": "integer",
+        "title": "容器副本数",
+        "default": 1,
+        "form": true
+      },
+      "vsphere": {
+        "type": "object",
+        "form": true,
+        "title": "vsphere设置",
+        "properties": {
+          "user": {
+            "type": "string",
+            "title": "vsphere登录用户名",
+            "form": true
+          },
+          "password": {
+            "type": "string",
+            "title": "vsphere登录密码",
+            "form": true
+          },
+          "host": {
+            "form": true,
+            "type": "string",
+            "title": "vsphere访问地址"
+          },
+          "ignoressl": {
+            "form": true,
+            "type": "boolean",
+            "title": "忽略ssl验证"
+          }
+        }
+      },
+      "metrics": {
+        "type": "object",
+        "form": true,
+        "title": "监控服务",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用监控采集端",
+            "default": true,
+            "form": true
+          }
+        }
+      }
+    }
+  }

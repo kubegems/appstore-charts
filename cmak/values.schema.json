@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Cmak容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Cmak服务名",
+      "form": true
+    },
+    "zookeeper": {
+      "type": "string",
+      "title": "Zookeeper 地址",
+      "form": true
+    }
+  }
+}

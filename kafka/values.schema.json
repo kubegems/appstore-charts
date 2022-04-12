@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Kafka容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Kafka服务名",
+      "form": true
+    },
+    "externalZookeeper": {
+      "type": "object",
+      "title": "Zookeeper设置",
+      "form": true,
+      "properties": {
+        "servers": {
+          "type": "string",
+          "title": "访问地址",
+          "form": true
+        }
+      }
+    },
+    "replicaCount": {
+      "type": "integer",
+      "title": "容器副本数",
+      "form": true,
+      "default": 1
+    },
+    "persistence": {
+      "type": "object",
+      "form": true,
+      "title": "持久化存储设置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "form": true
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "50Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "storageClass": {
+          "type": "string",
+          "title": "存储类型",
+          "form": true,
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "deleteTopicEnable": {
+      "type": "boolean",
+      "title": "允许删除Topic",
+      "form": true,
+      "default": true
+    },
+    "logRetentionHours": {
+      "type": "integer",
+      "title": "消息保留时间，单位小时",
+      "form": true,
+      "default": 24
+    },
+    "numPartitions": {
+      "type": "integer",
+      "form": true,
+      "title": "默认Topic的Partition数",
+      "default": 1
+    },
+    "defaultReplicationFactor": {
+      "type": "integer",
+      "form": true,
+      "title": "默认Topic数据副本",
+      "default": 1
+    },
+    "offsetsTopicReplicationFactor": {
+      "type": "integer",
+      "form": true,
+      "title": "consumer_offsets副本数",
+      "default": 1
+    },
+    "transactionStateLogReplicationFactor": {
+      "type": "integer",
+      "form": true,
+      "title": "Topic事务的复制因子",
+      "default": 1
+    }
+  }
+}

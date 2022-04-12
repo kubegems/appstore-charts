@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "nameOverride": {
+        "type": "string",
+        "title": "Tomcat容器名",
+        "form": true
+      },
+      "fullnameOverride": {
+        "type": "string",
+        "title": "Tomcat服务名",
+        "form": true
+      },
+      "replicaCount": {
+        "tyoe": "integer",
+        "title": "容器副本数",
+        "form": true,
+        "default": 1
+      },
+      "tomcatUsername": {
+        "type": "string",
+        "title": "Tomcat用户名",
+        "form": true,
+        "default": "gems"
+      },
+      "tomcatPassword": {
+        "type": "string",
+        "title": "Tomcat密码",
+        "form": true,
+        "default": "cloud1688"
+      },
+      "tomcatAllowRemoteManagement": {
+        "type": "integer",
+        "title": "运行远程管理Tomcat.0/disable,1/enable",
+        "form": true,
+        "default": 0
+      },
+      "persistence": {
+        "type": "object",
+        "title": "数据持久化设置",
+        "form": true,
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用存储卷",
+            "form": true
+          },
+          "size": {
+            "type": "string",
+            "title": "存储卷容量",
+            "form": true,
+            "render": "slider",
+            "sliderMin": 1,
+            "sliderMax": 100,
+            "sliderUnit": "Gi",
+            "default": "5Gi",
+            "hidden": {
+              "path": "persistence/enabled",
+              "value": false
+            }
+          },
+          "storageClass": {
+            "type": "string",
+            "title": "存储类型",
+            "form": true,
+            "hidden": {
+              "path": "persistence/enabled",
+              "value": false
+            }
+          }
+        }
+      }
+    }
+  }

@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "InfluxDB容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "InfluxDB服务名",
+      "form": true
+    },
+    "architecture": {
+      "type": "string",
+      "title": "InfluxDB架构",
+      "form": true,
+      "default": "standalone",
+      "enum": [
+        "standalone",
+        "high-availability"
+      ]
+    },
+    "auth": {
+      "type": "object",
+      "title": "认证设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用访问认证",
+          "form": true,
+          "default": true
+        },
+        "admin": {
+          "type": "object",
+          "title": "admin账号设置",
+          "form": true,
+          "hidden": {
+            "path": "auth/enabled",
+            "value": false
+          },
+          "properties": {
+            "username": {
+              "type": "string",
+              "title": "ADMIN账号用户名",
+              "default": "gems",
+              "form": true
+            },
+            "password": {
+              "type": "string",
+              "title": "ADMIN账号密码",
+              "default": "cloud1688",
+              "form": true
+            },
+            "rootPassword": {
+              "type": "string",
+              "title": "设置用户密码",
+              "form": true,
+              "hidden": {
+                "path": "auth/rbac/enabled",
+                "value": "fa"
+              }
+            }
+          }
+        }
+      }
+    },
+    "influxdb": {
+      "type": "object",
+      "title": "InfluxDB设置",
+      "form": true,
+      "properties": {
+        "replicaCount": {
+          "type": "integer",
+          "form": true,
+          "title": "influxdb容器副本数",
+          "default": 1
+        }
+      }
+    },
+    "relay": {
+      "type": "object",
+      "title": "InfluxDB Relay设置",
+      "form": true,
+      "hidden": {
+        "path": "architecture",
+        "value": "standalone"
+      },
+      "properties": {
+        "replicaCount": {
+          "type": "integer",
+          "form": true,
+          "title": "influxdb replay副本数",
+          "default": 1
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "数据持久化设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "form": true
+        },
+        "storageClass": {
+          "type": "string",
+          "form": true,
+          "title": "存储卷类型",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "10Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": false,
+          "form": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    kubegems.io/application: {{ template "name" . }}
+  name: {{ template "name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+    scrapeTimeout: 10s
+  jobLabel: {{ template "name" . }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      kubegems.io/application: {{ template "name" . }}
+{{- end }}

@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Nats容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Nats服务名",
+      "form": true
+    },
+    "replicaCount": {
+      "type": "integer",
+      "title": "容器副本数",
+      "form": true
+    },
+    "maxConnections": {
+      "type": "integer",
+      "title": "最大连接数",
+      "form": true,
+      "default": 100
+    },
+    "auth": {
+      "type": "object",
+      "title": "设置Nats认证",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用认证",
+          "default": false
+        },
+        "user": {
+          "type": "string",
+          "form": true,
+          "title": "设置用户名",
+          "default": "gems",
+          "hidden": {
+            "path": "auth/enabled",
+            "value": false
+          }
+        },
+        "password": {
+          "type": "string",
+          "form": true,
+          "title": "设置密码",
+          "default": "cloud1688",
+          "hidden": {
+            "path": "auth/enabled",
+            "value": false
+          }
+        }
+      }
+    },
+    "clusterAuth": {
+      "type": "object",
+      "title": "设置Nats集群认证",
+      "form": true,
+      "hidden": {
+        "path": "replicaCount",
+        "value": 1
+      },
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用认证",
+          "form": true,
+          "default": false
+        },
+        "user": {
+          "type": "string",
+          "form": true,
+          "title": "设置用户名",
+          "default": "gems",
+          "hidden": {
+            "path": "clusterAuth/enabled",
+            "value": false
+          }
+        },
+        "password": {
+          "type": "string",
+          "form": true,
+          "title": "设置密码",
+          "default": "cloud1688",
+          "hidden": {
+            "path": "clusterAuth/enabled",
+            "value": false
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": false,
+          "form": true
+        }
+      }
+    }
+  }
+}

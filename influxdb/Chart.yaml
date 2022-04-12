@@ -1,0 +1,26 @@
+annotations:
+  category: Database
+apiVersion: v2
+appVersion: 2.0.7
+dependencies:
+- name: common
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - bitnami-common
+  version: 1.x.x
+description: InfluxDB(TM) is an open source time-series database designed to handle
+  large write and read loads in real-time.
+home: https://github.com/bitnami/charts/tree/master/bitnami/influxdb
+icon: https://bitnami.com/assets/stacks/influxdb/img/influxdb-stack-220x234.png
+keywords:
+- timeseries
+maintainers:
+- email: containers@bitnami.com
+  name: Bitnami
+- email: support@kubegems.io
+  name: KubeGems
+name: influxdb
+sources:
+- https://github.com/bitnami/bitnami-docker-influxdb
+- https://www.influxdata.com/products/influxdb-overview/
+version: 2.2.11

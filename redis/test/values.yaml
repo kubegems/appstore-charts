@@ -1,0 +1,13 @@
+nameOverride: cms-redis
+fullnameOverride: cms-redis
+usePassword: true
+password: "cloud1688"
+cluster:
+  enabled: false
+master:
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi
+metrics:
+  enabled: true

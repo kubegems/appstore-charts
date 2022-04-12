@@ -1,0 +1,13 @@
+apiVersion: v1
+appVersion: 2.4.0
+description: Kafka Cluster,this is a distributed streaming platform.
+engine: gotpl
+home: https://kafka.apache.org/
+icon: https://bitnami.com/assets/stacks/kafka/img/kafka-stack-110x117.png
+keywords:
+- message
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems
+name: kafka
+version: 7.1.0

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "SkyWalking容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "SkyWalking服务名",
+      "form": true
+    },
+    "opa": {
+      "type": "object",
+      "title": "SkyWalking OAP Server设置",
+      "form": true,
+      "properties": {
+        "replicas": {
+          "type": "integer",
+          "title": "OAP副本数",
+          "default": 2,
+          "form": true
+        }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "title": "SkyWalking Dashboard设置",
+      "form": true,
+      "properties": {
+        "replicas": {
+          "type": "integer",
+          "title": "UI副本数",
+          "default": 1,
+          "form": true
+        }
+      }
+    },
+    "elasticsearch": {
+      "type": "object",
+      "form": true,
+      "title": "数据设置",
+      "properties": {
+        "config": {
+          "type": "object",
+          "title": "ElasitcSearch",
+          "form": true,
+          "properties": {
+            "address": {
+              "type": "string",
+              "title": "地址",
+              "form": true,
+              "default": "elasticsearch:9200"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+      "nameOverride": {
+        "type": "string",
+        "title": "SonarQube容器名",
+        "form": true
+      },
+      "fullnameOverride": {
+        "type": "string",
+        "title": "SonarQube服务名",
+        "form": true
+      },
+      "psql": {
+        "type": "object",
+        "title": "PosetgeSQL数据库设置",
+        "form": true,
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "PosetgeSQL访问地址",
+            "form": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "PosetgeSQL访问端口",
+            "default": 5432,
+            "form": true
+          },
+          "username": {
+            "type": "string",
+            "title": "用户名",
+            "default": "sonarqube",
+            "form": true
+          },
+          "password": {
+            "type": "string",
+            "title": "密码",
+            "form": true,
+            "default": "sonarqube"
+          },
+          "database": {
+            "type": "string",
+            "title": "Database",
+            "default": "sonarqube",
+            "form": true
+          }
+        }
+      },
+      "persistence": {
+        "type": "object",
+        "title": "持久化数据设置",
+        "form": true,
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用存储卷",
+            "form": true
+          },
+          "storageClass": {
+            "type": "string",
+            "title": "存储卷类型",
+            "form": true,
+            "hidden": {
+              "path": "persistence/enabled",
+              "value": false
+            }
+          },
+          "size": {
+            "type": "string",
+            "title": "存储卷容量",
+            "form": true,
+            "render": "slider",
+            "sliderMin": 1,
+            "sliderMax": 100,
+            "sliderUnit": "Gi",
+            "default": "10Gi",
+            "hidden": {
+              "path": "persistence/enabled",
+              "value": false
+            }
+          }
+        }
+      }
+    }
+  }

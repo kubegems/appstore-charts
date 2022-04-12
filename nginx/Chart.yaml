@@ -1,0 +1,25 @@
+annotations:
+  category: Infrastructure
+apiVersion: v2
+appVersion: 1.21.0
+dependencies:
+- name: common
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - bitnami-common
+  version: 1.x.x
+description: Chart for the nginx server
+home: https://github.com/bitnami/charts/tree/master/bitnami/nginx
+icon: https://bitnami.com/assets/stacks/nginx/img/nginx-stack-220x234.png
+keywords:
+- web
+maintainers:
+- email: containers@bitnami.com
+  name: Bitnami
+- email: support@kubegems.io
+  name: KubeGems
+name: nginx
+sources:
+- https://github.com/bitnami/bitnami-docker-nginx
+- http://www.nginx.org
+version: 9.3.4

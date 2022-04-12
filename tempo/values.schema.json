@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Tempo容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Tempo服务名",
+      "form": true
+    },
+    "retention": {
+      "type": "string",
+      "title": "数据保留时间",
+      "form": true,
+      "default": "24h"
+    },
+    "persistence": {
+      "type": "object",
+      "title": "持久化数据设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "form": true,
+          "title": "启用存储卷"
+        },
+        "storageClass": {
+          "type": "string",
+          "form": true,
+          "title": "存储卷类型",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 1,
+          "sliderMax": 100,
+          "sliderUnit": "Gi",
+          "default": "20Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    }
+  }
+}

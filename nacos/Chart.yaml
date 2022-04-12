@@ -1,0 +1,16 @@
+apiVersion: v2
+appVersion: "2.0.2"
+description: Official helm chart for Nacos Server
+engine: gotpl
+name: nacos
+home: https://nacos.io
+version: 0.1.5
+maintainers:
+  - name: arrowfeng
+  - name: paderlol
+  - name: KubeGems
+    email: support@kubegems.io
+keywords:
+- key-value
+sources:
+- https://github.com/nacos-group/nacos-k8s/tree/master/helm

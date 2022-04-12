@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Zookeeper容器名",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Zokeeper服务名",
+      "form": true
+    },
+    "replicaCount": {
+      "type": "integer",
+      "title": "容器副本数",
+      "default": 1,
+      "form": true
+    },
+    "maxClientCnxns": {
+      "type": "string",
+      "title": "设置最大连接数",
+      "form": true,
+      "default": 60
+    },
+    "persistence": {
+      "type": "object",
+      "form": true,
+      "title": "数据持久化设置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用存储卷",
+          "default": true,
+          "form": true
+        },
+        "size": {
+          "type": "string",
+          "title": "存储卷容量",
+          "default": "1Gi",
+          "form": true,
+          "sliderMax": 100,
+          "sliderMin": 1,
+          "sliderVal": 1,
+          "sliderUnit": "Gi",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        },
+        "storageClass": {
+          "form": true,
+          "type": "string",
+          "title": "存储卷类型",
+          "hidden": {
+            "value": false,
+            "path": "persistence/enabled"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "form": true,
+      "title": "监控服务",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用监控采集端",
+          "default": false,
+          "form": true
+        }
+      }
+    }
+  }
+}

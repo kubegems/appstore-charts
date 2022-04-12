@@ -1,0 +1,20 @@
+apiVersion: v2
+description: Apache SkyWalking APM System
+home: https://skywalking.apache.org
+icon: https://raw.githubusercontent.com/apache/skywalking-kubernetes/master/logo/sw-logo-for-chart.jpg
+maintainers:
+- email: hanahmily@gmail.com
+  name: hanahmily
+- email: innerpeace.zhai@gmail.com
+  name: innerpeacez
+- email: kezhenxu94@163.com
+  name: kezhenxu94
+- email: support@kubegems.io
+  name: KubeGems
+keywords:
+- apm
+name: skywalking
+sources:
+- https://github.com/apache/skywalking-kubernetes
+version: 8.6.0
+appVersion: 8.6.0
