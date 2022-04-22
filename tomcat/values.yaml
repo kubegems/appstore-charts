@@ -16,7 +16,7 @@ kubeVersion:
 ## ref: https://hub.docker.com/r/bitnami/tomcat/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/tomcat
   tag: 10.0.8-debian-10-r0
   ## Specify a imagePullPolicy
@@ -435,7 +435,7 @@ ingress:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     pullPolicy: Always

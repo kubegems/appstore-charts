@@ -23,7 +23,7 @@ serviceAccounts:
   oap:
 
 initContainer:
-  image: docker.io/kubegemsapp/busybox
+  image: registry.cn-beijing.aliyuncs.com/kubegemsapp/busybox
   tag: '1.30'
 
 oap:
@@ -33,7 +33,7 @@ oap:
   # Sync period in seconds. Defaults to 60 seconds. env: SW_CONFIG_CONFIGMAP_PERIOD
   dynamicConfigEnabled: false
   image:
-    repository: docker.io/kubegemsapp/skywalking-oap-server
+    repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/skywalking-oap-server
     tag: 8.6.0-es7
     pullPolicy: IfNotPresent
   storageType: elasticsearch7 
@@ -72,7 +72,7 @@ ui:
   name: ui
   replicas: 1
   image:
-    repository: docker.io/kubegemsapp/skywalking-ui
+    repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/skywalking-ui
     tag: 8.6.0
     pullPolicy: IfNotPresent
   # podAnnotations:

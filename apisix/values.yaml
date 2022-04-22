@@ -24,7 +24,7 @@ apisix:
   enabled: true
 
   image:
-    repository: docker.io/kubegemsapp/apisix
+    repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/apisix
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: 2.7-alpine

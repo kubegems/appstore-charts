@@ -11,7 +11,7 @@
 ## ref: https://hub.docker.com/r/bitnami/nats/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/nats
   tag: 2.3.1-debian-10-r0
   ## Specify a imagePullPolicy
@@ -519,7 +519,7 @@ pdb:
 metrics:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/nats-exporter
     tag: 0.8.0-debian-10-r3
     pullPolicy: IfNotPresent

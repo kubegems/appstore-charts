@@ -11,7 +11,7 @@
 ## ref: https://hub.docker.com/r/bitnami/mysql/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: bitnami/mysql
   tag: 5.7.26
   ## Specify a imagePullPolicy
@@ -258,7 +258,7 @@ slave:
 metrics:
   enabled: true
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: prom/mysqld-exporter
     tag: v0.10.0
     pullPolicy: IfNotPresent

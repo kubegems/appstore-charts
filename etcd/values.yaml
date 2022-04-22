@@ -12,7 +12,7 @@
 ## ref: https://hub.docker.com/r/bitnami/etcd/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/etcd
   tag: 3.5.0-debian-10-r0
   ## Specify a imagePullPolicy
@@ -508,7 +508,7 @@ persistence:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     pullPolicy: Always

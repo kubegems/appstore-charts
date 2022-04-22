@@ -21,7 +21,7 @@
 replicaCount: 1
 
 image:
-  repository: docker.io/kubegemsapp/apisix-dashboard
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/apisix-dashboard
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "2.7"

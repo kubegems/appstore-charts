@@ -13,7 +13,7 @@
 image:
   ## Bitnami MongoDB(R) registry
   ##
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   ## Bitnami MongoDB(R) image name
   ##
   repository: kubegemsapp/mongodb
@@ -145,7 +145,7 @@ tls:
   ## Bitnami Nginx image
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/nginx
     tag: 1.19.10-debian-10-r63
     pullPolicy: IfNotPresent
@@ -624,7 +624,7 @@ externalAccess:
     ## ref: https://hub.docker.com/r/bitnami/kubectl/tags/
     ##
     image:
-      registry: docker.io
+      registry: registry.cn-beijing.aliyuncs.com
       repository: bitnami/kubectl
       tag: 1.19.12-debian-10-r4
       ## Specify a imagePullPolicy
@@ -1078,7 +1078,7 @@ podSecurityPolicy:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     ## Specify a imagePullPolicy
@@ -1127,7 +1127,7 @@ metrics:
   ## ref: https://hub.docker.com/r/bitnami/mongodb-exporter/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/mongodb-exporter
     tag: 0.11.2-debian-10-r200
     pullPolicy: IfNotPresent

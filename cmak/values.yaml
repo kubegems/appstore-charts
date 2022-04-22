@@ -1,4 +1,4 @@
-imageRegistry: docker.io/kubegemsapp/cmak:3.0.0.5-7e7a22e
+imageRegistry: registry.cn-beijing.aliyuncs.com/kubegemsapp/cmak:3.0.0.5-7e7a22e
 nameOverride: cmak
 fullnameOverride: cmak
 # mirroring CMAK UI preferences for Kafka clusters

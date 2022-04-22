@@ -11,7 +11,7 @@
 ## ref: https://hub.docker.com/r/bitnami/nginx/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/nginx
   tag: 1.21.0-debian-10-r21
   ## Specify a imagePullPolicy
@@ -94,7 +94,7 @@ cloneStaticSiteFromGit:
   ## ref: https://hub.docker.com/r/bitnami/git/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/git
     tag: 2.32.0-debian-10-r20
     ## Specify a imagePullPolicy
@@ -414,7 +414,7 @@ ldapDaemon:
   ## ref: https://hub.docker.com/r/bitnami/nginx-ldap-auth-daemon/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/nginx-ldap-auth-daemon
     tag: 0.20200116.0-debian-10-r382
     pullPolicy: IfNotPresent
@@ -722,7 +722,7 @@ metrics:
   ## ref: https://hub.docker.com/r/bitnami/nginx-exporter/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/nginx-exporter
     tag: 0.9.0-debian-10-r87
     pullPolicy: IfNotPresent

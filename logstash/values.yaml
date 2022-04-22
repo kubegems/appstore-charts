@@ -11,7 +11,7 @@
 ## ref: https://hub.docker.com/r/bitnami/logstash/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/logstash
   tag: 7.13.2-debian-10-r0
   ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -359,7 +359,7 @@ volumePermissions:
   securityContext:
     runAsUser: 0
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: bitnami/bitnami-shell
     tag: 10-debian-10-r107
     ## Specify a imagePullPolicy
@@ -477,7 +477,7 @@ metrics:
   ## ref: https://hub.docker.com/r/bitnami/logstash-exporter/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/logstash-exporter
     tag: 7.3.0-debian-10-r211
     ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'

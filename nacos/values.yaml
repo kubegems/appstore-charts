@@ -11,13 +11,13 @@ fullnameOverride: nacos
 ############################nacos###########################
 nacos:
   image:
-    repository: docker.io/kubegemsapp/nacos-server
+    repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/nacos-server
     tag: 2.0.2
     pullPolicy: IfNotPresent
   plugin:
     enable: true
     image:
-      repository: docker.io/kubegemsapp/nacos-peer-finder-plugin
+      repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/nacos-peer-finder-plugin
       tag: 1.1
   replicaCount: 1
   domainName: cluster.local

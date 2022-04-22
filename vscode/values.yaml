@@ -6,7 +6,7 @@ replicaCount: 1
 password: cloud1688
 
 image:
-  repository: docker.io/kubegemsapp/code-server
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/code-server
   tag: '3.12.0'
   pullPolicy: IfNotPresent
 

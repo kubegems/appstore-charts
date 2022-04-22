@@ -52,7 +52,7 @@ injector:
 
   # image sets the repo and tag of the vault-k8s image to use for the injector.
   image:
-    repository: "docker.io/kubegemsapp/vault-k8s"
+    repository: "registry.cn-beijing.aliyuncs.com/kubegemsapp/vault-k8s"
     tag: "0.10.2"
     pullPolicy: IfNotPresent
 
@@ -216,7 +216,7 @@ server:
   # By default no direct resource request is made.
 
   image:
-    repository: "docker.io/kubegemsapp/vault"
+    repository: "registry.cn-beijing.aliyuncs.com/kubegemsapp/vault"
     tag: "1.7.3"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
@@ -705,7 +705,7 @@ csi:
   enabled: false
 
   image:
-    repository: "docker.io/kubegemsapp/vault-csi-provider"
+    repository: "registry.cn-beijing.aliyuncs.com/kubegemsapp/vault-csi-provider"
     tag: "0.3.0"
     pullPolicy: IfNotPresent
 

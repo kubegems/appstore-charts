@@ -2,7 +2,7 @@ nameOverride: mysql
 fullnameOverride: mysql
 
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/mysql
   tag: 5.7.26
   pullPolicy: IfNotPresent
@@ -145,7 +145,7 @@ slave:
 metrics:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/mysqld-exporter
     tag: v0.10.0
     pullPolicy: IfNotPresent

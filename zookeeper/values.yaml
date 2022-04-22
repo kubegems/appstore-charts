@@ -9,7 +9,7 @@
 #   storageClass: myStorageClass
 
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/zookeeper
   tag: 3.5.6
   ## Specify a imagePullPolicy
@@ -39,7 +39,7 @@ fullnameOverride: zookeeper
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/minideb
     tag: stretch
     pullPolicy: IfNotPresent
@@ -222,7 +222,7 @@ metrics:
   enabled: false
 
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/zookeeper-exporter
     tag: 0.1.2
     pullPolicy: IfNotPresent

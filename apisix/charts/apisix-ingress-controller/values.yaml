@@ -40,7 +40,7 @@ serviceAccount:
 replicaCount: 1
 
 image:
-  repository: docker.io/kubegemsapp/apisix-ingress-controller
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/apisix-ingress-controller
   pullPolicy: IfNotPresent
   tag: "1.0.0"
 
