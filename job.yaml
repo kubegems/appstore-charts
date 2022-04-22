@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
       - args:
-        - wait
-        - repo
+        - --wait
+        - --repo
         - kubegems
-        - server
+        - --server
         - http://gems-chartmuseum:8030
         image: registry.cn-beijing.aliyuncs.com/kubegems/charts-uploader:v1.20.0-beta.1
         imagePullPolicy: Always
