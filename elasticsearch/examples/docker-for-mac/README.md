@@ -1,6 +1,6 @@
 # Docker for Mac
 
-This example deploy a 3 nodes Elasticsearch 7.13.2 cluster on [Docker for Mac][]
+This example deploy a 3 nodes Elasticsearch 8.1.0 cluster on [Docker for Mac][]
 using [custom values][].
 
 Note that this configuration should be used for test only and isn't recommended
@@ -19,5 +19,5 @@ for production.
   ```
 
 
-[custom values]: https://github.com/elastic/helm-charts/tree/7.13/elasticsearch/examples/docker-for-mac/values.yaml
+[custom values]: https://github.com/elastic/helm-charts/tree/main/elasticsearch/examples/docker-for-mac/values.yaml
 [docker for mac]: https://docs.docker.com/docker-for-mac/kubernetes/

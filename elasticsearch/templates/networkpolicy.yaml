@@ -5,6 +5,7 @@ metadata:
   name: {{ template "elasticsearch.uname" . }}
   labels:
     heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
     chart: "{{ .Chart.Name }}"
     app: "{{ template "elasticsearch.uname" . }}"
 spec:

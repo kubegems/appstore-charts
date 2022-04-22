@@ -1,9 +1,0 @@
-nameOverride: elasticsearch
-fullnameOverride: elasticsearch
-replicas: 1
-minimumMasterNodes: 1
-volumeClaimTemplate:
-  storageClassName: "local-path"
-  resources:
-    requests:
-      storage: 1Gi

@@ -54,7 +54,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
         {{- end }}
         {{/* This forces a restart if the configmap has changed */}}
-        {{- if .Values.esConfig }}
+        {{- if or .Values.esConfig .Values.esJvmOptions }}
         configchecksum: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
         {{- end }}
     spec:
@@ -66,11 +66,10 @@ spec:
         {{- if .Values.fsGroup }}
         fsGroup: {{ .Values.fsGroup }} # Deprecated value, please use .Values.podSecurityContext.fsGroup
         {{- end }}
-      {{- if .Values.rbac.create }}
-      serviceAccountName: "{{ template "elasticsearch.uname" . }}"
-      {{- else if not (eq .Values.rbac.serviceAccountName "") }}
-      serviceAccountName: {{ .Values.rbac.serviceAccountName | quote }}
+      {{- if or .Values.rbac.create .Values.rbac.serviceAccountName }}
+      serviceAccountName: "{{ template "elasticsearch.serviceAccount" . }}"
       {{- end }}
+      automountServiceAccountToken: {{ .Values.rbac.automountToken }}
       {{- with .Values.tolerations }}
       tolerations:
 {{ toYaml . | indent 6 }}
@@ -127,6 +126,16 @@ spec:
           configMap:
             name: {{ template "elasticsearch.uname" . }}-config
         {{- end }}
+        {{- if .Values.esJvmOptions }}
+        - name: esjvmoptions
+          configMap:
+            name: {{ template "elasticsearch.uname" . }}-jvm-options
+        {{- end }}
+        {{- if .Values.createCert }}
+        - name: elasticsearch-certs
+          secret:
+           secretName: {{ template "elasticsearch.uname" . }}-certs
+        {{- end }}
 {{- if .Values.keystore }}
         - name: keystore
           emptyDir: {}
@@ -168,13 +177,14 @@ spec:
       {{- end }}
 {{ if .Values.keystore }}
       - name: keystore
+        securityContext:
+{{ toYaml .Values.securityContext | indent 10 }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         command:
-        - sh
+        - bash
         - -c
         - |
-          #!/usr/bin/env bash
           set -euo pipefail
 
           elasticsearch-keystore create
@@ -220,13 +230,21 @@ spec:
 {{ toYaml .Values.securityContext | indent 10 }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        {{- if .Values.secret.enabled }}
         readinessProbe:
           exec:
             command:
-              - sh
+              - bash
               - -c
               - |
-                #!/usr/bin/env bash -e
+                set -e
+
+                # Exit if ELASTIC_PASSWORD in unset
+                if [ -z "${ELASTIC_PASSWORD}" ]; then
+                  echo "ELASTIC_PASSWORD variable is missing, exiting"
+                  exit 1
+                fi
+
                 # If the node is starting up wait for the cluster to be ready (request params: "{{ .Values.clusterHealthCheckParams }}" )
                 # Once it has started only check that the node itself is responding
                 START_FILE=/tmp/.es_start_file
@@ -244,9 +262,7 @@ spec:
                     set -- "$@" $args
                   fi
 
-                  if [ -n "${ELASTIC_USERNAME}" ] && [ -n "${ELASTIC_PASSWORD}" ]; then
-                    set -- "$@" -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}"
-                  fi
+                  set -- "$@" -u "elastic:${ELASTIC_PASSWORD}"
 
                   curl --output /dev/null -k "$@" "{{ .Values.protocol }}://127.0.0.1:{{ .Values.httpPort }}${path}"
                 }
@@ -280,6 +296,7 @@ spec:
                   fi
                 fi
 {{ toYaml .Values.readinessProbe | indent 10 }}
+        {{- end }}
         ports:
         - name: http
           containerPort: {{ .Values.httpPort }}
@@ -292,15 +309,12 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
-          {{- if eq .Values.roles.master "true" }}
-          {{- if ge (int (include "elasticsearch.esMajorVersion" .)) 7 }}
+          {{- if has "master" .Values.roles }}
           - name: cluster.initial_master_nodes
             value: "{{ template "elasticsearch.endpoints" . }}"
-          {{- else }}
-          - name: discovery.zen.minimum_master_nodes
-            value: "{{ .Values.minimumMasterNodes }}"
           {{- end }}
-          {{- end }}
+          - name: node.roles
+            value: "{{ template "elasticsearch.roles" . }}"
           {{- if lt (int (include "elasticsearch.esMajorVersion" .)) 7 }}
           - name: discovery.zen.ping.unicast.hosts
             value: "{{ template "elasticsearch.masterService" . }}-headless"
@@ -312,13 +326,41 @@ spec:
             value: "{{ .Values.clusterName }}"
           - name: network.host
             value: "{{ .Values.networkHost }}"
+          {{- if .Values.secret.enabled }}
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "elasticsearch.uname" . }}-credentials
+                key: password
+          {{- end }}
           {{- if .Values.esJavaOpts  }}
           - name: ES_JAVA_OPTS
             value: "{{ .Values.esJavaOpts }}"
           {{- end }}
-          {{- range $role, $enabled := .Values.roles }}
-          - name: node.{{ $role }}
-            value: "{{ $enabled }}"
+          {{- if .Values.createCert }}
+          - name: xpack.security.enabled
+            value: "true"
+          - name: xpack.security.transport.ssl.enabled
+            value: "true"
+          - name: xpack.security.http.ssl.enabled
+            value: "true"
+          - name: xpack.security.transport.ssl.verification_mode
+            value: "certificate"
+          - name: xpack.security.transport.ssl.key
+            value: "/usr/share/elasticsearch/config/certs/tls.key"
+          - name: xpack.security.transport.ssl.certificate
+            value: "/usr/share/elasticsearch/config/certs/tls.crt"
+          - name: xpack.security.transport.ssl.certificate_authorities
+            value: "/usr/share/elasticsearch/config/certs/ca.crt"
+          - name: xpack.security.http.ssl.key
+            value: "/usr/share/elasticsearch/config/certs/tls.key"
+          - name: xpack.security.http.ssl.certificate
+            value: "/usr/share/elasticsearch/config/certs/tls.crt"
+          - name: xpack.security.http.ssl.certificate_authorities
+            value: "/usr/share/elasticsearch/config/certs/ca.crt"
+          {{- else }}
+          - name: xpack.security.enabled
+            value: "false"
           {{- end }}
 {{- if .Values.extraEnvs }}
 {{ toYaml .Values.extraEnvs | indent 10 }}
@@ -331,6 +373,11 @@ spec:
           {{- if .Values.persistence.enabled }}
           - name: "{{ template "elasticsearch.uname" . }}"
             mountPath: /usr/share/elasticsearch/data
+          {{- end }}
+          {{- if .Values.createCert }}
+          - name: elasticsearch-certs
+            mountPath: /usr/share/elasticsearch/config/certs
+            readOnly: true
           {{- end }}
 {{ if .Values.keystore }}
           - name: keystore
@@ -347,6 +394,11 @@ spec:
           {{- range $path, $config := .Values.esConfig }}
           - name: esconfig
             mountPath: /usr/share/elasticsearch/config/{{ $path }}
+            subPath: {{ $path }}
+          {{- end -}}
+          {{- range $path, $config := .Values.esJvmOptions }}
+          - name: esjvmoptions
+            mountPath: /usr/share/elasticsearch/config/jvm.options.d/{{ $path }}
             subPath: {{ $path }}
           {{- end -}}
         {{- if .Values.extraVolumeMounts }}

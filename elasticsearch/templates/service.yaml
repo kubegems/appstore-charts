@@ -1,3 +1,4 @@
+{{- if .Values.service.enabled -}}
 ---
 kind: Service
 apiVersion: v1
@@ -21,6 +22,7 @@ spec:
   selector:
     chart: "{{ .Chart.Name }}"
     app: "{{ template "elasticsearch.uname" . }}"
+  publishNotReadyAddresses: {{ .Values.service.publishNotReadyAddresses }}
   ports:
   - name: {{ .Values.service.httpPortName | default "http" }}
     protocol: TCP
@@ -40,6 +42,7 @@ spec:
 {{- end }}
 {{- if .Values.service.externalTrafficPolicy }}
   externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+{{- end }}
 {{- end }}
 ---
 kind: Service
