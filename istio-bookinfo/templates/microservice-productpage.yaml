@@ -40,7 +40,7 @@ spec:
       serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
-        image: docker.io/kubegemsapp/examples-bookinfo-productpage-v1:1.15.0
+        image: registry.cn-beijing.aliyuncs.com/kubegemsapp/examples-bookinfo-productpage-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080

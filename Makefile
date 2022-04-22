@@ -1,4 +1,4 @@
-CHARTS_UPLOADER = docker.io/kubegems/charts-uploader:latest
+CHARTS_UPLOADER ?= docker.io/kubegems/charts-uploader:latest
 
 package:
 	 rm -rf charts/*.tgz

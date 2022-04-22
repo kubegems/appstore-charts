@@ -67,7 +67,7 @@ hostAliases: []
 #  - "foo.local"
 #  - "bar.local"
 
-image: "docker.io/kubegemsapp/apm-server"
+image: "registry.cn-beijing.aliyuncs.com/kubegemsapp/apm-server"
 imageTag: "7.13.2"
 imagePullPolicy: "IfNotPresent"
 imagePullSecrets: []

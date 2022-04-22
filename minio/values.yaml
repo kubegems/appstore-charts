@@ -24,7 +24,7 @@ global:
 ## ref: https://hub.docker.com/r/bitnami/minio/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/minio
   tag: 2021.6.17-debian-10-r0
   ## Specify a imagePullPolicy
@@ -48,7 +48,7 @@ image:
 ## ref: https://hub.docker.com/r/bitnami/minio-client/tags/
 ##
 clientImage:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/minio-client
   tag: 2021.6.13-debian-10-r3
 
@@ -555,7 +555,7 @@ persistence:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     pullPolicy: Always

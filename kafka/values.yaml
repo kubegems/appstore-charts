@@ -12,7 +12,7 @@
 ## ref: https://hub.docker.com/r/bitnami/kafka/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/kafka
   tag: 2.4.0
   ## Specify a imagePullPolicy
@@ -44,7 +44,7 @@ fullnameOverride: kafka
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/minideb
     tag: stretch
     pullPolicy: IfNotPresent 
@@ -341,7 +341,7 @@ metrics:
     ## ref: https://hub.docker.com/r/bitnami/kafka-exporter/tags/
     ##
     image:
-      registry: docker.io
+      registry: registry.cn-beijing.aliyuncs.com
       repository: kubegemsapp/kafka-exporter
       tag: 1.2.0
       pullPolicy: IfNotPresent
@@ -408,7 +408,7 @@ metrics:
     ## ref: https://hub.docker.com/r/bitnami/jmx-exporter/tags/
     ##
     image:
-      registry: docker.io
+      registry: registry.cn-beijing.aliyuncs.com
       repository: kubegemsapp/jmx-exporter
       tag: 0.12.0
       pullPolicy: IfNotPresent

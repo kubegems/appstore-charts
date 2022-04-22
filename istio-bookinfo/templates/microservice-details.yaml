@@ -40,7 +40,7 @@ spec:
       serviceAccountName: bookinfo-details
       containers:
       - name: details
-        image: docker.io/kubegemsapp/examples-bookinfo-details-v1:1.15.0
+        image: registry.cn-beijing.aliyuncs.com/kubegemsapp/examples-bookinfo-details-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080

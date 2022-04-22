@@ -75,7 +75,7 @@ hostAliases: []
 #  - "foo.local"
 #  - "bar.local"
 
-image: "registry.cn-beijing.aliyuncs.com/kubegemsapp/elasticsearch"
+image: registry.cn-beijing.aliyuncs.com/kubegemsapp/elasticsearch
 imageTag: "8.1.0"
 imagePullPolicy: "IfNotPresent"
 

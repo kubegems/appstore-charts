@@ -16,7 +16,7 @@ kubeVersion:
 ## ref: https://hub.docker.com/r/bitnami/consul/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/consul
   tag: 1.10.0-debian-10-r0
   ## Specify a imagePullPolicy
@@ -316,7 +316,7 @@ persistence:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     pullPolicy: Always
@@ -470,7 +470,7 @@ metrics:
   ## ref: https://hub.docker.com/r/bitnami/consul-exporter/tags/
   ##
   image:
-    registry: docker.io 
+    registry: registry.cn-beijing.aliyuncs.com 
     repository: kubegemsapp/consul-exporter
     tag: 0.7.1-debian-10-r313
     pullPolicy: IfNotPresent

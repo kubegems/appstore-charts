@@ -52,7 +52,7 @@ extraDeploy: []
 ## @param image.debug Enable image debug mode
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/jenkins
   tag: 2.289.1-debian-10-r0
   ## Specify a imagePullPolicy
@@ -459,7 +459,7 @@ volumePermissions:
   ## @param volumePermissions.image.pullSecrets Bitnami Shell image pull secrets
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     pullPolicy: IfNotPresent
@@ -504,7 +504,7 @@ metrics:
   ## @param metrics.image.pullSecrets Jenkins Exporter image pull secrets
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/jenkins-exporter
     tag: 0.20171225.0-debian-10-r465
     pullPolicy: IfNotPresent

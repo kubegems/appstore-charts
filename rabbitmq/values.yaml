@@ -12,7 +12,7 @@
 ## ref: https://hub.docker.com/r/bitnami/rabbitmq/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/rabbitmq
   tag: 3.7.17-debian-9-r37
 
@@ -356,7 +356,7 @@ metrics:
 volumePermissions:
   enabled: true
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/minideb
     tag: stretch
     pullPolicy: Always

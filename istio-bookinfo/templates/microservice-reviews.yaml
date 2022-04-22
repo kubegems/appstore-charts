@@ -40,7 +40,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: docker.io/kubegemsapp/examples-bookinfo-reviews-v1:1.15.0
+        image: registry.cn-beijing.aliyuncs.com/kubegemsapp/examples-bookinfo-reviews-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -67,7 +67,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: docker.io/kubegemsapp/examples-bookinfo-reviews-v2:1.15.0
+        image: registry.cn-beijing.aliyuncs.com/kubegemsapp/examples-bookinfo-reviews-v2:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -94,7 +94,7 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: docker.io/kubegemsapp/examples-bookinfo-reviews-v3:1.15.0
+        image: registry.cn-beijing.aliyuncs.com/kubegemsapp/examples-bookinfo-reviews-v3:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080

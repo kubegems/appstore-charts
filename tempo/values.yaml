@@ -6,7 +6,7 @@ fullnameOverride: "tempo"
 
 replicas: 1
 tempo:
-  repository: docker.io/kubegemsapp/tempo
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/tempo
   tag: 1.0.1
   pullPolicy: IfNotPresent
   ## Optionally specify an array of imagePullSecrets.
@@ -75,7 +75,7 @@ tempo:
   #   existingClaim: volume-claim
 
 tempoQuery:
-  repository: docker.io/kubegemsapp/tempo-query
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/tempo-query
   tag: 1.0.1
   pullPolicy: IfNotPresent
   ## Optionally specify an array of imagePullSecrets.

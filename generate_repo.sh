@@ -1,42 +1,23 @@
 #!/bin/bash
 
-function green(){
-    echo -e "\033[32m$1\033[0m"
+green() {
+  echo "\033[32m$1\033[0m"
 }
 
-function bred(){
-    echo -e "\033[31m\033[01m$1\033[0m"
+bred() {
+  echo "\033[31m\033[01m$1\033[0m"
 }
 
 CHARTS_DIR='charts'
 ROOTDIR='.'
 
-mkdir -p $CHARTS_DIR
-
 # 打包
-ls | while read myline; do
-  # 如果对象名不包含cloud-则跳过
-
-  # 非目录跳过
-  [[ ! -d ${myline} ]] && {
-    continue
-  }
-
-  [[ ${myline} == "charts" ]] && {
-    continue
-  }
-
-  #打包
-  green "packaging $myline "
-  helm package $myline
-  if [[ $? -ne 0 ]]; then
-      bred "helm package $myline error!!!"
-      exit 255
-  else
-      continue
+charts=$(find ${ROOTDIR} -maxdepth 1 -mindepth 1 -type d -not -name '.*' -not -name ${CHARTS_DIR} -printf '%f\n')
+for chart in $charts; do
+  green "打包 $chart"
+  helm package -d $CHARTS_DIR $chart
+  if [ $? -ne 0 ]; then
+    bred "helm package $myline error!!!"
+    exit 255
   fi
 done
-
-#将pkg移动到gems目录
-find . -name '*.tgz' | while read file; do mv $file $CHARTS_DIR/; done
-

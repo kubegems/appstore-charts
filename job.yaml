@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/name: gems-charts-uploader
+  name: gems-charts-uploader
+  namespace: gemcloud-system
+spec:
+  backoffLimit: 3
+  parallelism: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gems-charts-uploader
+      name: gems-charts-uploader
+    spec:
+      containers:
+      - args:
+        - --wait
+        - --repo
+        - kubegems
+        - --server
+        - http://gems-chartmuseum:8030
+        image: registry.cn-beijing.aliyuncs.com/kubegems/charts-uploader:v1.20.0-beta.1
+        imagePullPolicy: Always
+        name: gems-charts-uploader
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

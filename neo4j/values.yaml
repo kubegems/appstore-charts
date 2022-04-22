@@ -7,7 +7,7 @@ nameOverride: neo4j
 fullnameOverride: neo4j
 
 # Specs for the Neo4j docker image
-image: "docker.io/kubegemsapp/neo4j"
+image: "registry.cn-beijing.aliyuncs.com/kubegemsapp/neo4j"
 imageTag: "4.4.1-community"
 imagePullPolicy: "IfNotPresent"
 # imagePullSecret: registry-secret

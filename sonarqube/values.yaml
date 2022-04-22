@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: docker.io/kubegemsapp/sonarqube
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/sonarqube
   # Overrides the image tag whose default is {{ .Chart.AppVersion }}-community
   tag: "8.9.1-community"
   pullPolicy: IfNotPresent

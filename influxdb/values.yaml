@@ -20,7 +20,7 @@ kubeVersion:
 ## ref: https://hub.docker.com/r/bitnami/influxdb/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/influxdb
   tag: 2.0.7-debian-10-r10
 
@@ -371,7 +371,7 @@ relay:
   ## ref: https://hub.docker.com/r/bitnami/influxdb-relay/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/influxdb-relay
     tag: 0.20200717.0-scratch-r7
     ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -750,7 +750,7 @@ persistence:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/bitnami-shell
     tag: 10
     ## Specify a imagePullPolicy. Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -868,7 +868,7 @@ backup:
       ## ref: https://hub.docker.com/r/bitnami/google-cloud-sdk/tags/
       ##
       image:
-        registry: docker.io
+        registry: registry.cn-beijing.aliyuncs.com
         repository: bitnami/google-cloud-sdk
         tag: 0.345.0-debian-10-r3
 
@@ -893,7 +893,7 @@ backup:
       ## ref: https://hub.docker.com/r/bitnami/azure-cli/tags/
       ##
       image:
-        registry: docker.io
+        registry: registry.cn-beijing.aliyuncs.com
         repository: bitnami/azure-cli
         tag: 2.25.0-debian-10-r2
 

@@ -26,7 +26,7 @@ spec:
       {{- if and .Values.volumePermissions.enabled .Values.persistence.enabled }}
       initContainers:
       - name: init-chmod-data
-        image: docker.io/kubegemsapp/busybox:latest
+        image: registry.cn-beijing.aliyuncs.com/kubegemsapp/busybox:latest
         imagePullPolicy: IfNotPresent
         command:
           - sh

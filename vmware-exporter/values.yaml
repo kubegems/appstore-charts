@@ -39,7 +39,7 @@ livenessProbe:
   failureThreshold: 10
 
 image:
-  repository: docker.io/kubegemsapp/vmware_exporter
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/vmware_exporter
   tag: v0.13.2
   pullPolicy: IfNotPresent
 

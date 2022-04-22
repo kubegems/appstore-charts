@@ -13,7 +13,7 @@ global:
 ## ref: https://hub.docker.com/r/bitnami/redis/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: bitnami/redis
   ## Bitnami Redis(TM) image tag
   ## ref: https://github.com/bitnami/bitnami-docker-redis#supported-tags-and-respective-dockerfile-links
@@ -55,7 +55,7 @@ sentinel:
   ## ref: https://hub.docker.com/r/bitnami/redis-sentinel/tags/
   ##
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: bitnami/redis-sentinel
     ## Bitnami Redis(TM) image tag
     ## ref: https://github.com/bitnami/bitnami-docker-redis-sentinel#supported-tags-and-respective-dockerfile-links
@@ -525,7 +525,7 @@ metrics:
   enabled: true
 
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: bitnami/redis-exporter
     tag: 1.5.3-debian-10-r14
     pullPolicy: IfNotPresent
@@ -626,7 +626,7 @@ metrics:
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: bitnami/bitnami-shell
     tag: "10"
     pullPolicy: Always
@@ -656,7 +656,7 @@ configmap: |-
 sysctlImage:
   enabled: false
   command: []
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: bitnami/bitnami-shell
   tag: "10"
   pullPolicy: Always

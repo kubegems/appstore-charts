@@ -13,7 +13,7 @@ global:
 ## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
 ##
 image:
-  registry: docker.io
+  registry: registry.cn-beijing.aliyuncs.com
   repository: kubegemsapp/postgresql
   tag: 11.12.0-debian-10-r38
   ## Specify a imagePullPolicy
@@ -48,7 +48,7 @@ fullnameOverride: postgresql
 volumePermissions:
   enabled: false
   image:
-    registry: docker.io 
+    registry: registry.cn-beijing.aliyuncs.com 
     repository: kubegemsapp/bitnami-shell
     tag: 10
     ## Specify a imagePullPolicy
@@ -774,7 +774,7 @@ metrics:
     rules: []
 
   image:
-    registry: docker.io
+    registry: registry.cn-beijing.aliyuncs.com
     repository: kubegemsapp/postgres-exporter
     tag: 0.9.0-debian-10-r102
     pullPolicy: IfNotPresent
