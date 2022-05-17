@@ -1,0 +1,205 @@
+# Default values for prometheus-mysql-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: "registry.cn-beijing.aliyuncs.com/kubegemsapp/mysqld-exporter"
+  tag: "v0.12.1"
+  pullPolicy: "IfNotPresent"
+
+nameOverride: mysql-exporter
+fullnameOverride: mysql-exporter
+
+service:
+  labels: {}
+  annotations: {}
+  name: mysql-exporter
+  type: ClusterIP
+  externalPort: 9104
+  internalPort: 9104
+
+serviceMonitor:
+  # enabled should be set to true to enable prometheus-operator discovery of this service
+  enabled: true
+  # interval is the interval at which metrics should be scraped
+  interval: 60s
+  # scrapeTimeout is the timeout after which the scrape is ended
+  scrapeTimeout: 10s
+  # namespace: monitoring
+  # additionalLabels is the set of additional labels to add to the ServiceMonitor
+  path: /metrics
+  scheme: http
+  additionalLabels: {}
+  jobLabel: ""
+  targetLabels: []
+  podTargetLabels: []
+  metricRelabelings: []
+  # Set relabel_configs as per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+  relabelings: []
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: false
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+  annotations: {}
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+   cpu: 200m
+   memory: 256Mi
+  requests:
+   cpu: 50m
+   memory: 64Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 65534
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 65534
+
+
+annotations:
+  #prometheus.io/scrape: "true"
+  #prometheus.io/path: "/metrics"
+  #prometheus.io/port: "9104"
+
+collectors: 
+  # auto_increment.columns: false
+  binlog_size: true
+  engine_innodb_status: true
+  # engine_tokudb_status: false
+  global_status: true
+  global_variables: true
+  # info_schema.clientstats: false
+  info_schema.innodb_metrics: true
+  # info_schema.innodb_tablespaces: false
+  # info_schema.innodb_cmp: false
+  # info_schema.innodb_cmpmem: false
+  info_schema.processlist: true
+  info_schema.processlist.min_time: 0
+  info_schema.query_response_time: true
+  # info_schema.tables: true
+  # info_schema.tables.databases: '*'
+  # info_schema.tablestats: false
+  # info_schema.schemastats: false
+  # info_schema.userstats: false
+  # perf_schema.eventsstatements: false
+  # perf_schema.eventsstatements.digest_text_limit: 120
+  # perf_schema.eventsstatements.limit: false
+  # perf_schema.eventsstatements.timelimit: 86400
+  # perf_schema.eventswaits: false
+  # perf_schema.file_events: false
+  # perf_schema.file_instances: false
+  # perf_schema.indexiowaits: false
+  # perf_schema.tableiowaits: false
+  # perf_schema.tablelocks: false
+  # perf_schema.replication_group_member_stats: false
+  # slave_status: true
+  slave_hosts: true
+  # heartbeat: false
+  # heartbeat.database: heartbeat
+  # heartbeat.table: heartbeat
+
+# mysql connection params which build the DATA_SOURCE_NAME env var of the docker container
+mysql:
+  db: ""
+  host: "mysql"
+  param: ""
+  pass: "password"
+  port: 3306
+  protocol: ""
+  user: "root"
+  # secret with full DATA_SOURCE_NAME env var as stringdata
+  existingSecret: ""
+  # secret only containing the password
+  existingPasswordSecret:
+    name: ""
+    key: ""
+
+# cloudsqlproxy https://cloud.google.com/sql/docs/mysql/sql-proxy
+cloudsqlproxy:
+  enabled: false
+  image:
+    repo: "gcr.io/cloudsql-docker/gce-proxy"
+    tag: "1.19.1-alpine"
+    pullPolicy: "IfNotPresent"
+  instanceConnectionName: "project:us-central1:dbname"
+  port: "3306"
+  credentialsSecret: ""
+  credentials: ""
+    # {
+    #   "type": "service_account",
+    #   "project_id": "project",
+    #   "private_key_id": "KEYID1",
+    #   "private_key": "-----BEGIN PRIVATE KEY-----\sdajsdnasd\n-----END PRIVATE KEY-----\n",
+    #   "client_email": "user@project.iam.gserviceaccount.com",
+    #   "client_id": "111111111",
+    #   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    #   "token_uri": "https://accounts.google.com/o/oauth2/token",
+    #   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    #   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/user%40project.iam.gserviceaccount.com"
+    # }
+
+prometheusRule:
+  ## If true, a PrometheusRule CRD is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  ##
+  ## The rules will be processed as Helm template, allowing to set variables in them.
+  enabled: true
+  #  namespace: monitoring
+  labels: 
+    prometheusRule: gemcloud
+  rules: 
+    - alert: MysqlDown
+      expr: mysql_up{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        description: MySQL instance is down on {{ "{{ $labels.instance }}" }}  VALUE={{ "{{ $value }}" }}  LABELS={{ "{{ $labels }}" }}
+        summary: MySQL down instance {{ "{{ $labels.instance }}" }}
+    - alert: MysqlTooManyConnections > 80%
+      expr: max_over_time(mysql_global_status_threads_connected{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]) / mysql_global_variables_max_connections{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} * 100 > 80
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: MySQL too many connections > 80% instance {{ "{{ $labels.instance }}" }}
+        description: More than 80% of MySQL connections are  {{ "{{ $labels.instance }}" }}  VALUE={{ "{{ $value }}" }}  LABELS={{ "{{ $labels }}" }}
+    - alert: MysqlSlowQueries
+      expr: increase(mysql_global_status_slow_queries{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]) > 0
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: MySQL slow queries instance {{ "{{ $labels.instance }}" }}
+        description: MySQL server mysql has some new slow query VALUE={{ "{{ $value }}" }}  LABELS={{ "{{ $labels }}" }} 
+    - alert: MysqlRestarted
+      expr: mysql_global_status_uptime{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} < 60
+      for: 0m
+      labels:
+        severity: info
+      annotations:
+        summary: MySQL restarted instance {{ "{{ $labels.instance }}" }}
+        description: MySQL has just been restarted on {{ "{{ $labels.instance }}" }} VALUE={{ "{{ $value }}" }} LABELS={{ "{{ $labels }}" }}

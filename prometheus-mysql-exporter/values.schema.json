@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Mysql exporter名称",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Mysql Exporter服务名",
+      "form": true
+    },
+    "mysql": {
+      "type": "object",
+      "title": "Mysql 设置",
+      "form": true,
+      "properties": {
+        "host": {
+          "type": "string",
+          "title": "Mysql 地址",
+          "form": true,
+          "default": "mysql"
+        },
+        "port": {
+          "type": "intger",
+          "title": "Mysql 端口",
+          "form": true,
+          "default": 3306
+        },
+        "user": {
+          "type": "string",
+          "title": "Mysql 用户名",
+          "form": true,
+          "default": "exporter"
+        },
+        "pass": {
+          "type": "string",
+          "title": "Mysql 用户密码",
+          "form": true,
+          "default": "password"
+        }
+      }
+    },
+    "serviceMonitor": {
+      "type": "object",
+      "title": "Mysql 监控数据采集器设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用自动采集器(需Prometheus Operator支持)",
+          "default": true,
+          "form": true
+        },
+        "interval": {
+          "type": "string",
+          "title": "监控数据采样频率",
+          "default": "60s",
+          "form": true
+        },
+        "scrapeTimeout": {
+          "type": "string",
+          "title": "监控数据采样超时",
+          "default": "10s",
+          "form": true
+        },
+        "path": {
+          "type": "string",
+          "title": "监控数据采样路径",
+          "default": "/metrics",
+          "form": true
+        },
+        "scheme": {
+          "type": "string",
+          "title": "监控数据采样协议",
+          "default": "http",
+          "form": true
+        }
+      }
+    },
+    "prometheusRule": {
+      "type": "object",
+      "title": "Elasticsearch 告警设置(需Prometheus Operator支持)",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用平台内置 Elasticsearch 告警规则",
+          "default": true,
+          "form": true
+        }
+      }
+    }
+  }
+}
