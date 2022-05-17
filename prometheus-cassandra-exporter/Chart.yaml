@@ -1,0 +1,21 @@
+apiVersion: v2
+name: prometheus-cassandra-exporter
+description: A Helm chart for Kubernetes
+type: application
+description: Apache Cassandra is a free and open-source distributed database management
+  system designed to handle large amounts of data across many commodity servers, providing
+  high availability with no single point of failure. Cassandra offers robust support
+  for clusters spanning multiple datacenters, with asynchronous masterless replication
+  allowing low latency operations for all clients.
+home: https://github.com/bitnami/charts/tree/master/bitnami/cassandra
+icon: https://bitnami.com/assets/stacks/cassandra/img/cassandra-stack-220x234.png
+keywords:
+- exporter
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems
+sources:
+- http://cassandra.apache.org
+
+version: 2.3.4
+appVersion: 2.3.4

@@ -1,0 +1,17 @@
+{{- if .Values.prometheusRule.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "cassandra-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    prometheusRule: gemcloud
+    {{- include "cassandra-exporter.labels" . | nindent 4 }}
+spec:
+{{- with .Values.prometheusRule.rules }}
+  groups:
+    - name: {{ include "cassandra-exporter.fullname" $ }}
+      rules: {{ tpl (toYaml .) $ | nindent 8 }}
+{{- end }}
+{{- end }}

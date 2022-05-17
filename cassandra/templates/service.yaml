@@ -47,4 +47,7 @@ spec:
       {{- else if eq .Values.service.type "ClusterIP" }}
       nodePort: null
       {{- end }}
+    - name: jmx
+      port: {{ .Values.service.jmxPort | default "7199" }}
+      targetPort: {{ .Values.service.jmxPort | default "7199" }}
   selector: {{- include "common.labels.matchLabels" . | nindent 4 }}

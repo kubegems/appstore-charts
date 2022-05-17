@@ -1,0 +1,81 @@
+# Default values for cassandra-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/cassandra-exporter
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "2.3.4-debian-10-r435"
+
+host: cassandra:7199
+username: gems
+password: cloud1688
+
+nameOverride: "cassandra-exporter"
+fullnameOverride: "cassandra-exporter"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources: 
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceMonitor:
+  ## If true, a ServiceMonitor CRD is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  ##
+  enabled: true
+  #  namespace: monitoring
+  labels: {}
+  interval: 60s
+  scrapeTimeout: 10s
+  scheme: http
+  path: /metrics
+  relabelings: []
+  targetLabels: []
+  metricRelabelings: []
+  sampleLimit: 0
+
+prometheusRule:
+  enabled: false
+  rules: []
+  #- alert: cassandra_failing_or_dead_nodes
+  #  expr: |
+  #    kube_statefulset_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "cassandra-exporter.fullname" . }}"}
+  #    - kube_statefulset_status_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "cassandra-exporter.fullname" . }}"}
+  #    != 0
+  #  for: 5m
+  #  labels:
+  #    severity: critical
+  #  annotations:
+  #    description: The service of cassandra is not available. 

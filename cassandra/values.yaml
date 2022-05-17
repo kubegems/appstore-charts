@@ -106,6 +106,10 @@ service:
   metricsPort: 8080
   ## Specify the nodePort(s) value(s) for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+
+  ## Java JMX Remote Port
+  ## KubeGems
+  jmxPort: 7199
   ##
   nodePorts:
     cql: ''
@@ -238,8 +242,8 @@ cluster:
 ##
 jvm:
   ## Extra JVM options
-  ##
-  extraOpts:
+  ## KubeGems: Disable Jmx Remote Authenticate. This is used for Application Access Center
+  extraOpts: "-Dcom.sun.management.jmxremote.authenticate=false"
 
   ## Memory settings: These are calculated automatically unless specified otherwise
   ## To run on environments with little resources (<= 8GB), tune your heap settings:
@@ -254,6 +258,7 @@ jvm:
   ##
   #maxHeapSize: 4G
   #newHeapSize: 800M
+  
 
 ## Database credentials
 ##
@@ -291,9 +296,11 @@ command: []
 args: []
 
 ## An array to add extra env vars
-## For example:
-##
-extraEnvVars: []
+## KubeGems: enable Remote JMX
+extraEnvVars: 
+- name: LOCAL_JMX
+  value: "no"
+  
 #  - name: FOO
 #    value: BAR
 

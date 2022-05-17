@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "Cassandra Exporter名称",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Cassandra Exporter服务名",
+      "form": true
+    },
+    "host": {
+      "type": "string",
+      "title": "Cassandra JMX地址",
+      "form": true
+    },
+    "username": {
+      "type": "string",
+      "title": "Cassandra用户名",
+      "default": "gems",
+      "form": true
+    },
+    "password": {
+      "type": "string",
+      "title": "Cassandra密码",
+      "default": "cloud1688",
+      "form": true
+    },
+    "metrics": {
+      "type": "object",
+      "title": "采集器设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用自动采集器",
+          "default": true,
+          "form": true
+        },
+        "interval": {
+          "type": "string",
+          "title": "监控数据采集频率",
+          "default": "60s",
+          "form": true
+        },
+        "scrapeTimeout": {
+          "type": "string",
+          "title": "监控数据采集超时时间",
+          "default": "10s",
+          "form": true
+        },
+        "path": {
+          "type": "string",
+          "title": "监控数据采集路径",
+          "default": "/metrics",
+          "form": true
+        },
+        "scheme": {
+          "type": "string",
+          "title": "监控采集协议",
+          "default": "http",
+          "form": true
+        }
+      }
+    }
+  }
+}
