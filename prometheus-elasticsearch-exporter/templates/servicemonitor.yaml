@@ -4,9 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "elasticsearch-exporter.fullname" . }}
-  {{- if .Values.serviceMonitor.namespace }}
-  namespace: {{ .Values.serviceMonitor.namespace }}
-  {{- end }}
+  namespace: {{ .Release.Namespace }}
   labels:
     chart: {{ template "elasticsearch-exporter.chart" . }}
     app: {{ template "elasticsearch-exporter.name" . }}
