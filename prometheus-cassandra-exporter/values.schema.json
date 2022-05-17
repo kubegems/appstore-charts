@@ -31,36 +31,36 @@
     },
     "metrics": {
       "type": "object",
-      "title": "采集器设置",
+      "title": "Cassandra 监控数据采集器设置",
       "form": true,
       "properties": {
         "enabled": {
           "type": "boolean",
-          "title": "启用自动采集器",
+          "title": "启用自动采集器(需Prometheus Operator支持)",
           "default": true,
           "form": true
         },
         "interval": {
           "type": "string",
-          "title": "监控数据采集频率",
+          "title": "监控数据采样频率",
           "default": "60s",
           "form": true
         },
         "scrapeTimeout": {
           "type": "string",
-          "title": "监控数据采集超时时间",
+          "title": "监控数据采样超时",
           "default": "10s",
           "form": true
         },
         "path": {
           "type": "string",
-          "title": "监控数据采集路径",
+          "title": "监控数据采样路径",
           "default": "/metrics",
           "form": true
         },
         "scheme": {
           "type": "string",
-          "title": "监控采集协议",
+          "title": "监控数据采样协议",
           "default": "http",
           "form": true
         }
