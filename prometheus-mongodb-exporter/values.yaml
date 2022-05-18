@@ -1,0 +1,162 @@
+affinity: {}
+
+annotations: {}
+
+extraArgs:
+- --collect.collection
+- --collect.database
+- --collect.indexusage
+- --collect.topmetrics
+- --collect.connpoolstats
+
+image:
+  pullPolicy: IfNotPresent
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/mongodb-exporter
+  tag: 0.10.0
+
+imagePullSecrets: []
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: metrics
+  initialDelaySeconds: 10
+
+# [mongodb[+srv]://][user:pass@]host1[:port1][,host2[:port2],...][/database][?options]
+mongodb:
+  uri: "mongodb://[user:pass@]host1[:port1][,host2[:port2]/admin?"
+
+# Name of an externally managed secret (in the same namespace) containing the connection uri as key `mongodb-uri`.
+# If this is provided, the value mongodb.uri is ignored.
+existingSecret:
+  name: ""
+  key: "mongodb-uri"
+
+nameOverride: "mongodb-exporter"
+fullnameOverride: "mongodb-exporter"
+
+nodeSelector: {}
+
+podAnnotations: {}
+#  prometheus.io/scrape: "true"
+#  prometheus.io/port: "metrics"
+
+port: "9216"
+
+priorityClassName: ""
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: metrics
+  initialDelaySeconds: 10
+
+replicas: 1
+
+resources: 
+  limits:
+    cpu: 250m
+    memory: 192Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Extra environment variables that will be passed into the exporter pod
+env: {}
+
+# Volumes that will be mounted into the exporter pod
+volumeMounts: []
+
+# Volumes that will be attached to the exporter deployment
+volumes: []
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["all"]
+  readOnlyRootFilesystem: true
+  runAsGroup: 10000
+  runAsNonRoot: true
+  runAsUser: 10000
+
+service:
+  labels: {}
+  annotations: {}
+  port: 9216
+  type: ClusterIP
+
+serviceAccount:
+  create: true
+  # If create is true and name is not set, then a name is generated using the
+  # fullname template.
+  name:
+
+serviceMonitor:
+  enabled: true
+  interval: 60s
+  scrapeTimeout: 10s
+  additionalLabels: {}
+  targetLabels: []
+  metricRelabelings: []
+
+tolerations: []
+
+prometheusRule:
+  ## If true, a PrometheusRule CRD is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  ##
+  ## The rules will be processed as Helm template, allowing to set variables in them.
+  enabled: true
+  #  namespace: monitoring
+  additionalLabels: 
+    prometheusRule: gemcloud
+  rules: 
+    - alert: MongodbDown
+      expr: mongodb_up{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        description: MongoDB Down instance {{ "{{ $labels.instance }}" }}
+        summary: MongoDB instance is down {{ "{{ $labels.instance }}" }}
+    - alert: MongodbTooManyConnections
+      expr: >
+        avg by(instance) (rate(mongodb_connections{state="current",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])) 
+        / avg by(instance) (sum (mongodb_connections{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}) by (instance)) 
+        * 100 > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: MongoDB too many connections instance {{ "{{ $labels.instance }}" }}
+        description: Too many connections > 80% VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
+    - alert: MongodbLowAvalibleConnections
+      expr: mongodb_connections{state="available",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} < 100
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: MongoDB few available connections instance {{ "{{ $labels.instance }}" }}
+        description: few availabel connections < 100 VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
+    - alert: MongodbTooManyMemories
+      expr: >
+        mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
+        / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
+        * 100 > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: MongoDB too many memories instance {{ "{{ $labels.instance }}" }}
+        description: Too many memories > 80% VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
+    - alert: MongodbTooManyMemories
+      expr: >
+        mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
+        / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
+        * 100 > 95
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: MongoDB too many memories instance {{ "{{ $labels.instance }}" }}
+        description: Too many memories > 95% VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}

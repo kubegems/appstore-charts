@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "MongoDB exporter名称",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "MongoDB Exporter服务名",
+      "form": true
+    },
+    "mongodb": {
+      "type": "object",
+      "title": "MongoDB 设置",
+      "form": true,
+      "properties": {
+        "uri": {
+          "type": "string",
+          "title": "MongoDB 连接信息",
+          "form": true,
+          "default": "mongodb://[user:pass@]host[:port]/admin?"
+        }
+      }
+    },
+    "serviceMonitor": {
+      "type": "object",
+      "title": "MongoDB 监控数据采集器设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用自动采集器(需Prometheus Operator支持)",
+          "default": true,
+          "form": true
+        },
+        "interval": {
+          "type": "string",
+          "title": "监控数据采样频率",
+          "default": "60s",
+          "form": true
+        },
+        "scrapeTimeout": {
+          "type": "string",
+          "title": "监控数据采样超时",
+          "default": "10s",
+          "form": true
+        }
+      }
+    },
+    "prometheusRule": {
+      "type": "object",
+      "title": "MongoDB 告警设置(需Prometheus Operator支持)",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用平台内置 MongoDB 告警规则",
+          "default": true,
+          "form": true
+        }
+      }
+    }
+  }
+}
