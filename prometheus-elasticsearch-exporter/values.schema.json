@@ -46,18 +46,6 @@
           "title": "监控数据采样超时",
           "default": "10s",
           "form": true
-        },
-        "path": {
-          "type": "string",
-          "title": "监控数据采样路径",
-          "default": "/metrics",
-          "form": true
-        },
-        "scheme": {
-          "type": "string",
-          "title": "监控数据采样协议",
-          "default": "http",
-          "form": true
         }
       }
     },

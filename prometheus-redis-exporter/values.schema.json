@@ -4,48 +4,46 @@
   "properties": {
     "nameOverride": {
       "type": "string",
-      "title": "Mysql exporter名称",
+      "title": "Redis exporter名称",
       "form": true
     },
     "fullnameOverride": {
       "type": "string",
-      "title": "Mysql Exporter服务名",
+      "title": "Redis Exporter服务名",
       "form": true
     },
-    "mysql": {
+    "redisAddress": {
+      "type": "string",
+      "title": "Redis 地址",
+      "form": true,
+      "default": "redis://redis:6379"
+    },
+    "auth": {
       "type": "object",
-      "title": "Mysql 设置",
+      "title": "Redis 设置",
       "form": true,
       "properties": {
-        "host": {
-          "type": "string",
-          "title": "Mysql 地址",
+        "enabled": {
+          "type": "boolean",
+          "title": "启用 Redis 认证",
           "form": true,
-          "default": "mysql"
+          "default": false
         },
-        "port": {
-          "type": "intger",
-          "title": "Mysql 端口",
-          "form": true,
-          "default": 3306
-        },
-        "user": {
+        "redisPassword": {
           "type": "string",
-          "title": "Mysql 用户名",
+          "title": "Redis 访问密码",
           "form": true,
-          "default": "exporter"
-        },
-        "pass": {
-          "type": "string",
-          "title": "Mysql 用户密码",
-          "form": true,
-          "default": "password"
+          "default": "password",
+          "hidden": {
+            "value": false,
+            "path": "auth/enabled"
+          }
         }
       }
     },
     "serviceMonitor": {
       "type": "object",
-      "title": "Mysql 监控数据采集器设置",
+      "title": "Redis 监控数据采集器设置",
       "form": true,
       "properties": {
         "enabled": {
@@ -60,7 +58,7 @@
           "default": "60s",
           "form": true
         },
-        "scrapeTimeout": {
+        "timeout": {
           "type": "string",
           "title": "监控数据采样超时",
           "default": "10s",
@@ -70,12 +68,12 @@
     },
     "prometheusRule": {
       "type": "object",
-      "title": "Elasticsearch 告警设置(需Prometheus Operator支持)",
+      "title": "Redis 告警设置(需Prometheus Operator支持)",
       "form": true,
       "properties": {
         "enabled": {
           "type": "boolean",
-          "title": "启用平台内置 Elasticsearch 告警规则",
+          "title": "启用平台内置 Redis 告警规则",
           "default": true,
           "form": true
         }
