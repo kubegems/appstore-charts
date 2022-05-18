@@ -7,6 +7,8 @@ maintainers:
   name: juanchimienti
 - email: monotek23@gmail.com
   name: monotek
+- email: support@kubegems.io
+  name: KubeGems
 name: prometheus-mysql-exporter
 sources:
 - https://github.com/prometheus/mysqld_exporter

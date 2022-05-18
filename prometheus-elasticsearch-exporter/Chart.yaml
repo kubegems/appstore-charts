@@ -13,7 +13,7 @@ maintainers:
 - email: cedric@desaintmartin.fr
   name: desaintmartin
 - email: support@kubernetes.io
-  name: kubegems
+  name: KubeGems
 name: prometheus-elasticsearch-exporter
 sources:
 - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-elasticsearch-exporter

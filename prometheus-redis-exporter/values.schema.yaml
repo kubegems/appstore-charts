@@ -1,0 +1,69 @@
+$schema: http://json-schema.org/schema#
+type: object
+properties:
+  nameOverride:
+    type: string
+    title: Redis exporter名称
+    form: true
+  fullnameOverride:
+    type: string
+    title: Redis Exporter服务名
+    form: true
+  redisAddress:
+    type: string
+    title: Redis 地址
+    form: true
+    default: redis://redis:6379
+  auth:
+    type: object
+    title: Redis 设置
+    form: true
+    properties:
+      enabled:
+        type: boolean
+        title: 启用 Redis 认证
+        form: true
+        default: false
+      redisPassword:
+        type: string
+        title: Redis 访问密码
+        form: true
+        default: password
+        hidden:
+          value: false
+          path: auth/enabled
+  serviceMonitor:
+    type: object
+    title: Redis 监控数据采集器设置
+    form: true
+    properties:
+      enabled:
+        type: boolean
+        title: 启用自动采集器(需Prometheus Operator支持)
+        default: true
+        form: true
+      interval:
+        type: string
+        title: 监控数据采样频率
+        default: 60s
+        form: true
+      timeout:
+        type: string
+        title: 监控数据采样超时
+        default: 10s
+        form: true
+      telemetryPath:
+        type: string
+        title: 监控数据采样路径
+        default: /metrics
+        form: true
+  prometheusRule:
+    type: object
+    title: Redis 告警设置(需Prometheus Operator支持)
+    form: true
+    properties:
+      enabled:
+        type: boolean
+        title: 启用平台内置 Redis 告警规则
+        default: true
+        form: true
