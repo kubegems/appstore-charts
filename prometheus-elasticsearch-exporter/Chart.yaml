@@ -3,9 +3,7 @@ appVersion: 1.3.0
 description: Elasticsearch stats exporter for Prometheus
 home: https://github.com/prometheus-community/elasticsearch_exporter
 keywords:
-- metrics
-- elasticsearch
-- monitoring
+- exporter
 kubeVersion: '>=1.10.0-0'
 maintainers:
 - email: sven.mueller@commercetools.com

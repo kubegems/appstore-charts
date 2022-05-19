@@ -204,7 +204,7 @@ elasticsearch:
         storage: 30Gi
 
   rbac:
-    create: false
+    create: true
     serviceAccountName: ""
 
   podSecurityPolicy:

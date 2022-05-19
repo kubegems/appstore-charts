@@ -38,7 +38,10 @@
           "type": "array",
           "title": "plugins设置，逗号分隔",
           "form": true,
-          "default": ["rabbitmq_management", "rabbitmq_peer_discovery_k8s"],
+          "default": [
+            "rabbitmq_management",
+            "rabbitmq_peer_discovery_k8s"
+          ],
           "items": {
             "type": "string",
             "enum": [
@@ -97,19 +100,6 @@
             "path": "persistence/enabled",
             "value": false
           }
-        }
-      }
-    },
-    "metrics": {
-      "type": "object",
-      "form": true,
-      "title": "监控服务",
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "title": "启用监控采集端",
-          "default": false,
-          "form": true
         }
       }
     }

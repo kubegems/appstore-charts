@@ -1,0 +1,120 @@
+$schema: http://json-schema.org/schema#
+type: object
+properties:
+  nameOverride:
+    type: string
+    title: MYSQL容器务名
+    form: true
+  fullnameOverride:
+    type: string
+    title: MYSQL服务名
+    form: true
+  root:
+    type: object
+    title: 管理员设置
+    form: true
+    properties:
+      password:
+        type: string
+        title: root密码
+        form: true
+        default: cloud1688
+  master:
+    type: object
+    title: MYSQL主库设置
+    form: true
+    properties:
+      persistence:
+        type: object
+        title: 数据持久化设置
+        form: true
+        properties:
+          enabled:
+            type: boolean
+            title: 启用存储卷
+            form: true
+          size:
+            type: string
+            title: 存储卷容量
+            form: true
+            render: slider
+            sliderMin: 1
+            sliderMax: 100
+            sliderUnit: Gi
+            default: 10Gi
+            hidden:
+              path: master/persistence/enabled
+              value: false
+          storageClass:
+            type: string
+            title: 存储类型
+            form: true
+            hidden:
+              path: master/persistence/enabled
+              value: false
+  replication:
+    type: object
+    title: MYSQL复制模式设置
+    form: true
+    properties:
+      enabled:
+        type: boolean
+        title: 启用复制功能
+        form: true
+      user:
+        type: string
+        title: 从库复制账号
+        form: true
+        default: replicator
+        hidden:
+          path: replication/enabled
+          value: false
+      password:
+        type: string
+        title: 从库复制密码
+        form: true
+        default: 93WrNBCT
+        hidden:
+          path: replication/enabled
+          value: false
+  slave:
+    type: object
+    title: MYSQL从库设置
+    form: true
+    hidden:
+      path: replication/enabled
+      value: false
+    properties:
+      replicas:
+        type: integer
+        title: 从库数量
+        form: true
+        default: 1
+      persistence:
+        type: object
+        title: 数据持久化设置
+        form: true
+        properties:
+          enabled:
+            type: boolean
+            title: 启用存储卷
+            form: true
+          size:
+            type: string
+            title: 存储卷容量
+            form: true
+            render: slider
+            sliderMin: 1
+            sliderMax: 100
+            sliderUnit: Gi
+            default: 10Gi
+            hidden:
+              path: slave/persistence/enabled
+              value: false
+          storageClass:
+            type: string
+            title: 存储类型
+            form: true
+            hidden:
+              path: slave/persistence/enabled
+              value: false

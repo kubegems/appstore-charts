@@ -67,7 +67,7 @@ serviceMonitor:
   sampleLimit: 0
 
 prometheusRule:
-  enabled: false
+  enabled: true
   rules: []
   #- alert: cassandra_failing_or_dead_nodes
   #  expr: |

@@ -2,6 +2,8 @@ apiVersion: v1
 appVersion: v0.29.0
 description: Rabbitmq metrics exporter for prometheus
 home: https://github.com/kbudde/rabbitmq_exporter
+keywords:
+- exporter 
 maintainers:
 - email: cedric@desaintmartin.fr
   name: desaintmartin
