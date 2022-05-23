@@ -16,5 +16,5 @@ keywords:
 name: skywalking
 sources:
 - https://github.com/apache/skywalking-kubernetes
-version: 8.6.0
-appVersion: 8.6.0
+version: 8.9.1
+appVersion: 8.9.1

@@ -20,7 +20,7 @@ limitations under the License.
 Expand the name of the chart.
 */}}
 {{- define "skywalking.name" -}}
-{{- default .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -49,11 +49,26 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a oap full labels value.
+*/}}
+{{- define "skywalking.oap.labels" -}}
+app={{ template "skywalking.name" . }},release={{ .Release.Name }},component={{ .Values.oap.name }}
+{{- end -}}
+
+{{/*
 Create a default fully qualified ui name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "skywalking.ui.fullname" -}}
 {{ template "skywalking.fullname" . }}-{{ .Values.ui.name }}
+{{- end -}}
+
+{{/*
+Create a default fully qualified satellite name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "skywalking.satellite.fullname" -}}
+{{ template "skywalking.fullname" . }}-{{ .Values.satellite.name }}
 {{- end -}}
 
 {{/*
@@ -63,6 +78,13 @@ Create the name of the service account to use for the oap cluster
 {{ default (include "skywalking.oap.fullname" .) .Values.serviceAccounts.oap }}
 {{- end -}}
 
+{{/*
+Create the name of the service account to use for the satellite cluster
+*/}}
+{{- define "skywalking.serviceAccountName.satellite" -}}
+{{ default (include "skywalking.satellite.fullname" .) .Values.serviceAccounts.satellite }}
+{{- end -}}
+
 {{- define "skywalking.containers.wait-for-es" -}}
 - name: wait-for-elasticsearch
   image: {{ .Values.initContainer.image }}:{{ .Values.initContainer.tag }}
@@ -70,6 +92,6 @@ Create the name of the service account to use for the oap cluster
 {{- if .Values.elasticsearch.enabled }}
   command: ['sh', '-c', 'for i in $(seq 1 60); do nc -z -w3 {{ .Values.elasticsearch.clusterName }}-{{ .Values.elasticsearch.nodeGroup }} {{ .Values.elasticsearch.httpPort }} && exit 0 || sleep 5; done; exit 1']
 {{- else }}
-  command: ['sh', '-c', 'for i in $(seq 1 60); do nc -z -w3 {{ .Values.elasticsearch.config.address }}  && exit 0 || sleep 5; done; exit 1']
+  command: ['sh', '-c', 'for i in $(seq 1 60); do nc -z -w3 {{ .Values.elasticsearch.config.host }} {{ .Values.elasticsearch.config.port.http }} && exit 0 || sleep 5; done; exit 1']
 {{- end }}
 {{- end -}}

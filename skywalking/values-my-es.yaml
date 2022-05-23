@@ -13,17 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-  {{- if (.Files.Glob "files/conf.d/oap/**") }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "skywalking.fullname" . }}-oap-cm-override
-  labels:
-    app: {{ template "skywalking.name" . }}
-    component: {{ .Values.oap.name }}
-binaryData:
-  {{ range $path, $bytes := .Files.Glob "files/conf.d/oap/**" }}
-  {{- $path | replace "files/conf.d/oap/" "" | b64enc | replace "=" "-" | indent 2 }}: |
-  {{ $.Files.Get $path | b64enc | indent 4 }}
-  {{ end }}
-  {{ end }}
+# Default values for skywalking.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+oap:
+  image:
+    tag: 8.8.1
+  storageType: elasticsearch
+
+ui:
+  image:
+    tag: 8.8.1
+
+elasticsearch:
+  enabled: false
+  config:               # For users of an existing elasticsearch cluster,takes effect when `elasticsearch.enabled` is false
+    host: your.elasticsearch.host.or.ip
+    port:
+      http: 9200
+    user: "xxx"         # [optional]
+    password: "xxx"     # [optional]

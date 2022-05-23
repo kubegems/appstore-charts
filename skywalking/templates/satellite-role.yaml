@@ -13,17 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-  {{- if (.Files.Glob "files/conf.d/oap/**") }}
-apiVersion: v1
-kind: ConfigMap
+{{- if .Values.satellite.enabled }}
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ template "skywalking.fullname" . }}-oap-cm-override
+  name: {{ template "skywalking.satellite.fullname" . }}
   labels:
     app: {{ template "skywalking.name" . }}
-    component: {{ .Values.oap.name }}
-binaryData:
-  {{ range $path, $bytes := .Files.Glob "files/conf.d/oap/**" }}
-  {{- $path | replace "files/conf.d/oap/" "" | b64enc | replace "=" "-" | indent 2 }}: |
-  {{ $.Files.Get $path | b64enc | indent 4 }}
-  {{ end }}
-  {{ end }}
+    component: "{{ .Values.oap.name }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: "{{ .Release.Service }}"
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]
+{{- end }}
