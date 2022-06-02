@@ -24,7 +24,7 @@
           "default": "mysql"
         },
         "port": {
-          "type": "intger",
+          "type": "integer",
           "title": "Mysql 端口",
           "form": true,
           "default": 3306
@@ -33,7 +33,7 @@
           "type": "string",
           "title": "Mysql 用户名",
           "form": true,
-          "default": "exporter"
+          "default": "root"
         },
         "pass": {
           "type": "string",
@@ -56,13 +56,13 @@
         },
         "interval": {
           "type": "string",
-          "title": "监控数据采样频率",
-          "default": "60s",
+          "title": "采样间隔",
+          "default": "30s",
           "form": true
         },
         "scrapeTimeout": {
           "type": "string",
-          "title": "监控数据采样超时",
+          "title": "采样超时",
           "default": "10s",
           "form": true
         }
@@ -70,12 +70,12 @@
     },
     "prometheusRule": {
       "type": "object",
-      "title": "Elasticsearch 告警设置(需Prometheus Operator支持)",
+      "title": "告警设置(需Prometheus Operator支持)",
       "form": true,
       "properties": {
         "enabled": {
           "type": "boolean",
-          "title": "启用平台内置 Elasticsearch 告警规则",
+          "title": "启用平台内置 Mysql 告警规则",
           "default": true,
           "form": true
         }
