@@ -1,73 +1,72 @@
-{{- if .Values.alerts.enabled }}
+{{- if .Values.alerts.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ template "prometheus-mysql-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
     {{- include "prometheus-mysql-exporter.labels" . | nindent 4 }}
     prometheusrule.kubegems.io/name: {{ template "prometheus-mysql-exporter.fullname" . }}
-    prometheusrule.kubegems.io/name: monitor
+    prometheusrule.kubegems.io/type: monitor
+  name: {{ template "prometheus-mysql-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   groups:
-    - name: MysqlDown
-      rules:
-        - alert: MysqlDown
-          expr: mysql_up{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
-          for: 0m
-          labels:
-            gems_alert_from: monitor
-            gems_alert_scope: normal
-            gems_alertname: MysqlDown
-            gems_namespace: "{{ .Release.Namespace }}"
-            severity: critical
-          annotations:
-            description: MySQL instance is down on {{ "{{ $labels.instance }}" }}  VALUE={{ "{{ $value }}" }}  LABELS={{ "{{ $labels }}" }}
-            message: MySQL down instance {{ "{{ $labels.instance }}" }}
-            value: '{{"{{ $value"}} | printf "%.1f" }}'
-    - name: MysqlTooManyConnections
-      rules:            
-        - alert: MysqlTooManyConnections
-          expr: max_over_time(mysql_global_status_threads_connected{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]) / mysql_global_variables_max_connections{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} * 100 > 80
-          for: 2m
-          labels:
-            gems_alert_from: monitor
-            gems_alert_scope: normal
-            gems_alertname: MysqlTooManyConnections
-            gems_namespace: "{{ .Release.Namespace }}"
-            severity: error
-          annotations:
-            message: MySQL too many connections > 80% instance {{ "{{ $labels.instance }}" }}
-            value: '{{"{{ $value"}} | printf "%.1f" }}'
-            description: More than 80% of MySQL connections are  {{ "{{ $labels.instance }}" }}  VALUE={{ "{{ $value }}" }}  LABELS={{ "{{ $labels }}" }}
-    - name: MysqlSlowQueries
-      rules:              
-        - alert: MysqlSlowQueries
-          expr: increase(mysql_global_status_slow_queries{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]) > 0
-          for: 2m
-          labels:
-            gems_alert_from: monitor
-            gems_alert_scope: normal
-            gems_alertname: MysqlSlowQueries
-            gems_namespace: "{{ .Release.Namespace }}"
-            severity: error
-          annotations:
-            message: MySQL slow queries instance {{ "{{ $labels.instance }}" }}
-            value: '{{"{{ $value"}} | printf "%.1f" }}'
-            description: MySQL server mysql has some new slow query VALUE={{ "{{ $value }}" }}  LABELS={{ "{{ $labels }}" }} 
-    - name: MysqlRestarted
-      rules:              
-        - alert: MysqlRestarted
-          expr: mysql_global_status_uptime{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} < 60
-          for: 0m
-          labels:
-            gems_alert_from: monitor
-            gems_alert_scope: normal
-            gems_alertname: MysqlRestarted
-            gems_namespace: "{{ .Release.Namespace }}"
-            severity: error
-          annotations:
-            message: MySQL restarted instance {{ "{{ $labels.instance }}" }}
-            value: '{{"{{ $value"}} | printf "%.1f" }}'
-            description: MySQL has just been restarted on {{ "{{ $labels.instance }}" }} VALUE={{ "{{ $value }}" }} LABELS={{ "{{ $labels }}" }}
+  - name: MysqlDown
+    rules:
+    - alert: MysqlDown
+      annotations:
+        message: MySQL instance {{"{{"}} $labels.instance }} down
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: mysql_up{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MysqlDown
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: MysqlTooManyConnections
+    rules:
+    - alert: MysqlTooManyConnections
+      annotations:
+        message: MySQL instance {{"{{"}} $labels.instance }} too many connections > 80%
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: max_over_time(mysql_global_status_threads_connected{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])
+        / mysql_global_variables_max_connections{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 100>80
+      for: 2m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MysqlTooManyConnections
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: MysqlSlowQueries
+    rules:
+    - alert: MysqlSlowQueries
+      annotations:
+        message: MySQL instance {{"{{"}} $labels.instance }} slow queries
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: increase(mysql_global_status_slow_queries{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])>0
+      for: 2m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MysqlSlowQueries
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: MysqlRestarted
+    rules:
+    - alert: MysqlRestarted
+      annotations:
+        message: MySQL instance {{"{{"}} $labels.instance }} restarted
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: mysql_global_status_uptime{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}<60
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MysqlRestarted
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
 {{- end }}

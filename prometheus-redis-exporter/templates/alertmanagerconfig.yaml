@@ -4,10 +4,10 @@ kind: AlertmanagerConfig
 metadata:
   creationTimestamp: null
   labels:
-    {{- include "prometheus-mysql-exporter.labels" . | nindent 4 }}
-    alertmanagerconfig.kubegems.io/name: {{ template "prometheus-mysql-exporter.fullname" . }}
+    {{- include "prometheus-redis-exporter.labels" . | nindent 4 }}
+    alertmanagerconfig.kubegems.io/name: {{ template "prometheus-redis-exporter.fullname" . }}
     alertmanagerconfig.kubegems.io/type: monitor
-  name: {{ template "prometheus-mysql-exporter.fullname" . }}
+  name: {{ template "prometheus-redis-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   receivers:
@@ -33,7 +33,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: MysqlDown
+        value: RedisDown
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
     - continue: true
@@ -41,7 +41,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: MysqlTooManyConnections
+        value: RedisMemoryHigh
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
     - continue: true
@@ -49,7 +49,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: MysqlSlowQueries
+        value: RedisTooManyConnections
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
     - continue: true
@@ -57,7 +57,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: MysqlRestarted
+        value: RedisRejectedConnections
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
 {{- end }}

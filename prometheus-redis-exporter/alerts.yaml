@@ -1,0 +1,48 @@
+- name: RedisDown
+  namespace: __namespace__
+  expr: redis_up{service="__fullname__",namespace="__namespace__"}
+  message: Redis instance {{ $labels.instance }} down
+  for: 0m
+  alertLevels:
+    - compareOp: "=="
+      compareValue: "0"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RedisMemoryHigh
+  namespace: __namespace__
+  expr: redis_memory_used_bytes{service="__fullname__",namespace="__namespace__"} / redis_memory_max_bytes{service="__fullname__", namespace="__namespace__"} * 100
+  message: Redis instance {{ $labels.instance }} is using too much memory
+  for: 2m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "90"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RedisTooManyConnections
+  namespace: __namespace__
+  expr: redis_connected_clients{service="__fullname__",namespace="__namespace__"} / redis_config_maxclients{service="__fullname__",namespace="__namespace__"} * 100
+  message: Redis too many connections instance {{ $labels.instance }}
+  for: 5m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "60"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RedisRejectedConnections
+  namespace: __namespace__
+  expr: increase(redis_rejected_connections_total{service="__fullname__",namespace="__namespace__"}[1m])
+  message: MySQL instance {{ $labels.instance }} restarted
+  for: 0m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "0"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m

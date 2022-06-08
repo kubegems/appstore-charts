@@ -87,54 +87,12 @@ serviceMonitor:
   # Set of labels to transfer on the Kubernetes Service onto the target.
   # targetLabels: []
   # metricRelabelings: []
+  additionalLabels:
+    release: kube-prometheus-stack  
 
-## Custom PrometheusRules to be defined
-## The value is evaluated as a template, so, for example, the value can depend on .Release or .Chart
-## ref: https://github.com/coreos/prometheus-operator#customresourcedefinitions
-prometheusRule:
-  enabled: true
-  additionalLabels: 
-     prometheusRule: gemcloud
-  rules: 
-    - alert: RedisDown
-      expr: redis_up{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
-      for: 0m
-      labels:
-        severity: critical
-      annotations:
-        summary: Redis instance {{ "{{ $labels.instance }}" }} down
-        description: Redis instance {{ "{{ $labels.instance }}" }} is down.
-    - alert: RedisMemoryHigh
-      expr: >
-         redis_memory_used_bytes{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} * 100
-         /
-         redis_memory_max_bytes{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
-         > 90 <= 100
-      for: 2m
-      labels:
-        severity: warning
-      annotations:
-        summary: Redis instance {{ "{{ $labels.instance }}" }} is using too much memory
-        description: Redis instance is using {{ "{{ $value }}" }}% of its available memory.
-    - alert: RedisTooManyConnections
-      expr: >
-         redis_connected_clients{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
-         / redis_config_maxclients{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} * 100
-         > 60
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-         summary: Redis too many connections instance {{ "{{ $labels.instance }}" }}
-         description: Redis instance has too many connections  VALUE ={{ "{{ $value }}" }}%  LABELS = {{ "{{ $labels }}" }}
-    - alert: RedisRejectedConnections
-      expr: increase(redis_rejected_connections_total{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]) > 0
-      for: 0m
-      labels:
-        severity: critical
-      annotations:
-        summary: Redis rejected connections instance {{ "{{ $labels.instance }}" }}
-        description: last {{ "{{ $value }}" }} connections to Redis has been rejected
+# include prometheusrule groups and alertmanagerconfig routes
+alerts:
+  enabled: true  
 
 # Used to mount a LUA-Script via config map and use it for metrics-collection
 # script:

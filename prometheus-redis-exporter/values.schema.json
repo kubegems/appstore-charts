@@ -16,7 +16,7 @@
       "type": "string",
       "title": "Redis 地址",
       "form": true,
-      "default": "redis://redis:6379"
+      "default": "redis:6379"
     },
     "auth": {
       "type": "object",
@@ -55,7 +55,7 @@
         "interval": {
           "type": "string",
           "title": "监控数据采样频率",
-          "default": "60s",
+          "default": "30s",
           "form": true
         },
         "timeout": {
@@ -66,7 +66,7 @@
         }
       }
     },
-    "prometheusRule": {
+    "alerts": {
       "type": "object",
       "title": "Redis 告警设置(需Prometheus Operator支持)",
       "form": true,

@@ -3,16 +3,16 @@ appVersion: 1.27.0
 description: Prometheus exporter for Redis metrics
 home: https://github.com/oliver006/redis_exporter
 keywords:
-- exporter 
+  - exporter
 maintainers:
-- email: arcadie.condrat@gmail.com
-  name: acondrat
-- email: zanhsieh@gmail.com
-  name: zanhsieh
-- email: support@kubegems.io
-  name: KubeGems
+  - email: arcadie.condrat@gmail.com
+    name: acondrat
+  - email: zanhsieh@gmail.com
+    name: zanhsieh
+  - email: support@kubegems.io
+    name: KubeGems
 name: prometheus-redis-exporter
 sources:
-- https://github.com/oliver006/redis_exporter
+  - https://github.com/oliver006/redis_exporter
 type: application
-version: 4.6.0
+version: 4.7.4

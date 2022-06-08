@@ -68,7 +68,7 @@
         }
       }
     },
-    "prometheusRule": {
+    "alerts": {
       "type": "object",
       "title": "告警设置(需Prometheus Operator支持)",
       "form": true,
