@@ -38,7 +38,7 @@
         "interval": {
           "type": "string",
           "title": "监控数据采样频率",
-          "default": "60s",
+          "default": "30s",
           "form": true
         },
         "scrapeTimeout": {
@@ -49,7 +49,7 @@
         }
       }
     },
-    "prometheusRule": {
+    "alerts": {
       "type": "object",
       "title": "Elasticsearch 告警设置(需Prometheus Operator支持)",
       "form": true,

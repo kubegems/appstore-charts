@@ -1,3 +1,4 @@
+# used for generate prometheusrule and alertmanagerconfig
 - name: RedisDown
   namespace: __namespace__
   expr: redis_up{service="__fullname__",namespace="__namespace__"}

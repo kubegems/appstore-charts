@@ -2,15 +2,15 @@
 apiVersion: {{ template "rbac.apiVersion" . }}
 kind: Role
 metadata:
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ template "elasticsearch-exporter.chart" . }}
-    app: {{ template "elasticsearch-exporter.name" . }}
+    chart: {{ template "prometheus-elasticsearch-exporter.chart" . }}
+    app: {{ template "prometheus-elasticsearch-exporter.name" . }}
 rules:
 - apiGroups: ['extensions']
   resources: ['podsecuritypolicies']
   verbs:     ['use']
   resourceNames:
-  - {{ template "elasticsearch-exporter.fullname" . }}
+  - {{ template "prometheus-elasticsearch-exporter.fullname" . }}
 {{- end }}

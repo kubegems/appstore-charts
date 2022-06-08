@@ -1,3 +1,4 @@
+# used for generate prometheusrule and alertmanagerconfig
 - name: MysqlDown
   namespace: __namespace__
   expr: mysql_up{service="__fullname__",namespace="__namespace__"}

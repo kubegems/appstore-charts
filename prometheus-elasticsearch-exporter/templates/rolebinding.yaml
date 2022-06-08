@@ -2,19 +2,19 @@
 apiVersion: {{ template "rbac.apiVersion" . }}
 kind: RoleBinding
 metadata:
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ template "elasticsearch-exporter.chart" . }}
-    app: {{ template "elasticsearch-exporter.name" . }}
+    chart: {{ template "prometheus-elasticsearch-exporter.chart" . }}
+    app: {{ template "prometheus-elasticsearch-exporter.name" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
 subjects:
 - kind: ServiceAccount
   {{- if .Values.serviceAccount.create  }}
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   {{- else }}
   name: {{ .Values.serviceAccount.name }}
   {{- end }}

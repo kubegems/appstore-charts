@@ -214,7 +214,8 @@ serviceMonitor:
   ## https://github.com/coreos/prometheus-operator
   ##
   enabled: true
-  labels: {}
+  labels:
+    release: kube-prometheus-stack
   interval: 60s
   scrapeTimeout: 10s
   scheme: http
@@ -224,62 +225,12 @@ serviceMonitor:
   metricRelabelings: []
   sampleLimit: 0
 
-prometheusRule:
+alerts:
   ## If true, a PrometheusRule CRD is created for a prometheus operator
   ## https://github.com/coreos/prometheus-operator
   ##
   ## The rules will be processed as Helm template, allowing to set variables in them.
   enabled: true
-  #  namespace: monitoring
-  labels: 
-    prometheusRule: gemcloud
-  rules: 
-    - alert: ElasticsearchDataUsedTooHigh
-      expr: |
-        100 * (elasticsearch_filesystem_data_size_bytes{service="{{ template "elasticsearch-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} - elasticsearch_filesystem_data_free_bytes{service="{{ template "elasticsearch-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"})
-        / elasticsearch_filesystem_data_size_bytes{service="{{ template "elasticsearch-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
-        > 80
-      for: 1h
-      labels:
-        severity: warning
-      annotations:
-        description: ElasticSearch Data Used Too High. now is over ${{ "{{ $value }}" }}%.
-        summary: ElasticSearch Data Too High.
-    - alert: ElasticsearchHeapTooHigh
-      expr: |
-        elasticsearch_jvm_memory_used_bytes{service="{{ template "elasticsearch-exporter.fullname" . }}",area="heap",namespace="{{ .Release.Namespace }}"} / elasticsearch_jvm_memory_max_bytes{service="{{ template "elasticsearch-exporter.fullname" . }}",area="heap",namespace="{{ .Release.Namespace }}"}
-        > 0.9
-      for: 15m
-      labels:
-        severity: critical
-      annotations:
-        description: The heap usage is over 90% for 15m
-        summary: ElasticSearch node {{ "{{ $labels.node }}" }} heap usage is high
-    - alert: ElasticsearchClusterRed
-      expr: elasticsearch_cluster_health_status{color="red",namespace="{{ .Release.Namespace }}",service="{{ template "elasticsearch-exporter.fullname" . }}"} == 1
-      for: 0m
-      labels:
-        severity: critical
-      annotations:
-        summary: Elasticsearch Cluster Red instance  {{ "{{ $labels.node }}" }}
-        description: Elastic Cluster Red status  VALUE = {{ "{{ $value }}" }}\n  LABELS = {{ "{{ $labels }}" }}
-    - alert: ElasticsearchClusterYellow
-      expr: elasticsearch_cluster_health_status{color="yellow",namespace="{{ .Release.Namespace }}",service="{{ template "elasticsearch-exporter.fullname" . }}"} == 1
-      for: 0m
-      labels:
-        severity: warning
-      annotations:
-        summary: Elasticsearch Cluster Yellow instance {{"{{ $labels.instance }}"}}
-        description: Elastic Cluster Yellow status  VALUE = {{"{{ $value }}"}}\n  LABELS = {{"{{ $labels }}"}}
-    - alert: ElasticsearchUnassignedShards
-      expr: elasticsearch_cluster_health_unassigned_shards{namespace="{{ .Release.Namespace }}",service="{{ template "elasticsearch-exporter.fullname" . }}"} > 0
-      for: 0m
-      labels:
-        severity: critical
-      annotations:
-        summary: Elasticsearch unassigned shards instance {{"{{ $labels.instance }}"}}
-        description: Elasticsearch has unassigned shards  VALUE = {{"{{ $value }}"}}\n  LABELS = {{"{{ $labels }}"}}
-
 
 # Create a service account
 # To use a service account not handled by the chart, set the name here

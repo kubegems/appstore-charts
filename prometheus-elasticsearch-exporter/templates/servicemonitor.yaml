@@ -1,13 +1,12 @@
 {{- if .Values.serviceMonitor.enabled }}
----
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ template "elasticsearch-exporter.chart" . }}
-    app: {{ template "elasticsearch-exporter.name" . }}
+    chart: {{ template "prometheus-elasticsearch-exporter.chart" . }}
+    app: {{ template "prometheus-elasticsearch-exporter.name" . }}
     {{- if .Values.serviceMonitor.labels }}
     {{- toYaml .Values.serviceMonitor.labels | nindent 4 }}
     {{- end }}
@@ -29,10 +28,10 @@ spec:
     metricRelabelings:
     {{ toYaml .Values.serviceMonitor.metricRelabelings | nindent 4 }}
     {{- end }}
-  jobLabel: "{{ template "elasticsearch-exporter.fullname" . }}"
+  jobLabel: "{{ template "prometheus-elasticsearch-exporter.fullname" . }}"
   selector:
     matchLabels:
-      app: {{ template "elasticsearch-exporter.name" . }}
+      app: {{ template "prometheus-elasticsearch-exporter.name" . }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

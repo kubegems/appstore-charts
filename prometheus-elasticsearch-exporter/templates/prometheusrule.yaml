@@ -1,20 +1,88 @@
-{{- if .Values.prometheusRule.enabled }}
----
+{{- if .Values.alerts.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ template "elasticsearch-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
-    chart: {{ template "elasticsearch-exporter.chart" . }}
-    app: {{ template "elasticsearch-exporter.name" . }}
-{{- if .Values.prometheusRule.labels }}
-{{- toYaml .Values.prometheusRule.labels | nindent 4 }}
-{{- end }}
+    prometheusrule.kubegems.io/name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
+    prometheusrule.kubegems.io/type: monitor
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
-{{- with .Values.prometheusRule.rules }}
   groups:
-    - name: {{ template "elasticsearch-exporter.name" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+  - name: ElasticsearchDataUsedTooHigh
+    rules:
+    - alert: ElasticsearchDataUsedTooHigh
+      annotations:
+        message: ElasticSearch instance {{"{{"}} $labels.instance }} Data Used Too High.
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: (elasticsearch_filesystem_data_size_bytes{service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        - elasticsearch_filesystem_data_free_bytes{service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"})
+        / elasticsearch_filesystem_data_size_bytes{service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 100>80
+      for: 1h
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: ElasticsearchDataUsedTooHigh
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: ElasticsearchHeapTooHigh
+    rules:
+    - alert: ElasticsearchHeapTooHigh
+      annotations:
+        message: ElasticSearch instance {{"{{"}} $labels.instance }} node {{"{{"}} $labels.node
+          }} heap usage is high
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: elasticsearch_jvm_memory_used_bytes{service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}",area="heap",namespace="{{ .Release.Namespace }}"}
+        / elasticsearch_jvm_memory_max_bytes{service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}",area="heap",namespace="{{ .Release.Namespace }}"}>0.9
+      for: 15m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: ElasticsearchHeapTooHigh
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: ElasticsearchCluster
+    rules:
+    - alert: ElasticsearchCluster
+      annotations:
+        message: Elasticsearch Cluster Red instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: elasticsearch_cluster_health_status{color="red", namespace="{{ .Release.Namespace }}",service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}"}==1
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: ElasticsearchCluster
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: ElasticsearchClusterYellow
+    rules:
+    - alert: ElasticsearchClusterYellow
+      annotations:
+        message: Elasticsearch Cluster Yellow instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: elasticsearch_cluster_health_status{color="yellow",namespace="{{ .Release.Namespace }}",service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}"}==1
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: ElasticsearchClusterYellow
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: ElasticsearchUnassignedShards
+    rules:
+    - alert: ElasticsearchUnassignedShards
+      annotations:
+        message: Elasticsearch unassigned shards instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: elasticsearch_cluster_health_unassigned_shards{namespace="{{ .Release.Namespace }}",service="{{ template "prometheus-elasticsearch-exporter.fullname" . }}"}>0
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: ElasticsearchUnassignedShards
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
 {{- end }}

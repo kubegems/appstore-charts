@@ -1,0 +1,61 @@
+# used for generate prometheusrule and alertmanagerconfig
+- name: ElasticsearchDataUsedTooHigh
+  namespace: __namespace__
+  expr: (elasticsearch_filesystem_data_size_bytes{service="__fullname__",namespace="__namespace__"} - elasticsearch_filesystem_data_free_bytes{service="__fullname__",namespace="__namespace__"}) / elasticsearch_filesystem_data_size_bytes{service="__fullname__",namespace="__namespace__"} * 100
+  message: ElasticSearch instance {{ $labels.instance }} Data Used Too High.
+  for: 1h
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "80"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: ElasticsearchHeapTooHigh
+  namespace: __namespace__
+  expr: elasticsearch_jvm_memory_used_bytes{service="__fullname__",area="heap",namespace="__namespace__"} / elasticsearch_jvm_memory_max_bytes{service="__fullname__",area="heap",namespace="__namespace__"}
+  message: ElasticSearch instance {{ $labels.instance }} node {{ $labels.node }} heap usage is high
+  for: 15m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "0.9"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: ElasticsearchCluster
+  namespace: __namespace__
+  expr: elasticsearch_cluster_health_status{color="red", namespace="__namespace__",service="__fullname__"}
+  message: Elasticsearch Cluster Red instance {{ $labels.instance }}
+  for: 0m
+  alertLevels:
+    - compareOp: "=="
+      compareValue: "1"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: ElasticsearchClusterYellow
+  namespace: __namespace__
+  expr: elasticsearch_cluster_health_status{color="yellow",namespace="__namespace__",service="__fullname__"}
+  message: Elasticsearch Cluster Yellow instance {{ $labels.instance }}
+  for: 0m
+  alertLevels:
+    - compareOp: "=="
+      compareValue: "1"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: ElasticsearchUnassignedShards
+  namespace: __namespace__
+  expr: elasticsearch_cluster_health_unassigned_shards{namespace="__namespace__",service="__fullname__"}
+  message: Elasticsearch unassigned shards instance {{ $labels.instance }}
+  for: 0m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "0"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m

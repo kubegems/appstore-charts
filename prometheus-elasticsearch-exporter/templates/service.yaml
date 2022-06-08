@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ template "elasticsearch-exporter.chart" . }}
-    app: {{ template "elasticsearch-exporter.name" . }}
+    chart: {{ template "prometheus-elasticsearch-exporter.chart" . }}
+    app: {{ template "prometheus-elasticsearch-exporter.name" . }}
 {{- if .Values.service.labels }}
 {{ toYaml .Values.service.labels | indent 4 }}
 {{- end }}
@@ -20,4 +20,4 @@ spec:
       port: {{ .Values.service.httpPort }}
       protocol: TCP
   selector:
-    app: {{ template "elasticsearch-exporter.name" . }}
+    app: {{ template "prometheus-elasticsearch-exporter.name" . }}

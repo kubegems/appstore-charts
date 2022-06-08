@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "elasticsearch-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ template "elasticsearch-exporter.chart" . }}
-    app: {{ template "elasticsearch-exporter.name" . }}
+    chart: {{ template "prometheus-elasticsearch-exporter.chart" . }}
+    app: {{ template "prometheus-elasticsearch-exporter.name" . }}
   {{- if .Values.deployment.annotations }}
   annotations:
 {{- toYaml .Values.deployment.annotations | nindent 4 }}
@@ -14,7 +14,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "elasticsearch-exporter.name" . }}
+      app: {{ template "prometheus-elasticsearch-exporter.name" . }}
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "elasticsearch-exporter.name" . }}
+        app: {{ template "prometheus-elasticsearch-exporter.name" . }}
         {{- if .Values.podLabels }}
 {{ toYaml .Values.podLabels | indent 8 }}
         {{- end }}
@@ -33,7 +33,7 @@ spec:
       {{- end }}
     spec:
       {{- if .Values.serviceAccount.create  }}
-      serviceAccountName: {{ template "elasticsearch-exporter.fullname" . }}
+      serviceAccountName: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
       {{- else }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- end }}
@@ -194,7 +194,7 @@ spec:
         {{- if and .Values.es.ssl.enabled (eq .Values.es.ssl.useExistingSecrets false) }}
         - name: ssl
           secret:
-            secretName: {{ template "elasticsearch-exporter.fullname" . }}-cert
+            secretName: {{ template "prometheus-elasticsearch-exporter.fullname" . }}-cert
         {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}

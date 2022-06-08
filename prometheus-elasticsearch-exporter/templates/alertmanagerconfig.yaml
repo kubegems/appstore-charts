@@ -4,9 +4,9 @@ kind: AlertmanagerConfig
 metadata:
   creationTimestamp: null
   labels:
-    alertmanagerconfig.kubegems.io/name: {{ template "prometheus-redis-exporter.fullname" . }}
+    alertmanagerconfig.kubegems.io/name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
     alertmanagerconfig.kubegems.io/type: monitor
-  name: {{ template "prometheus-redis-exporter.fullname" . }}
+  name: {{ template "prometheus-elasticsearch-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   receivers:
@@ -32,7 +32,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: RedisDown
+        value: ElasticsearchDataUsedTooHigh
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
     - continue: true
@@ -40,7 +40,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: RedisMemoryHigh
+        value: ElasticsearchHeapTooHigh
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
     - continue: true
@@ -48,7 +48,7 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: RedisTooManyConnections
+        value: ElasticsearchCluster
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
     - continue: true
@@ -56,7 +56,15 @@ spec:
       - name: gems_namespace
         value: {{ .Release.Namespace }}
       - name: gems_alertname
-        value: RedisRejectedConnections
+        value: ElasticsearchClusterYellow
+      receiver: gemcloud-default-webhook
+      repeatInterval: 10m
+    - continue: true
+      matchers:
+      - name: gems_namespace
+        value: {{ .Release.Namespace }}
+      - name: gems_alertname
+        value: ElasticsearchUnassignedShards
       receiver: gemcloud-default-webhook
       repeatInterval: 10m
 {{- end }}

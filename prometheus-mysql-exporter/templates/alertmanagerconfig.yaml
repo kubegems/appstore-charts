@@ -4,7 +4,6 @@ kind: AlertmanagerConfig
 metadata:
   creationTimestamp: null
   labels:
-    {{- include "prometheus-mysql-exporter.labels" . | nindent 4 }}
     alertmanagerconfig.kubegems.io/name: {{ template "prometheus-mysql-exporter.fullname" . }}
     alertmanagerconfig.kubegems.io/type: monitor
   name: {{ template "prometheus-mysql-exporter.fullname" . }}

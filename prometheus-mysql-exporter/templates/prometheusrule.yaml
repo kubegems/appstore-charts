@@ -4,7 +4,6 @@ kind: PrometheusRule
 metadata:
   creationTimestamp: null
   labels:
-    {{- include "prometheus-mysql-exporter.labels" . | nindent 4 }}
     prometheusrule.kubegems.io/name: {{ template "prometheus-mysql-exporter.fullname" . }}
     prometheusrule.kubegems.io/type: monitor
   name: {{ template "prometheus-mysql-exporter.fullname" . }}
