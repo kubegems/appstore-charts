@@ -14,6 +14,7 @@ home: https://github.com/bitnami/charts/tree/master/bitnami/influxdb
 icon: https://bitnami.com/assets/stacks/influxdb/img/influxdb-stack-220x234.png
 keywords:
 - timeseries
+- database
 maintainers:
 - email: containers@bitnami.com
   name: Bitnami

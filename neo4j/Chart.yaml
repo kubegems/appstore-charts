@@ -5,7 +5,8 @@ home: https://www.neo4j.com
 icon: http://info.neo4j.com/rs/773-GON-065/images/neo4j_logo.png
 name: neo4j
 keywords:
-- nosql
+- graph
+- database
 sources:
 - https://github.com/neo4j/neo4j
 version: 4.4.1
