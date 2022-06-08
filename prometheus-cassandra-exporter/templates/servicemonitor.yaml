@@ -3,14 +3,17 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "cassandra-exporter.fullname" . }}
+  name: {{ include "prometheus-cassandra-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels: 
-    {{- include "cassandra-exporter.labels" . | nindent 4 }}
+    {{- include "prometheus-cassandra-exporter.labels" . | nindent 4 }}
+    {{- if .Values.serviceMonitor.labels }}
+    {{- toYaml .Values.serviceMonitor.labels | nindent 4 }}
+    {{- end }}    
 spec:
   selector:
     matchLabels: 
-      {{- include "cassandra-exporter.labels" . | nindent 6 }}
+      {{- include "prometheus-cassandra-exporter.labels" . | nindent 6 }}
   endpoints:
     - port: {{ .Values.serviceMonitor.port | default "metrics" }}
       {{- if .Values.serviceMonitor.interval}}

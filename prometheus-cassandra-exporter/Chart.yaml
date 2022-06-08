@@ -17,5 +17,5 @@ maintainers:
 sources:
 - http://cassandra.apache.org
 
-version: 2.3.4
+version: 2.4.0
 appVersion: 2.3.4

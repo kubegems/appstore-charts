@@ -1,17 +1,12 @@
-{{- if .Values.prometheusRule.enabled }}
----
+{{- if .Values.alerts.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ include "cassandra-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
-    prometheusRule: gemcloud
-    {{- include "cassandra-exporter.labels" . | nindent 4 }}
-spec:
-{{- with .Values.prometheusRule.rules }}
-  groups:
-    - name: {{ include "cassandra-exporter.fullname" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+    prometheusrule.kubegems.io/name: {{ template "prometheus-cassandra-exporter.fullname" . }}
+    prometheusrule.kubegems.io/type: monitor
+  name: {{ template "prometheus-cassandra-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec: {}
 {{- end }}

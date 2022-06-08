@@ -17,10 +17,12 @@ fullnameOverride: "cassandra-exporter"
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -32,7 +34,7 @@ service:
   type: ClusterIP
   port: 8080
 
-resources: 
+resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -56,7 +58,8 @@ serviceMonitor:
   ##
   enabled: true
   #  namespace: monitoring
-  labels: {}
+  labels:
+    release: kube-prometheus-stack
   interval: 60s
   scrapeTimeout: 10s
   scheme: http
@@ -66,16 +69,16 @@ serviceMonitor:
   metricRelabelings: []
   sampleLimit: 0
 
-prometheusRule:
+alerts:
   enabled: true
   rules: []
   #- alert: cassandra_failing_or_dead_nodes
   #  expr: |
-  #    kube_statefulset_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "cassandra-exporter.fullname" . }}"}
-  #    - kube_statefulset_status_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "cassandra-exporter.fullname" . }}"}
+  #    kube_statefulset_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "prometheus-cassandra-exporter.fullname" . }}"}
+  #    - kube_statefulset_status_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "prometheus-cassandra-exporter.fullname" . }}"}
   #    != 0
   #  for: 5m
   #  labels:
   #    severity: critical
   #  annotations:
-  #    description: The service of cassandra is not available. 
+  #    description: The service of cassandra is not available.

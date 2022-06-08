@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cassandra-exporter.fullname" . }}
+  name: {{ include "prometheus-cassandra-exporter.fullname" . }}
   labels:
-    {{- include "cassandra-exporter.labels" . | nindent 4 }}
+    {{- include "prometheus-cassandra-exporter.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "cassandra-exporter.selectorLabels" . | nindent 6 }}
+      {{- include "prometheus-cassandra-exporter.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -17,7 +17,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cassandra-exporter.selectorLabels" . | nindent 8 }}
+        {{- include "prometheus-cassandra-exporter.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -44,7 +44,7 @@ spec:
       volumes:
         - name: exporter-config
           configMap:
-            name: {{ include "cassandra-exporter.fullname" . }}-config
+            name: {{ include "prometheus-cassandra-exporter.fullname" . }}-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -29,7 +29,7 @@
       "default": "cloud1688",
       "form": true
     },
-    "metrics": {
+    "serviceMonitor": {
       "type": "object",
       "title": "Cassandra 监控数据采集器设置",
       "form": true,
@@ -43,13 +43,26 @@
         "interval": {
           "type": "string",
           "title": "监控数据采样频率",
-          "default": "60s",
+          "default": "30s",
           "form": true
         },
         "scrapeTimeout": {
           "type": "string",
           "title": "监控数据采样超时",
           "default": "10s",
+          "form": true
+        }
+      }
+    },
+    "alerts": {
+      "type": "object",
+      "title": "Cassandra 告警设置(需Prometheus Operator支持)",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用平台内置 Cassandra 告警规则",
+          "default": true,
           "form": true
         }
       }

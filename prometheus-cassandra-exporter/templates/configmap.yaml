@@ -1,10 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "cassandra-exporter.fullname" . }}-config
+  name: {{ include "prometheus-cassandra-exporter.fullname" . }}-config
   namespace: {{ .Release.Namespace }}
   labels:
-     {{- include "cassandra-exporter.labels" . | nindent 4 }}
+    {{- include "prometheus-cassandra-exporter.labels" . | nindent 4 }}
+    {{- if .Values.serviceMonitor.labels }}
+    {{- toYaml .Values.serviceMonitor.labels | nindent 4 }}
+    {{- end }}     
 data:
   config.yml: |-
     host: {{ .Values.host }}
