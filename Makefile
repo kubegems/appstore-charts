@@ -20,3 +20,6 @@ init-chartmuseum:
 apply:
 	#kubectl delete job charts-uploader
 	kubectl create job charts-uploader --image=$(CHARTS_UPLOADER)
+
+generate:
+	bash generate_alerts.sh
