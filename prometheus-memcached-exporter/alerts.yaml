@@ -1,0 +1,25 @@
+# used for generate prometheusrule and alertmanagerconfig
+- name: MemcachedDown
+  namespace: __namespace__
+  expr: memcached_up{service="__fullname__",namespace="__namespace__"}
+  message: Memcached instance {{ $labels.instance }} down
+  for: 0m
+  alertLevels:
+    - compareOp: "=="
+      compareValue: "0"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: MemcachedLowAvalibleConnections
+  namespace: __namespace__
+  expr: memcached_current_connections{service="__fullname__",namespace="__namespace__"} / memcached_max_connections{service="__fullname__",namespace="__namespace__"} * 100
+  message: memcached few available connections instance {{ $labels.instance }}
+  for: 0m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "90"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m

@@ -1,5 +1,4 @@
 {{- if .Values.serviceMonitor.enabled }}
----
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -7,6 +6,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels: 
     {{- include "prometheus-memcached-exporter.labels" . | nindent 4 }}
+    {{- if .Values.serviceMonitor.labels }}
+    {{- toYaml .Values.serviceMonitor.labels | nindent 4 }}
+    {{- end }}        
 spec:
   selector:
     matchLabels: 

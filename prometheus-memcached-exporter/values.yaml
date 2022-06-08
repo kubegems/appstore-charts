@@ -71,11 +71,12 @@ serviceMonitor:
   # Set path to redis-exporter telemtery-path
   telemetryPath: /metrics
   # Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
-  labels: {}
+  labels:
+    release: kube-prometheus-stack
   # Set timeout for scrape
   timeout: 10s
   
-prometheusRule:
+alerts:
   ## If true, a PrometheusRule CRD is created for a prometheus operator
   ## https://github.com/coreos/prometheus-operator
   ##

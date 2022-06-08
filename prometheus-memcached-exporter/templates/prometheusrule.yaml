@@ -1,17 +1,44 @@
-{{- if .Values.prometheusRule.enabled }}
----
+{{- if .Values.alerts.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ include "prometheus-memcached-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
-    prometheusRule: gemcloud
-    {{- include "prometheus-memcached-exporter.labels" . | nindent 4 }}
+    prometheusrule.kubegems.io/name: {{ template "prometheus-memcached-exporter.fullname" . }}
+    prometheusrule.kubegems.io/type: monitor
+  name: {{ template "prometheus-memcached-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
-{{- with .Values.prometheusRule.rules }}
   groups:
-    - name: {{ include "prometheus-memcached-exporter.fullname" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+  - name: MemcachedDown
+    rules:
+    - alert: MemcachedDown
+      annotations:
+        message: Memcached instance {{"{{"}} $labels.instance }} down
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: memcached_up{service="{{ template "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MemcachedDown
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: MemcachedLowAvalibleConnections
+    rules:
+    - alert: MemcachedLowAvalibleConnections
+      annotations:
+        message: memcached few available connections instance {{"{{"}} $labels.instance
+          }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: memcached_current_connections{service="{{ template "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        / memcached_max_connections{service="{{ template "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 100>90
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MemcachedLowAvalibleConnections
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
 {{- end }}
