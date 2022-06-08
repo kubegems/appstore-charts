@@ -51,7 +51,7 @@
         "interval": {
           "type": "string",
           "title": "监控数据采样频率",
-          "default": "60s",
+          "default": "30s",
           "form": true
         },
         "timeout": {
@@ -62,7 +62,7 @@
         }
       }
     },
-    "prometheusRule": {
+    "alerts": {
       "type": "object",
       "title": "RabbitMQ 告警设置(需Prometheus Operator支持)",
       "form": true,

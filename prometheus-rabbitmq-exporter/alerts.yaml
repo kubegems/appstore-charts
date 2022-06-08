@@ -1,0 +1,61 @@
+# used for generate prometheusrule and alertmanagerconfig
+- name: RabbitmqNodeDown
+  namespace: __namespace__
+  expr: rabbitmq_running{service="__fullname__",namespace="__namespace__"}
+  message: Rabbitmq instance {{ $labels.instance }} node {{ $labels.node }} down
+  for: 5m
+  alertLevels:
+    - compareOp: "=="
+      compareValue: "0"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RabbitmqClusterDown
+  namespace: __namespace__
+  expr: rabbitmq_up{service="__fullname__",namespace="__namespace__"}
+  message: The Rabbitmq cluster {{ $labels.service }} is maybe down.
+  for: 0m
+  alertLevels:
+    - compareOp: "=="
+      compareValue: "0"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RabbitMQClusterPartition
+  namespace: __namespace__
+  expr: rabbitmq_partitions{service="__fullname__",namespace="__namespace__"}
+  message: Rabbitmq cluster partition in Rabbitmq cluster tracked by {{ $labels.service }} was detected by the node {{ $labels.node }}
+  for: 5m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "0"
+      severity: critical
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RabbitmqOutOfMemory
+  namespace: __namespace__
+  expr: rabbitmq_node_mem_used{service="__fullname__",namespace="__namespace__"} / rabbitmq_node_mem_limit{service="__fullname__",namespace="__namespace__"} * 100
+  message: The Rabbitmq node {{ $labels.node }} is Out of memory
+  for: 5m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "90"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m
+- name: RabbitmqTooManyConnections
+  namespace: __namespace__
+  expr: rabbitmq_connectionsTotal{service="__fullname__",namespace="__namespace__"}
+  message: Too many connections to the Rabbitmq cluster instance {{ $labels.instance }}
+  for: 5m
+  alertLevels:
+    - compareOp: ">"
+      compareValue: "1000"
+      severity: error
+  receivers:
+    - name: gemcloud-default-webhook
+      interval: 10m

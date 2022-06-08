@@ -1,70 +1,88 @@
-{{- if .Values.prometheusRule.enabled }}
+{{- if .Values.alerts.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
+  creationTimestamp: null
+  labels:
+    prometheusrule.kubegems.io/name: {{ template "prometheus-rabbitmq-exporter.fullname" . }}
+    prometheusrule.kubegems.io/type: monitor
   name: {{ template "prometheus-rabbitmq-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "prometheus-rabbitmq-exporter.name" . }}
-    chart: {{ template "prometheus-rabbitmq-exporter.chart" . }}
-    heritage: {{ .Release.Service }}
-  {{- if .Values.prometheusRule.additionalLabels }}
-{{ toYaml .Values.prometheusRule.additionalLabels | indent 4 }}
-  {{- end }}
 spec:
   groups:
-    - name: {{ template "prometheus-rabbitmq-exporter.fullname" . }}
-      rules:
-        - alert: RabbitmqNodeDown
-          expr: rabbitmq_running{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: A Rabbitmq node is down
-            description: |
-              The Rabbitmq node {{ "{{ $labels.node }}" }} of
-               the cluster tracked by {{ "{{ $labels.service }}" }} was not running during the last 5m.
-        - alert: RabbitmqClusterDown
-          expr: |
-            rabbitmq_up{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: The Rabbitmq cluster {{ "{{ $labels.service }}" }} is maybe down.
-            description: |
-                The Rabbitmq exporter couldn't scrape any Rabbitmq node of the
-                cluster tracked by {{ "{{ $labels.service }}" }} during the last 5m, the cluster is maybe down.
-        - alert: RabbitMQClusterPartition
-          expr: rabbitmq_partitions{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} > 0
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: A cluster partition was detected
-            description: |
-                Cluster partition in Rabbitmq cluster tracked by {{ "{{ $labels.service }}" }} was detected
-                by the node {{ "{{ $labels.node }}" }}
-        - alert: RabbitmqOutOfMemory
-          expr: |
-            rabbitmq_node_mem_used{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
-            / rabbitmq_node_mem_limit{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
-            * 100 > 90
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: The Rabbitmq node {{ "{{ $labels.node }}" }} is Out of memory
-            description: |
-                Memory available for Rabbmitmq node {{ "{{ $labels.node }}" }} is lower than 10%
-        - alert: RabbitmqTooManyConnections
-          expr: rabbitmq_connectionsTotal{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} > 1000
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: Too many connections to the Rabbitmq cluster
-            description: |
-                The Rabbitmq cluster tracked by {{ "{{ $labels.service }}" }} has too many connections {{ "{{ $value }}" }} (> 1000)
+  - name: RabbitmqNodeDown
+    rules:
+    - alert: RabbitmqNodeDown
+      annotations:
+        message: Rabbitmq instance {{"{{"}} $labels.instance }} node {{"{{"}} $labels.node }}
+          down
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: rabbitmq_running{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: RabbitmqNodeDown
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: RabbitmqClusterDown
+    rules:
+    - alert: RabbitmqClusterDown
+      annotations:
+        message: The Rabbitmq cluster {{"{{"}} $labels.service }} is maybe down.
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: rabbitmq_up{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: RabbitmqClusterDown
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: RabbitMQClusterPartition
+    rules:
+    - alert: RabbitMQClusterPartition
+      annotations:
+        message: Rabbitmq cluster partition in Rabbitmq cluster tracked by {{"{{"}} $labels.service
+          }} was detected by the node {{"{{"}} $labels.node }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: rabbitmq_partitions{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}>0
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: RabbitMQClusterPartition
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: RabbitmqOutOfMemory
+    rules:
+    - alert: RabbitmqOutOfMemory
+      annotations:
+        message: The Rabbitmq node {{"{{"}} $labels.node }} is Out of memory
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: rabbitmq_node_mem_used{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        / rabbitmq_node_mem_limit{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 100>90
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: RabbitmqOutOfMemory
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: RabbitmqTooManyConnections
+    rules:
+    - alert: RabbitmqTooManyConnections
+      annotations:
+        message: Too many connections to the Rabbitmq cluster instance {{"{{"}} $labels.instance
+          }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: rabbitmq_connectionsTotal{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}>1000
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: RabbitmqTooManyConnections
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
 {{- end }}
