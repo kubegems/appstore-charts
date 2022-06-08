@@ -95,68 +95,16 @@ serviceMonitor:
   enabled: true
   interval: 60s
   scrapeTimeout: 10s
-  additionalLabels: {}
+  additionalLabels:
+    release: kube-prometheus-stack
   targetLabels: []
   metricRelabelings: []
 
 tolerations: []
 
-prometheusRule:
+alerts:
   ## If true, a PrometheusRule CRD is created for a prometheus operator
   ## https://github.com/coreos/prometheus-operator
   ##
   ## The rules will be processed as Helm template, allowing to set variables in them.
   enabled: true
-  #  namespace: monitoring
-  additionalLabels: 
-    prometheusRule: gemcloud
-  rules: 
-    - alert: MongodbDown
-      expr: mongodb_up{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
-      for: 0m
-      labels:
-        severity: critical
-      annotations:
-        description: MongoDB Down instance {{ "{{ $labels.instance }}" }}
-        summary: MongoDB instance is down {{ "{{ $labels.instance }}" }}
-    - alert: MongodbTooManyConnections
-      expr: >
-        avg by(instance) (rate(mongodb_connections{state="current",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])) 
-        / avg by(instance) (sum (mongodb_connections{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}) by (instance)) 
-        * 100 > 80
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: MongoDB too many connections instance {{ "{{ $labels.instance }}" }}
-        description: Too many connections > 80% VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
-    - alert: MongodbLowAvalibleConnections
-      expr: mongodb_connections{state="available",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} < 100
-      for: 5m
-      labels:
-        severity: critical
-      annotations:
-        summary: MongoDB few available connections instance {{ "{{ $labels.instance }}" }}
-        description: few availabel connections < 100 VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
-    - alert: MongodbTooManyMemories
-      expr: >
-        mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
-        / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
-        * 100 > 80
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: MongoDB too many memories instance {{ "{{ $labels.instance }}" }}
-        description: Too many memories > 80% VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
-    - alert: MongodbTooManyMemories
-      expr: >
-        mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
-        / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ include "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} 
-        * 100 > 95
-      for: 5m
-      labels:
-        severity: critical
-      annotations:
-        summary: MongoDB too many memories instance {{ "{{ $labels.instance }}" }}
-        description: Too many memories > 95% VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}

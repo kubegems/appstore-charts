@@ -1,20 +1,87 @@
-{{- if .Values.prometheusRule.enabled }}
+{{- if .Values.alerts.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: {{ include "prometheus-mongodb-exporter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  creationTimestamp: null
   labels:
-    app.kubernetes.io/name: {{ include "prometheus-mongodb-exporter.name" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ include "prometheus-mongodb-exporter.chart" . }}
-{{- with .Values.prometheusRule.additionalLabels }}
-{{ toYaml . | indent 4 }}
-{{- end }}
+    prometheusrule.kubegems.io/name: {{ template "prometheus-mongodb-exporter.fullname" . }}
+    prometheusrule.kubegems.io/type: monitor
+  name: {{ template "prometheus-mongodb-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
-{{- with .Values.prometheusRule.rules }}
   groups:
-    - name: {{ template "prometheus-mongodb-exporter.fullname" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+  - name: MongodbDown
+    rules:
+    - alert: MongodbDown
+      annotations:
+        message: MongoDB instance {{"{{"}} $labels.instance }} down
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: mongodb_up{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MongodbDown
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: MongodbTooManyConnections
+    rules:
+    - alert: MongodbTooManyConnections
+      annotations:
+        message: MongoDB too many connections instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: avg by(instance) (rate(mongodb_connections{state="current",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]))
+        / avg by(instance) (sum (mongodb_connections{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}))
+        * 100>80
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MongodbTooManyConnections
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+  - name: MongodbLowAvalibleConnections
+    rules:
+    - alert: MongodbLowAvalibleConnections
+      annotations:
+        message: MongoDB few available connections instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: mongodb_connections{state="available",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}<100
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MongodbLowAvalibleConnections
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: MongodbTooManyMemories
+    rules:
+    - alert: MongodbTooManyMemories
+      annotations:
+        message: MongoDB too many memories instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 100>80
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MongodbTooManyMemories
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+    - alert: MongodbTooManyMemories
+      annotations:
+        message: MongoDB too many memories instance {{"{{"}} $labels.instance }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 100>90
+      for: 5m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: MongodbTooManyMemories
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
 {{- end }}

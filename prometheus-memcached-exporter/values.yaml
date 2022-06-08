@@ -82,25 +82,3 @@ alerts:
   ##
   ## The rules will be processed as Helm template, allowing to set variables in them.
   enabled: true
-  #  namespace: monitoring
-  rules: 
-    - alert: MemcachedDown
-      expr: memcached_up{service="{{ include "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"} == 0
-      for: 0m
-      labels:
-        severity: critical
-      annotations:
-        description:  Memcached Down instance {{ "{{ $labels.instance }}" }}
-        summary: Memcached instance is down {{ "{{ $labels.instance }}" }}
-    - alert: MemcachedLowAvalibleConnections
-      expr: >
-        memcached_current_connections{service="{{ include "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
-        / memcached_max_connections{service="{{ include "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
-        * 100 > 90
-      for: 0m
-      labels:
-        severity: warning
-      annotations:
-        summary: > 
-          memcached few available connections instance {{ "{{ $labels.instance }}" }}
-        description: few availabel connections < 100 VALUE ={{ "{{ $value }}" }}  LABELS = {{ "{{ $labels }}" }}
