@@ -95,8 +95,7 @@ serviceMonitor:
   enabled: true
   interval: 60s
   scrapeTimeout: 10s
-  additionalLabels:
-    release: kube-prometheus-stack
+  additionalLabels: {}
   targetLabels: []
   metricRelabelings: []
 

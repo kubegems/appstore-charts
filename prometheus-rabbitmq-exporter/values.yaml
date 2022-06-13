@@ -66,8 +66,7 @@ annotations: {}
 
 serviceMonitor:
   enabled: true
-  additionalLabels:
-    release: kube-prometheus-stack
+  additionalLabels: {}
   interval: 60s
   scrapeTimeout: 10s
   namespace: []

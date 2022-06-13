@@ -214,8 +214,7 @@ serviceMonitor:
   ## https://github.com/coreos/prometheus-operator
   ##
   enabled: true
-  labels:
-    release: kube-prometheus-stack
+  labels: {}
   interval: 60s
   scrapeTimeout: 10s
   scheme: http
