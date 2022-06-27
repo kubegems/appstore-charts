@@ -3,20 +3,20 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches:
-      - 'main'
-      - 'develop'
+      - "main"
+      - "develop"
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
     paths-ignore:
-      - 'config/**'
-      - '**/*.md'
+      - "config/**"
+      - "**/*.md"
   pull_request:
     branches:
-      - 'main'
-      - 'release-*'
+      - "main"
+      - "release-*"
     paths-ignore:
-      - 'config/**'
-      - '**/*.md'
+      - "config/**"
+      - "**/*.md"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -68,12 +68,17 @@ jobs:
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
           wget -q https://dl.k8s.io/release/v1.23.0/bin/linux/amd64/kubectl
           chmod +x ./kubectl
- 
+
       - name: Create k8s Kind Cluster
         uses: helm/kind-action@v1.2.0
         with:
           cluster_name: kubegems-installer-test
           node_image: kindest/node:v1.18.19
+
+      - name: Install required crds
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+          kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
 
       - name: Helm Resource Dry Run
         run: |

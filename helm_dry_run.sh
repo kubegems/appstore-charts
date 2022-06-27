@@ -26,6 +26,10 @@ ls | while read myline; do
     continue
   }
 
+  [[ ${myline} == "scripts" ]] && {
+    continue
+  }
+
   #打包
   green ">>>>>> Templating Charts $myline" 
   helm template $myline | kubectl apply --dry-run=server -f -
