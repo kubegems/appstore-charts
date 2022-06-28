@@ -2,8 +2,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   labels:
-    app.kubernetes.io/name: gems-charts-uploader
-  name: gems-charts-uploader
+    app.kubernetes.io/name: kubegems-appstore-charts
+  name: kubegems-appstore-charts
   namespace: gemcloud-system
 spec:
   backoffLimit: 3
@@ -11,8 +11,8 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gems-charts-uploader
-      name: gems-charts-uploader
+        app.kubernetes.io/name: kubegems-appstore-charts
+      name: kubegems-appstore-charts
     spec:
       containers:
       - args:
@@ -20,10 +20,10 @@ spec:
         - --repo
         - kubegems
         - --server
-        - http://gems-chartmuseum:8030
-        image: registry.cn-beijing.aliyuncs.com/kubegems/charts-uploader:v1.20.0-beta.1
+        - http://kubegems-chartmuseum:8080
+        image: kubegems/appstore-charts:latest
         imagePullPolicy: Always
-        name: gems-charts-uploader
+        name: kubegems-appstore-charts
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

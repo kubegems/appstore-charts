@@ -1,4 +1,4 @@
-CHARTS_UPLOADER ?= docker.io/kubegems/charts-uploader:latest
+CHARTS_UPLOADER ?= docker.io/kubegems/appstore-charts:latest
 
 package:
 	 rm -rf charts/*.tgz
@@ -18,8 +18,8 @@ init-chartmuseum:
 	 bash init_chartmuseum.sh
 
 apply:
-	#kubectl delete job charts-uploader
-	kubectl create job charts-uploader --image=$(CHARTS_UPLOADER)
+	#kubectl delete job appstore-charts
+	kubectl create job appstore-charts --image=$(CHARTS_UPLOADER)
 
 generate:
 	bash generate_alerts.sh
