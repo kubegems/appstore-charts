@@ -105,7 +105,7 @@ jobs:
 
       - name: Apply Charts job
         run: |
-          kubectl create job charts-uploader -n default --image=${{ steps.meta.outputs.tags }}
+          kubectl create job charts-uploader -n default --image=${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
           sleep 60
 
       - name: Job Logs
