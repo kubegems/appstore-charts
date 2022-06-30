@@ -14,7 +14,8 @@ spec:
     rules:
     - alert: RedisDown
       annotations:
-        message: Redis instance {{"{{"}} $labels.instance }} down
+        message: Redis [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] down
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: redis_up{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
       for: 0m
@@ -28,7 +29,8 @@ spec:
     rules:
     - alert: RedisMemoryHigh
       annotations:
-        message: Redis instance {{"{{"}} $labels.instance }} is using too much memory
+        message: Redis [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] is using too much memory
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: redis_memory_used_bytes{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / redis_memory_max_bytes{service="{{ template "prometheus-redis-exporter.fullname" . }}", namespace="{{ .Release.Namespace }}"}
@@ -44,7 +46,8 @@ spec:
     rules:
     - alert: RedisTooManyConnections
       annotations:
-        message: Redis too many connections instance {{"{{"}} $labels.instance }}
+        message: Redis too many connections [namespace {{"{{"}} $labels.namespace }}] [service
+          {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: redis_connected_clients{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / redis_config_maxclients{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
@@ -60,7 +63,8 @@ spec:
     rules:
     - alert: RedisRejectedConnections
       annotations:
-        message: MySQL instance {{"{{"}} $labels.instance }} restarted
+        message: MySQL [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] restarted
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: increase(redis_rejected_connections_total{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])>0
       for: 0m

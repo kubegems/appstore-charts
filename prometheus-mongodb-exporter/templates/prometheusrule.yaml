@@ -14,7 +14,8 @@ spec:
     rules:
     - alert: MongodbDown
       annotations:
-        message: MongoDB instance {{"{{"}} $labels.instance }} down
+        message: MongoDB [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] down
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: mongodb_up{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
       for: 0m
@@ -28,7 +29,8 @@ spec:
     rules:
     - alert: MongodbTooManyConnections
       annotations:
-        message: MongoDB too many connections instance {{"{{"}} $labels.instance }}
+        message: MongoDB too many connections [namespace {{"{{"}} $labels.namespace }}]
+          [service {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: avg by(instance) (rate(mongodb_connections{state="current",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m]))
         / avg by(instance) (sum (mongodb_connections{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}))
@@ -44,7 +46,8 @@ spec:
     rules:
     - alert: MongodbLowAvalibleConnections
       annotations:
-        message: MongoDB few available connections instance {{"{{"}} $labels.instance }}
+        message: MongoDB few available connections [namespace {{"{{"}} $labels.namespace
+          }}] [service {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: mongodb_connections{state="available",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}<100
       for: 5m
@@ -58,7 +61,8 @@ spec:
     rules:
     - alert: MongodbTooManyMemories
       annotations:
-        message: MongoDB too many memories instance {{"{{"}} $labels.instance }}
+        message: MongoDB too many memories [namespace {{"{{"}} $labels.namespace }}] [service
+          {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
@@ -72,7 +76,8 @@ spec:
         severity: error
     - alert: MongodbTooManyMemories
       annotations:
-        message: MongoDB too many memories instance {{"{{"}} $labels.instance }}
+        message: MongoDB too many memories [namespace {{"{{"}} $labels.namespace }}] [service
+          {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: mongodb_mongod_wiredtiger_cache_bytes{type="total",service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="{{ template "prometheus-mongodb-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}

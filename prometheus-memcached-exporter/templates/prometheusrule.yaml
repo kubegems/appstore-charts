@@ -14,7 +14,8 @@ spec:
     rules:
     - alert: MemcachedDown
       annotations:
-        message: Memcached instance {{"{{"}} $labels.instance }} down
+        message: Memcached [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] down
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: memcached_up{service="{{ template "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
       for: 0m
@@ -28,8 +29,8 @@ spec:
     rules:
     - alert: MemcachedLowAvalibleConnections
       annotations:
-        message: memcached few available connections instance {{"{{"}} $labels.instance
-          }}
+        message: memcached few available connections [namespace {{"{{"}} $labels.namespace
+          }}] [service {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: memcached_current_connections{service="{{ template "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / memcached_max_connections{service="{{ template "prometheus-memcached-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}

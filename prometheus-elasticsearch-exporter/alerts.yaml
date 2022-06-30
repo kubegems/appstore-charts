@@ -2,7 +2,7 @@
 - name: ElasticsearchDataUsedTooHigh
   namespace: __namespace__
   expr: (elasticsearch_filesystem_data_size_bytes{service="__fullname__",namespace="__namespace__"} - elasticsearch_filesystem_data_free_bytes{service="__fullname__",namespace="__namespace__"}) / elasticsearch_filesystem_data_size_bytes{service="__fullname__",namespace="__namespace__"} * 100
-  message: ElasticSearch instance {{ $labels.instance }} Data Used Too High.
+  message: ElasticSearch [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] Data Used Too High.
   for: 1h
   alertLevels:
     - compareOp: ">"
@@ -14,7 +14,7 @@
 - name: ElasticsearchHeapTooHigh
   namespace: __namespace__
   expr: elasticsearch_jvm_memory_used_bytes{service="__fullname__",area="heap",namespace="__namespace__"} / elasticsearch_jvm_memory_max_bytes{service="__fullname__",area="heap",namespace="__namespace__"}
-  message: ElasticSearch instance {{ $labels.instance }} node {{ $labels.node }} heap usage is high
+  message: ElasticSearch [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] [node {{ $labels.node }}] heap usage is high
   for: 15m
   alertLevels:
     - compareOp: ">"
@@ -26,7 +26,7 @@
 - name: ElasticsearchCluster
   namespace: __namespace__
   expr: elasticsearch_cluster_health_status{color="red", namespace="__namespace__",service="__fullname__"}
-  message: Elasticsearch Cluster Red instance {{ $labels.instance }}
+  message: Elasticsearch Cluster Red [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
   alertLevels:
     - compareOp: "=="
@@ -38,7 +38,7 @@
 - name: ElasticsearchClusterYellow
   namespace: __namespace__
   expr: elasticsearch_cluster_health_status{color="yellow",namespace="__namespace__",service="__fullname__"}
-  message: Elasticsearch Cluster Yellow instance {{ $labels.instance }}
+  message: Elasticsearch Cluster Yellow [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
   alertLevels:
     - compareOp: "=="
@@ -50,7 +50,7 @@
 - name: ElasticsearchUnassignedShards
   namespace: __namespace__
   expr: elasticsearch_cluster_health_unassigned_shards{namespace="__namespace__",service="__fullname__"}
-  message: Elasticsearch unassigned shards instance {{ $labels.instance }}
+  message: Elasticsearch unassigned shards [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
   alertLevels:
     - compareOp: ">"

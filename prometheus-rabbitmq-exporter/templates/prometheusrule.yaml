@@ -14,8 +14,8 @@ spec:
     rules:
     - alert: RabbitmqNodeDown
       annotations:
-        message: Rabbitmq instance {{"{{"}} $labels.instance }} node {{"{{"}} $labels.node }}
-          down
+        message: Rabbitmq [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] node {{"{{"}} $labels.node }} down
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: rabbitmq_running{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
       for: 5m
@@ -29,7 +29,8 @@ spec:
     rules:
     - alert: RabbitmqClusterDown
       annotations:
-        message: The Rabbitmq cluster {{"{{"}} $labels.service }} is maybe down.
+        message: The Rabbitmq cluster [namespace {{"{{"}} $labels.namespace }}] [service
+          {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}] is maybe down.
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: rabbitmq_up{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
       for: 0m
@@ -43,8 +44,9 @@ spec:
     rules:
     - alert: RabbitMQClusterPartition
       annotations:
-        message: Rabbitmq cluster partition in Rabbitmq cluster tracked by {{"{{"}} $labels.service
-          }} was detected by the node {{"{{"}} $labels.node }}
+        message: Rabbitmq cluster partition in Rabbitmq cluster was detected [namespace
+          {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance
+          }}] [node {{"{{"}} $labels.node }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: rabbitmq_partitions{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}>0
       for: 5m
@@ -58,7 +60,9 @@ spec:
     rules:
     - alert: RabbitmqOutOfMemory
       annotations:
-        message: The Rabbitmq node {{"{{"}} $labels.node }} is Out of memory
+        message: The Rabbitmq [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] [node {{"{{"}} $labels.node }}] is Out of
+          memory
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: rabbitmq_node_mem_used{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / rabbitmq_node_mem_limit{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
@@ -74,8 +78,8 @@ spec:
     rules:
     - alert: RabbitmqTooManyConnections
       annotations:
-        message: Too many connections to the Rabbitmq cluster instance {{"{{"}} $labels.instance
-          }}
+        message: Too many connections to the Rabbitmq cluster [namespace {{"{{"}} $labels.namespace
+          }}] [service {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}]
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: rabbitmq_connectionsTotal{service="{{ template "prometheus-rabbitmq-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}>1000
       for: 5m

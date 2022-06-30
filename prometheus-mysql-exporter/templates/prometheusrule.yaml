@@ -14,7 +14,8 @@ spec:
     rules:
     - alert: MysqlDown
       annotations:
-        message: MySQL instance {{"{{"}} $labels.instance }} down
+        message: MySQL [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] down
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: mysql_up{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
       for: 0m
@@ -28,7 +29,8 @@ spec:
     rules:
     - alert: MysqlTooManyConnections
       annotations:
-        message: MySQL instance {{"{{"}} $labels.instance }} too many connections > 80%
+        message: MySQL [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] too many connections > 80%
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: max_over_time(mysql_global_status_threads_connected{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])
         / mysql_global_variables_max_connections{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
@@ -44,7 +46,8 @@ spec:
     rules:
     - alert: MysqlSlowQueries
       annotations:
-        message: MySQL instance {{"{{"}} $labels.instance }} slow queries
+        message: MySQL [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] slow queries
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: increase(mysql_global_status_slow_queries{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}[1m])>0
       for: 2m
@@ -58,7 +61,8 @@ spec:
     rules:
     - alert: MysqlRestarted
       annotations:
-        message: MySQL instance {{"{{"}} $labels.instance }} restarted
+        message: MySQL [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] restarted
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: mysql_global_status_uptime{service="{{ template "prometheus-mysql-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}<60
       for: 0m
