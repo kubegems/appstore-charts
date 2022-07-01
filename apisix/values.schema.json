@@ -48,15 +48,43 @@
             "type": "string"
           }
         },
-        "user": {
-          "type": "string",
-          "title": "用户名",
-          "form": true
-        },
-        "password": {
-          "type": "string",
-          "title": "用户密码",
-          "form": true
+        "auth": {
+          "type": "object",
+          "title": "Etcd认证设置",
+          "form": true,
+          "properties": {
+            "rbac": {
+              "type": "object",
+              "title": "RBAC 设置",
+              "form": true,
+              "properties": {
+                "create": {
+                  "type": "boolean",
+                  "title": "启用 RBAC",
+                  "form": true,
+                  "default": false
+                },
+                "user": {
+                  "type": "string",
+                  "title": "用户名",
+                  "form": true,
+                  "hidden": {
+                    "path": "etcd/auth/rbac/create",
+                    "value": false
+                  }
+                },
+                "password": {
+                  "type": "string",
+                  "title": "用户密码",
+                  "form": true,
+                  "hidden": {
+                    "path": "etcd/auth/rbac/create",
+                    "value": false
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -104,19 +132,6 @@
         }
       }
     },
-    "ingress-controller": {
-      "type": "object",
-      "title": "Ingress设置",
-      "form": true,
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "title": "启用Ingress-Controller",
-          "form": true,
-          "default": true
-        }
-      }
-    },
     "admin": {
       "type": "object",
       "title": "Admin API设置",
@@ -149,6 +164,7 @@
           "hmac-auth",
           "http-logger",
           "ip-restriction",
+          "ua-restriction",
           "jwt-auth",
           "kafka-logger",
           "key-auth",
@@ -157,6 +173,7 @@
           "limit-req",
           "node-status",
           "openid-connect",
+          "authz-casbin",
           "prometheus",
           "proxy-cache",
           "proxy-mirror",
@@ -175,7 +192,11 @@
           "uri-blocker",
           "wolf-rbac",
           "zipkin",
-          "traffic-split"
+          "traffic-split",
+          "gzip",
+          "real-ip",
+          "ext-plugin-pre-req",
+          "ext-plugin-post-req"
         ]
       }
     },
@@ -185,7 +206,11 @@
       "form": true,
       "items": {
         "type": "string",
-        "enum": ["mqtt-proxy"]
+        "enum": [
+          "mqtt-proxy",
+          "ip-restriction",
+          "limit-conn"
+        ]
       }
     },
     "autoscaling": {

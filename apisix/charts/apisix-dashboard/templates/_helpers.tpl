@@ -63,6 +63,7 @@ Selector labels
 */}}
 {{- define "apisix-dashboard.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "apisix-dashboard.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
