@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32
-	kubegems.io/kubegems v1.21.0-rc.0
+	kubegems.io/kubegems v1.21.0-rc.4
 )
 
 require (

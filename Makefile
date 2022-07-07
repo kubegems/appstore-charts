@@ -1,6 +1,6 @@
 CHARTS_UPLOADER ?= docker.io/kubegems/appstore-charts:latest
 
-package: generate
+package:
 	 rm -rf charts/*.tgz
 	 bash generate_repo.sh
 
