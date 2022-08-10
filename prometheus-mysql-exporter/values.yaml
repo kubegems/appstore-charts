@@ -99,7 +99,7 @@ collectors:
   info_schema.processlist: true
   info_schema.processlist.min_time: 0
   info_schema.query_response_time: true
-  # info_schema.tables: true
+  info_schema.tables: true
   # info_schema.tables.databases: '*'
   # info_schema.tablestats: false
   # info_schema.schemastats: false
