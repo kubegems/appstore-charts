@@ -33,13 +33,21 @@
           "type": "string",
           "title": "监控数据采样频率",
           "default": "30s",
-          "form": true
+          "form": true,
+          "hidden": {
+            "path": "serviceMonitor/enabled",
+            "value": false
+          }
         },
         "timeout": {
           "type": "string",
           "title": "监控数据采样超时",
           "default": "10s",
-          "form": true
+          "form": true,
+          "hidden": {
+            "path": "serviceMonitor/enabled",
+            "value": false
+          }
         }
       }
     },

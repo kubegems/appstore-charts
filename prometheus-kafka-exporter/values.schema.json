@@ -4,42 +4,64 @@
   "properties": {
     "nameOverride": {
       "type": "string",
-      "title": "RabbitMQ exporter名称",
+      "title": "Kafka exporter名称",
       "form": true
     },
     "fullnameOverride": {
       "type": "string",
-      "title": "RabbitMQ Exporter服务名",
+      "title": "Kafka Exporter服务名",
       "form": true
     },
-    "rabbitmq": {
+    "kafkaServer": {
+      "type": "array",
+      "title": "Kafka 地址",
+      "form": true,
+      "default": "kafka-server:9092"
+    },
+    "sasl": {
       "type": "object",
-      "title": "RabbitMQ 设置",
+      "title": "Kafka 认证设置",
       "form": true,
       "properties": {
-        "url": {
-          "type": "string",
-          "title": "RabbitMQ 连接地址",
+        "enabled": {
+          "type": "boolean",
           "form": true,
-          "default": "http://rabbitmq:15672"
+          "default": false,
+          "title": "启用认证"
         },
-        "user": {
+        "mechanism": {
           "type": "string",
-          "title": "RabbitMQ 访问用户",
+          "title": "认证方式 <plain|scram-sha512|scram-sha256>",
           "form": true,
-          "default": "Admin"
+          "default": "plain",
+          "hidden": {
+            "path": "sasl/enabled",
+            "value": false
+          }
+        },
+        "username": {
+          "type": "string",
+          "title": "用户名",
+          "form": true,
+          "hidden": {
+            "path": "sasl/enabled",
+            "value": false
+          }
         },
         "password": {
           "type": "string",
-          "title": "RabbitMQ 用户密码",
+          "title": "密码",
           "form": true,
-          "default": "password"
+          "hidden": {
+            "path": "sasl/enabled",
+            "value": false
+          }
         }
       }
     },
     "serviceMonitor": {
       "type": "object",
-      "title": "RabbitMQ 监控数据采集器设置",
+      "title": "Kafka 监控数据采集器设置",
       "form": true,
       "properties": {
         "enabled": {
@@ -57,29 +79,6 @@
             "path": "serviceMonitor/enabled",
             "value": false
           }
-        },
-        "timeout": {
-          "type": "string",
-          "title": "监控数据采样超时",
-          "default": "10s",
-          "form": true,
-          "hidden": {
-            "path": "serviceMonitor/enabled",
-            "value": false
-          }
-        }
-      }
-    },
-    "alerts": {
-      "type": "object",
-      "title": "RabbitMQ 告警设置(需Prometheus Operator支持)",
-      "form": true,
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "title": "启用平台内置 Redis 告警规则",
-          "default": true,
-          "form": true
         }
       }
     }
