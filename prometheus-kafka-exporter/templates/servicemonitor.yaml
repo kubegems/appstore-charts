@@ -1,0 +1,33 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "prometheus-kafka-exporter.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "prometheus-kafka-exporter.name" . }}
+    helm.sh/chart: {{ include "prometheus-kafka-exporter.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- if .Values.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.serviceMonitor.additionalLabels | indent 4 -}}
+    {{- end }}
+spec:
+  jobLabel: jobLabel
+{{- if .Values.serviceMonitor.targetLabels }}
+  targetLabels:
+{{- range .Values.serviceMonitor.targetLabels }}
+    - {{ . }}
+{{- end }}
+{{- end }}
+  selector:
+    matchLabels:
+      app: {{ template "prometheus-kafka-exporter.name" . }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  endpoints:
+  - port: exporter-port
+    interval: {{ .Values.serviceMonitor.interval }}
+    {{- if .Values.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+{{- end }}

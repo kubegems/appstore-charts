@@ -1,0 +1,22 @@
+annotations:
+  artifacthub.io/links: |
+    - name: Chart Source
+      url: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-kafka-exporter
+apiVersion: v2
+appVersion: v1.4.2
+description: A Helm chart to export the metrics from Kafka in Prometheus format using
+  the kafka-exporter from https://github.com/danielqsj/kafka_exporter
+home: https://github.com/danielqsj/kafka_exporter
+keywords:
+- exporter
+maintainers:
+- email: github.gkarthiks@gmail.com
+  name: gkarthiks
+- email: golgoth31@notrenet.com
+  name: golgoth31
+- email: support@kubegems.io
+  name: KubeGems
+name: prometheus-kafka-exporter
+sources:
+- https://gkarthiks.github.io/helm-charts/charts/prometheus-kafka-exporter
+version: 1.6.0

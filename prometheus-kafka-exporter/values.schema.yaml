@@ -1,0 +1,32 @@
+$schema: http://json-schema.org/schema#
+type: object
+properties:
+  nameOverride:
+    type: string
+    title: Kafka exporter名称
+    form: true
+  fullnameOverride:
+    type: string
+    title: Kafka Exporter服务名
+    form: true
+  kafkaServer:
+    type: array
+    title: Kafka 地址
+    form: true
+    default: kafka-server:9092
+  serviceMonitor:
+    type: object
+    title: Kafka 监控数据采集器设置
+    form: true
+    properties:
+      enabled:
+        type: boolean
+        title: 启用自动采集器(需Prometheus Operator支持)
+        default: true
+        form: true
+      interval:
+        type: string
+        title: 监控数据采样频率
+        default: 30s
+        form: true
+
