@@ -90,10 +90,10 @@ securityContext: {}
 config:
   datasource:
     # Specify one of both datasource or datasourceSecret
-    host:
+    host: 127.0.0.1
     user: postgres
     # Only one of password, passwordSecret and pgpassfile can be specified
-    password:
+    password: postgres
     # Specify passwordSecret if DB password is stored in secret.
     passwordSecret: {}
     # Secret name
