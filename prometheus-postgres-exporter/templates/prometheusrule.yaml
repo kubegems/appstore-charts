@@ -1,0 +1,60 @@
+{{- if .Values.alerts.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  creationTimestamp: null
+  labels:
+    prometheusrule.kubegems.io/name: {{ template "prometheus-postgres-exporter.fullname" . }}
+    prometheusrule.kubegems.io/type: monitor
+  name: {{ template "prometheus-postgres-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+  - name: PostgresqlDown
+    rules:
+    - alert: PostgresqlDown
+      annotations:
+        message: Postgresql [namespace {{"{{"}} $labels.namespace }}] [service {{"{{"}} $labels.service
+          }}] [instance {{"{{"}} $labels.instance }}] node {{"{{"}} $labels.node }} down
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: pg_up{service="{{ template "prometheus-postgres-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}==0
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: PostgresqlDown
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: PostgresqlRestarted
+    rules:
+    - alert: PostgresqlRestarted
+      annotations:
+        message: Postgresql restarted [namespace {{"{{"}} $labels.namespace }}] [service
+          {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}].
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: time() - pg_postmaster_start_time_seconds{service="{{ template "prometheus-postgres-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}<60
+      for: 0m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: PostgresqlRestarted
+        gems_namespace: {{ .Release.Namespace }}
+        severity: critical
+  - name: PostgresqlTooManyConnections
+    rules:
+    - alert: PostgresqlTooManyConnections
+      annotations:
+        message: Postgresql too many connections [namespace {{"{{"}} $labels.namespace }}]
+          [service {{"{{"}} $labels.service }}] [instance {{"{{"}} $labels.instance }}] [node
+          {{"{{"}} $labels.node }}],now {{"{{"}} $value }}
+        value: '{{"{{"}} $value | printf "%.1f" }}'
+      expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres",service="{{ template "prometheus-postgres-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"})>pg_settings_max_connections{service="{{ template "prometheus-postgres-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
+        * 0.8
+      for: 2m
+      labels:
+        gems_alert_from: monitor
+        gems_alert_scope: normal
+        gems_alertname: PostgresqlTooManyConnections
+        gems_namespace: {{ .Release.Namespace }}
+        severity: error
+{{- end }}

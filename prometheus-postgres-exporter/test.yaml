@@ -1,0 +1,22 @@
+nameOverride: harbor-postgres-exporter
+fullnameOverride: harbor-postgre-exporter
+config:
+  datasource:
+    # Specify one of both datasource or datasourceSecret
+    host: 172.16.23.86
+    user: postgres
+    # Only one of password, passwordSecret and pgpassfile can be specified
+    password: adqDKh6zgKdy
+    # Specify passwordSecret if DB password is stored in secret.
+    passwordSecret: {}
+    # Secret name
+    #  name:
+    # Password key inside secret
+    #  key:
+    pgpassfile: ''
+    # If pgpassfile is set, it is used to initialize the PGPASSFILE environment variable.
+    # See https://www.postgresql.org/docs/14/libpq-pgpass.html for more info.
+    port: "30616"
+    database: ''
+    sslmode: disable
+    extraParams: ''

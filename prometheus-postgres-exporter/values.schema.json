@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "PostgreSQL exporter名称",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "PostgreSQL exporter服务名",
+      "form": true
+    },
+    "config": {
+      "type": "object",
+      "title": "PostgrePQL 配置",
+      "form": true,
+      "properties": {
+        "datasource": {
+          "type": "object",
+          "title": "数据源设置",
+          "form": true,
+          "properties": {
+            "host": {
+              "type": "string",
+              "title": "PostgrePQL 地址",
+              "form": true
+            },
+            "port": {
+              "type": "string",
+              "title": "PostgrePQL 端口",
+              "form": true,
+              "default": 5432
+            },
+            "user": {
+              "type": "string",
+              "title": "用户名",
+              "form": true,
+              "default": "postgres"
+            },
+            "password": {
+              "type": "string",
+              "title": "密码"
+            }
+          }
+        }
+      }
+    },
+    "serviceMonitor": {
+      "type": "object",
+      "title": "Redis 监控数据采集器设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用自动采集器(需Prometheus Operator支持)",
+          "default": true,
+          "form": true
+        },
+        "interval": {
+          "type": "string",
+          "title": "监控数据采样频率",
+          "default": "30s",
+          "form": true,
+          "hidden": {
+            "path": "serviceMonitor/enabled",
+            "value": false
+          }
+        },
+        "timeout": {
+          "type": "string",
+          "title": "监控数据采样超时",
+          "default": "10s",
+          "form": true,
+          "hidden": {
+            "path": "serviceMonitor/enabled",
+            "value": false
+          }
+        }
+      }
+    },
+    "alerts": {
+      "type": "object",
+      "title": "PostgreSQL 告警设置(需Prometheus Operator支持)",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用平台内置 PostgreSQL 告警规则",
+          "default": true,
+          "form": true
+        }
+      }
+    }
+  }
+}
