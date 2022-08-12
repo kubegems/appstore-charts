@@ -14,7 +14,7 @@
     },
     "config": {
       "type": "object",
-      "title": "PostgrePQL 配置",
+      "title": "PostgreSQL 配置",
       "form": true,
       "properties": {
         "datasource": {
@@ -41,6 +41,7 @@
             },
             "password": {
               "type": "string",
+              "form": true,
               "title": "密码"
             }
           }
@@ -49,7 +50,7 @@
     },
     "serviceMonitor": {
       "type": "object",
-      "title": "Redis 监控数据采集器设置",
+      "title": "PostgreSQL 监控数据采集器设置",
       "form": true,
       "properties": {
         "enabled": {

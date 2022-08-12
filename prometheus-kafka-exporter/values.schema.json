@@ -14,9 +14,11 @@
     },
     "kafkaServer": {
       "type": "array",
-      "title": "Kafka 地址",
+      "title": "Kafka 地址，格式 kafka-server:9092",
       "form": true,
-      "default": "kafka-server:9092"
+      "items": {
+        "type": "string"
+      }
     },
     "sasl": {
       "type": "object",

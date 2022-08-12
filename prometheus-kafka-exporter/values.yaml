@@ -1,5 +1,5 @@
 image:
-  repository: registry.cn-beijing.aliyuncs.com/kubegems/kafka-exporter
+  repository: registry.cn-beijing.aliyuncs.com/kubegemsapp/kafka-exporter
   tag: v1.4.2
   pullPolicy: IfNotPresent
 

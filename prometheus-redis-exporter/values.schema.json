@@ -33,7 +33,6 @@
           "type": "string",
           "title": "Redis 访问密码",
           "form": true,
-          "default": "password",
           "hidden": {
             "value": false,
             "path": "auth/enabled"
