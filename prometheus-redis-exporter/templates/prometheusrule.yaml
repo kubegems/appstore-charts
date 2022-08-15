@@ -34,7 +34,7 @@ spec:
         value: '{{"{{"}} $value | printf "%.1f" }}'
       expr: redis_memory_used_bytes{service="{{ template "prometheus-redis-exporter.fullname" . }}",namespace="{{ .Release.Namespace }}"}
         / redis_memory_max_bytes{service="{{ template "prometheus-redis-exporter.fullname" . }}", namespace="{{ .Release.Namespace }}"}
-        * 100 > 90 <= 100
+        * 100>90
       for: 2m
       labels:
         gems_alert_from: monitor
