@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "prometheus-jmx-exporter.fullname" . }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "prometheus-jmx-exporter.labels" . | nindent 4 }}
+    {{- if .Values.serviceMonitor.labels }}
+    {{- toYaml .Values.serviceMonitor.labels | nindent 4 }}
+    {{- end }}     
+data:
+  config.yml: |-
+    host: {{ .Values.host }}
+    ssl: False
+    {{- if .Values.auth.enabled }}
+    user: {{ .Values.auth.username }}
+    password: {{ .Values.auth.password }}
+    {{- end }}
+    jmxUrl: service:jmx:rmi:///jndi/rmi://{{ .Values.host}}/jmxrmi
+    listenPort: 8080
+    rules:
+    {{- toYaml .Values.filter | nindent 4 }}

@@ -1,0 +1,16 @@
+apiVersion: v2
+name: prometheus-jmx-exporter
+description: A Helm chart for Kubernetes
+type: application
+description: JMX to Prometheus exporter a collector that can configurably scrape and expose mBeans of a JMX target.
+home: https://github.com/prometheus/jmx_exporter
+icon: https://static.javatpoint.com/core/images/java-logo1.png
+keywords:
+- exporter
+maintainers:
+- email: support@kubegems.io
+  name: KubeGems
+sources:
+- https://github.com/prometheus/jmx_exporter
+version: 2.4.0
+appVersion: 2.3.4

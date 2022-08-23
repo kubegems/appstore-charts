@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "title": "JMX Exporter名称",
+      "form": true
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "JMX Exporter服务名",
+      "form": true
+    },
+    "host": {
+      "type": "string",
+      "title": "JMX 远程地址，<jmx-remote-host:2111>",
+      "form": true
+    },
+    "auth": {
+      "type": "object",
+      "title": "JMX 认证设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用认证",
+          "form": true,
+          "default": false
+        },
+        "username": {
+          "type": "string",
+          "title": "JMX 用户名",
+          "default": "gems",
+          "form": true,
+          "hidden": {
+            "path": "auth/enabled",
+            "value": false
+          }
+        },
+        "password": {
+          "type": "string",
+          "title": "JMX密码",
+          "default": "cloud1688",
+          "form": true,
+          "hidden": {
+            "path": "auth/enabled",
+            "value": false
+          }
+        }
+      }
+    },
+    "serviceMonitor": {
+      "type": "object",
+      "title": "JMX 监控数据采集器设置",
+      "form": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "启用自动采集器(需Prometheus Operator支持)",
+          "default": true,
+          "form": true
+        },
+        "interval": {
+          "type": "string",
+          "title": "监控数据采样频率",
+          "default": "30s",
+          "form": true,
+          "hidden": {
+            "path": "serviceMonitor/enabled",
+            "value": false
+          }
+        },
+        "scrapeTimeout": {
+          "type": "string",
+          "title": "监控数据采样超时",
+          "default": "10s",
+          "form": true,
+          "hidden": {
+            "path": "serviceMonitor/enabled",
+            "value": false
+          }
+        }
+      }
+    }
+  }
+}
