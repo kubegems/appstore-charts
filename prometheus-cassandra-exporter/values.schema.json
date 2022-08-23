@@ -70,7 +70,7 @@
         "enabled": {
           "type": "boolean",
           "title": "启用平台内置 Cassandra 告警规则",
-          "default": true,
+          "default": false,
           "form": true
         }
       }
