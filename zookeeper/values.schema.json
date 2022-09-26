@@ -22,7 +22,7 @@
       "type": "string",
       "title": "设置最大连接数",
       "form": true,
-      "default": 60
+      "default": "60"
     },
     "persistence": {
       "type": "object",
