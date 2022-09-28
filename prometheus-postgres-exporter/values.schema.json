@@ -31,7 +31,7 @@
               "type": "string",
               "title": "PostgreSQL 端口",
               "form": true,
-              "default": 5432
+              "default": "5432"
             },
             "user": {
               "type": "string",
