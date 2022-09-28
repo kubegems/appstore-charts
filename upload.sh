@@ -1,8 +1,10 @@
 #!/bin/sh
 
-CHARTMUSEUM_ADDR="http://gems-chartmuseum:8030"
-CHARTS_DIR="."
-REPO=kubegemsapp
+set -x
+
+CHARTMUSEUM_ADDR="http://kubegems-chartmuseum:8080"
+CHARTS_DIR="/uploader/charts"
+REPO=kubegems
 WAIT=0
 
 usage() {
@@ -72,9 +74,10 @@ while true; do
     esac
 done
 
-if [ ! -z $1 ]; then
-    CHARTS_DIR=$1
-fi
+#if [ ! -z $1 ]; then
+#    CHARTS_DIR=$1
+#fi
+
 if [ ! -d $CHARTS_DIR ]; then
     echo "charts_dir $CHARTS_DIR not exist."
     exit 1
