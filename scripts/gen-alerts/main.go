@@ -50,12 +50,11 @@ func main() {
 			AMConfig: prometheus.GetBaseAlertmanagerConfig(namespaceTpl, fullnameTpl),
 		},
 		PrometheusRule: prometheus.GetBasePrometheusRule(namespaceTpl, fullnameTpl),
-		MonitorOptions: prometheus.DefaultMonitorOptions(),
 	}
 
 	for _, alert := range alerts {
 		alert.Source = fullnameTpl
-		if err := alert.CheckAndModify(raw.MonitorOptions); err != nil {
+		if err := alert.CheckAndModify(); err != nil {
 			panic(err)
 		}
 		if err := raw.ModifyAlertRule(alert, prometheus.Add); err != nil {
