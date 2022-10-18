@@ -45,7 +45,8 @@
             "allowNoneAuthentication": {
               "type": "boolean",
               "title": "允许无认证请求",
-              "form": true
+              "form": true,
+              "default": true
             }
           }
         }
