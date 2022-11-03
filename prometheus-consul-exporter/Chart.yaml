@@ -3,13 +3,13 @@ appVersion: 0.4.0
 description: A Helm chart for the Prometheus Consul Exporter
 home: https://github.com/prometheus/consul_exporter
 keywords:
-- exporter
+  - exporter
 maintainers:
-- email: 8890118+timm088@users.noreply.github.com
-  name: timm088
-- email: github.gkarthiks@gmail.com
-  name: gkarthiks
-- email: support@kubegems.io
-  name: KubeGems
+  - email: 8890118+timm088@users.noreply.github.com
+    name: timm088
+  - email: github.gkarthiks@gmail.com
+    name: gkarthiks
+  - email: support@kubegems.io
+    name: KubeGems
 name: prometheus-consul-exporter
-version: 0.5.0
+version: 0.5.1

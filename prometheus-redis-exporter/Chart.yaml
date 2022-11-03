@@ -15,4 +15,4 @@ name: prometheus-redis-exporter
 sources:
   - https://github.com/oliver006/redis_exporter
 type: application
-version: 4.7.4
+version: 4.7.5

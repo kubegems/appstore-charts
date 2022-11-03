@@ -18,4 +18,4 @@ maintainers:
 name: prometheus-rabbitmq-exporter
 sources:
   - https://github.com/kbudde/rabbitmq_exporter
-version: 1.3.0
+version: 1.3.1

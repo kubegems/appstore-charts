@@ -14,4 +14,4 @@ maintainers:
 name: prometheus-mysql-exporter
 sources:
   - https://github.com/prometheus/mysqld_exporter
-version: 1.8.1
+version: 1.8.2
