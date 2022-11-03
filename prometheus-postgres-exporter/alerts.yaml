@@ -9,7 +9,8 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: PostgresqlRestarted
   namespace: __namespace__
@@ -21,17 +22,19 @@
       compareValue: "60"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: PostgresqlTooManyConnections
   namespace: __namespace__
-  expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres",service="__fullname__",namespace="__namespace__"}) 
+  expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres",service="__fullname__",namespace="__namespace__"})
   message: Postgresql too many connections [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] [node {{ $labels.node }}],now {{ $value }}
   for: 2m
   alertLevels:
     - compareOp: ">"
-      compareValue: "pg_settings_max_connections{service=\"__fullname__\",namespace=\"__namespace__\"} * 0.8"
+      compareValue: 'pg_settings_max_connections{service="__fullname__",namespace="__namespace__"} * 0.8'
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m

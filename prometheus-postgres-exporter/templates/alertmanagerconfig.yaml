@@ -11,7 +11,7 @@ metadata:
 spec:
   receivers:
   - name: "null"
-  - name: gemcloud-default-webhook
+  - name: kubegems-default-webhook-id-1
     webhookConfigs:
     - httpConfig:
         tlsConfig:
@@ -33,7 +33,7 @@ spec:
         value: {{ .Release.Namespace }}
       - name: gems_alertname
         value: PostgresqlDown
-      receiver: gemcloud-default-webhook
+      receiver: kubegems-default-webhook-id-1
       repeatInterval: 10m
     - continue: true
       matchers:
@@ -41,7 +41,7 @@ spec:
         value: {{ .Release.Namespace }}
       - name: gems_alertname
         value: PostgresqlRestarted
-      receiver: gemcloud-default-webhook
+      receiver: kubegems-default-webhook-id-1
       repeatInterval: 10m
     - continue: true
       matchers:
@@ -49,6 +49,6 @@ spec:
         value: {{ .Release.Namespace }}
       - name: gems_alertname
         value: PostgresqlTooManyConnections
-      receiver: gemcloud-default-webhook
+      receiver: kubegems-default-webhook-id-1
       repeatInterval: 10m
 {{- end }}

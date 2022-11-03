@@ -9,8 +9,10 @@ import (
 	"path"
 	"regexp"
 
-	"github.com/ghodss/yaml"
-	"kubegems.io/kubegems/pkg/utils/prometheus"
+	"kubegems.io/kubegems/pkg/service/models"
+	"kubegems.io/kubegems/pkg/service/observe"
+	"kubegems.io/kubegems/pkg/utils/prometheus/channels"
+	"sigs.k8s.io/yaml"
 )
 
 var (
@@ -32,7 +34,7 @@ const (
 
 func main() {
 	exporterPath := path.Join(dir, exporter)
-	alerts := []prometheus.MonitorAlertRule{}
+	alerts := []observe.MonitorAlertRule{}
 	file, err := os.Open(path.Join(exporterPath, "alerts.yaml"))
 	if err != nil {
 		panic(err)
@@ -45,19 +47,31 @@ func main() {
 		panic(err)
 	}
 
-	raw := &prometheus.RawMonitorAlertResource{
-		Base: &prometheus.BaseAlertResource{
-			AMConfig: prometheus.GetBaseAlertmanagerConfig(namespaceTpl, fullnameTpl),
+	tplGetter := models.NewPromqlTplMapperFromFile().FindPromqlTpl
+	raw := &observe.RawMonitorAlertResource{
+		Base: &observe.BaseAlertResource{
+			AMConfig: observe.GetBaseAlertmanagerConfig(namespaceTpl, fullnameTpl),
+			ChannelGetter: func(id uint) (channels.ChannelIf, error) {
+				if id == 1 {
+					return models.DefaultChannel.ChannelConfig.ChannelIf, nil
+				}
+				return nil, fmt.Errorf("channel %d not found", id)
+			},
 		},
-		PrometheusRule: prometheus.GetBasePrometheusRule(namespaceTpl, fullnameTpl),
+		PrometheusRule: observe.GetBasePrometheusRule(namespaceTpl, fullnameTpl),
+		TplGetter:      tplGetter,
 	}
 
-	for _, alert := range alerts {
-		alert.Source = fullnameTpl
-		if err := alert.CheckAndModify(); err != nil {
+	for i := range alerts {
+		if len(alerts[i].Receivers) == 0 {
+			continue
+		}
+		alerts[i].Source = fullnameTpl
+		alerts[i].Receivers[0].AlertChannel = models.DefaultChannel
+		if err := observe.MutateMonitorAlert(&alerts[i], tplGetter); err != nil {
 			panic(err)
 		}
-		if err := raw.ModifyAlertRule(alert, prometheus.Add); err != nil {
+		if err := raw.ModifyAlertRule(alerts[i], observe.Add); err != nil {
 			panic(err)
 		}
 	}

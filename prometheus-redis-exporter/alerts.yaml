@@ -9,7 +9,8 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: RedisMemoryHigh
   namespace: __namespace__
@@ -21,7 +22,8 @@
       compareValue: "90"
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: RedisTooManyConnections
   namespace: __namespace__
@@ -33,7 +35,8 @@
       compareValue: "60"
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: RedisRejectedConnections
   namespace: __namespace__
@@ -45,5 +48,6 @@
       compareValue: "0"
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m

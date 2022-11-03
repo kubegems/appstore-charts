@@ -9,7 +9,8 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: MongodbTooManyConnections
   namespace: __namespace__
@@ -21,7 +22,8 @@
       compareValue: "80"
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: MongodbLowAvalibleConnections
   namespace: __namespace__
@@ -33,7 +35,8 @@
       compareValue: "100"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: MongodbTooManyMemories
   namespace: __namespace__
@@ -49,5 +52,6 @@
       severity: critical
   inhibitLabels: [instance]
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m

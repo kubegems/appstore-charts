@@ -9,7 +9,8 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: ConsulServiceHealthcheckFailed
   namespace: __namespace__
@@ -21,5 +22,6 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m

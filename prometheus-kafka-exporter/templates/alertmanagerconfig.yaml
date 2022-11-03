@@ -4,9 +4,9 @@ kind: AlertmanagerConfig
 metadata:
   creationTimestamp: null
   labels:
-    alertmanagerconfig.kubegems.io/name: {{ template "prometheus-jmx-exporter.fullname" . }}
+    alertmanagerconfig.kubegems.io/name: {{ template "prometheus-kafka-exporter.fullname" . }}
     alertmanagerconfig.kubegems.io/type: monitor
-  name: {{ template "prometheus-jmx-exporter.fullname" . }}
+  name: {{ template "prometheus-kafka-exporter.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   receivers:

@@ -9,7 +9,8 @@
       compareValue: "80"
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: ElasticsearchHeapTooHigh
   namespace: __namespace__
@@ -21,7 +22,8 @@
       compareValue: "0.9"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: ElasticsearchCluster
   namespace: __namespace__
@@ -33,7 +35,8 @@
       compareValue: "1"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: ElasticsearchClusterYellow
   namespace: __namespace__
@@ -45,7 +48,8 @@
       compareValue: "1"
       severity: error
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m
 - name: ElasticsearchUnassignedShards
   namespace: __namespace__
@@ -57,5 +61,6 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - name: gemcloud-default-webhook
+    - alertChannel:
+        id: 1
       interval: 10m

@@ -11,7 +11,7 @@ metadata:
 spec:
   receivers:
   - name: "null"
-  - name: gemcloud-default-webhook
+  - name: kubegems-default-webhook-id-1
     webhookConfigs:
     - httpConfig:
         tlsConfig:
