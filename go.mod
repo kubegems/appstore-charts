@@ -2,7 +2,10 @@ module gen-alerts
 
 go 1.18
 
-require kubegems.io/kubegems v1.22.0-rc.0
+require (
+	kubegems.io/kubegems v1.22.0-rc.1
+	sigs.k8s.io/yaml v1.3.0
+)
 
 require (
 	cloud.google.com/go v0.102.0 // indirect
@@ -144,7 +147,6 @@ require (
 	sigs.k8s.io/controller-runtime v0.11.2 // indirect
 	sigs.k8s.io/kustomize/api v0.11.4 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.13.6 // indirect
-	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
 require (
@@ -186,7 +188,7 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/gorm v1.21.15 // indirect
 	k8s.io/api v0.23.6 // indirect
 	k8s.io/apiextensions-apiserver v0.23.6 // indirect
