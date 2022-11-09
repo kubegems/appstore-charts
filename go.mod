@@ -3,7 +3,7 @@ module gen-alerts
 go 1.18
 
 require (
-	kubegems.io/kubegems v1.22.0-rc.1
+	kubegems.io/kubegems v1.22.0
 	sigs.k8s.io/yaml v1.3.0
 )
 

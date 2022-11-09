@@ -2205,8 +2205,8 @@ k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9 h1:HNSDgDCrr/6Ly3WEGKZftiE7IY19V
 k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9/go.mod h1:jPW/WVKK9YHAvNhRxK0md/EJ228hCsBRufyofKtW8HA=
 kubegems.io/bundle-controller v1.0.0-alpha3.0.20220927065436-63421ac26d9d h1:LE7uDH3dgb5uYiapQAoN4E8mTczkJP1AAnvpkKuVTaE=
 kubegems.io/bundle-controller v1.0.0-alpha3.0.20220927065436-63421ac26d9d/go.mod h1:PbnIyc8iSl1emEoMx1CR+80GGOBfO1J7IpUIPrE83tQ=
-kubegems.io/kubegems v1.22.0-rc.1 h1:2HVlVYMU8yvCX5zUioCR8TGuJTRpwj6STxocu5Qh5/8=
-kubegems.io/kubegems v1.22.0-rc.1/go.mod h1:iajMGcm7QIZG7rLnlQftnyXEH61y6mbbYXpcHHTV4oI=
+kubegems.io/kubegems v1.22.0 h1:AZvclz9gvdS+F4zhN2YSPtIuCYonRUFvVsCrNo1D8eI=
+kubegems.io/kubegems v1.22.0/go.mod h1:iajMGcm7QIZG7rLnlQftnyXEH61y6mbbYXpcHHTV4oI=
 modernc.org/cc v1.0.0/go.mod h1:1Sk4//wdnYJiUIxnW8ddKpaOJCF37yAdqYnkxUpaYxw=
 modernc.org/golex v1.0.0/go.mod h1:b/QX9oBD/LhixY6NDh+IdGv17hgB+51fET1i2kPSmvk=
 modernc.org/mathutil v1.0.0/go.mod h1:wU0vUrJsVWBZ4P6e7xtFJEhFSNsfRLJ8H458uRjg03k=
