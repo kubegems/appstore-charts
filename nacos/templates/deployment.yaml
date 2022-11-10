@@ -8,7 +8,7 @@ spec:
   {{- if eq .Values.global.mode "cluster" }}
   serviceName: {{ template "nacos.hs.fullname" . }}
   {{- else }}
-  serviceName: nacos-cs
+  serviceName: {{ template "nacos.cs.fullname" . }}
   {{- end }}
   replicas: {{ .Values.nacos.replicaCount }}
   selector:

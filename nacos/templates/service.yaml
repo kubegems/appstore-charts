@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nacos-cs
+  name: {{ template "nacos.cs.fullname" . }}
   labels:
   {{- toYaml .Values.service.labels | nindent 4 }}
   annotations:
