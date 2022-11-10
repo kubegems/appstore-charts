@@ -24,6 +24,12 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+{{- define "nacos.hs.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s" $name "nacos-hs" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}

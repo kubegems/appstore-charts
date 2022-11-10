@@ -6,7 +6,7 @@ metadata:
   {{- toYaml .Values.annotations | indent 4 }}
 spec:
   {{- if eq .Values.global.mode "cluster" }}
-  serviceName: nacos-hs
+  serviceName: {{ template "nacos.hs.fullname" . }}
   {{- else }}
   serviceName: nacos-cs
   {{- end }}
@@ -70,7 +70,7 @@ spec:
 
             {{- else if eq .Values.global.mode "cluster" }}
             - name: SERVICE_NAME
-              value: "nacos-hs"
+              value: "{{ template "nacos.hs.fullname" . }}"
             - name: DOMAIN_NAME
               value: {{ .Values.nacos.domainName | quote }}
             - name: POD_NAMESPACE
