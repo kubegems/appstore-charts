@@ -18,6 +18,7 @@ spec:
           ca: {}
           cert: {}
           insecureSkipVerify: true
+      sendResolved: true
       url: https://kubegems-local-agent.kubegems-local:8041/alert
   route:
     groupBy:
