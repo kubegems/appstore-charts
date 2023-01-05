@@ -1,6 +1,6 @@
 # used for generate prometheusrule and alertmanagerconfig
-- name: MongodbDown
-  namespace: __namespace__
+- name: mongodb-down
+  alertType: monitor
   expr: mongodb_up{service="__fullname__",namespace="__namespace__"}
   message: MongoDB [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] down
   for: 0m
@@ -9,11 +9,10 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: MongodbTooManyConnections
-  namespace: __namespace__
+- name: mongodb-too-many-connections
+  alertType: monitor
   expr: avg by(instance) (rate(mongodb_connections{state="current",service="__fullname__",namespace="__namespace__"}[1m])) / avg by(instance) (sum (mongodb_connections{service="__fullname__",namespace="__namespace__"})) * 100
   message: MongoDB too many connections [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 5m
@@ -22,11 +21,10 @@
       compareValue: "80"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: MongodbLowAvalibleConnections
-  namespace: __namespace__
+- name: mongodb-low-avalible-connections
+  alertType: monitor
   expr: mongodb_connections{state="available",service="__fullname__",namespace="__namespace__"}
   message: MongoDB few available connections [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 5m
@@ -35,11 +33,10 @@
       compareValue: "100"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: MongodbTooManyMemories
-  namespace: __namespace__
+- name: mongodb-too-many-memories
+  alertType: monitor
   expr: mongodb_mongod_wiredtiger_cache_bytes{type="total",service="__fullname__",namespace="__namespace__"} / on(pod,namespace,instance,job,service) mongodb_mongod_wiredtiger_cache_max_bytes{service="__fullname__",namespace="__namespace__"} * 100
   message: MongoDB too many memories [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 5m
@@ -52,6 +49,5 @@
       severity: critical
   inhibitLabels: [instance]
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m

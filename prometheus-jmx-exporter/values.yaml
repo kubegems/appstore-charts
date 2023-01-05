@@ -15,7 +15,7 @@ auth:
   username: jmx-user
   password: cloud1688
 
-#A list of rules to apply in order, processing stops at the first matching rule. 
+#A list of rules to apply in order, processing stops at the first matching rule.
 #Attributes that aren't matched aren't collected. If not specified, defaults to collecting everything in the default format.
 filter:
   - pattern: "java.*"
@@ -74,17 +74,3 @@ serviceMonitor:
   targetLabels: []
   metricRelabelings: []
   sampleLimit: 0
-
-alerts:
-  enabled: false
-  rules: []
-  #- alert: cassandra_failing_or_dead_nodes
-  #  expr: |
-  #    kube_statefulset_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "prometheus-cassandra-exporter.fullname" . }}"}
-  #    - kube_statefulset_status_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "prometheus-cassandra-exporter.fullname" . }}"}
-  #    != 0
-  #  for: 5m
-  #  labels:
-  #    severity: critical
-  #  annotations:
-  #    description: The service of cassandra is not available.

@@ -71,9 +71,6 @@ serviceMonitor:
   scrapeTimeout: 10s
   namespace: []
 
-alerts:
-  enabled: true
-
 serviceAccount:
   # Specifies whether a ServiceAccount should be created
   create: true

@@ -1,6 +1,6 @@
 # used for generate prometheusrule and alertmanagerconfig
-- name: ElasticsearchDataUsedTooHigh
-  namespace: __namespace__
+- name: elasticsearch-data-used-too-high
+  alertType: monitor
   expr: (elasticsearch_filesystem_data_size_bytes{service="__fullname__",namespace="__namespace__"} - elasticsearch_filesystem_data_free_bytes{service="__fullname__",namespace="__namespace__"}) / elasticsearch_filesystem_data_size_bytes{service="__fullname__",namespace="__namespace__"} * 100
   message: ElasticSearch [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] Data Used Too High.
   for: 1h
@@ -9,11 +9,10 @@
       compareValue: "80"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: ElasticsearchHeapTooHigh
-  namespace: __namespace__
+- name: elasticsearch-heap-too-high
+  alertType: monitor
   expr: elasticsearch_jvm_memory_used_bytes{service="__fullname__",area="heap",namespace="__namespace__"} / elasticsearch_jvm_memory_max_bytes{service="__fullname__",area="heap",namespace="__namespace__"}
   message: ElasticSearch [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] [node {{ $labels.node }}] heap usage is high
   for: 15m
@@ -22,11 +21,10 @@
       compareValue: "0.9"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: ElasticsearchCluster
-  namespace: __namespace__
+- name: elasticsearch-cluster
+  alertType: monitor
   expr: elasticsearch_cluster_health_status{color="red", namespace="__namespace__",service="__fullname__"}
   message: Elasticsearch Cluster Red [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
@@ -35,11 +33,10 @@
       compareValue: "1"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: ElasticsearchClusterYellow
-  namespace: __namespace__
+- name: elasticsearch-cluster-yellow
+  alertType: monitor
   expr: elasticsearch_cluster_health_status{color="yellow",namespace="__namespace__",service="__fullname__"}
   message: Elasticsearch Cluster Yellow [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
@@ -48,11 +45,10 @@
       compareValue: "1"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: ElasticsearchUnassignedShards
-  namespace: __namespace__
+- name: elasticsearch-unassigned-shards
+  alertType: monitor
   expr: elasticsearch_cluster_health_unassigned_shards{namespace="__namespace__",service="__fullname__"}
   message: Elasticsearch unassigned shards [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
@@ -61,6 +57,5 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m

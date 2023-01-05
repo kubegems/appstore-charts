@@ -1,6 +1,6 @@
 # used for generate prometheusrule and alertmanagerconfig
-- name: MysqlDown
-  namespace: __namespace__
+- name: mysql-down
+  alertType: monitor
   expr: mysql_up{service="__fullname__",namespace="__namespace__"}
   message: MySQL [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] down
   for: 0m
@@ -9,11 +9,10 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: MysqlTooManyConnections
-  namespace: __namespace__
+- name: mysql-too-many-connections
+  alertType: monitor
   expr: max_over_time(mysql_global_status_threads_connected{service="__fullname__",namespace="__namespace__"}[1m]) / mysql_global_variables_max_connections{service="__fullname__",namespace="__namespace__"} * 100
   message: MySQL [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] too many connections > 80%
   for: 2m
@@ -22,11 +21,10 @@
       compareValue: "80"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: MysqlSlowQueries
-  namespace: __namespace__
+- name: mysql-slow-queries
+  alertType: monitor
   expr: increase(mysql_global_status_slow_queries{service="__fullname__",namespace="__namespace__"}[1m])
   message: MySQL [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] slow queries
   for: 2m
@@ -35,11 +33,10 @@
       compareValue: "0"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: MysqlRestarted
-  namespace: __namespace__
+- name: mysql-restarted
+  alertType: monitor
   expr: mysql_global_status_uptime{service="__fullname__",namespace="__namespace__"}
   message: MySQL [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] restarted
   for: 0m
@@ -48,6 +45,5 @@
       compareValue: "60"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m

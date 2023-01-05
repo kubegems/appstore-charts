@@ -67,17 +67,3 @@ serviceMonitor:
   targetLabels: []
   metricRelabelings: []
   sampleLimit: 0
-
-alerts:
-  enabled: true
-  rules: []
-  #- alert: cassandra_failing_or_dead_nodes
-  #  expr: |
-  #    kube_statefulset_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "prometheus-cassandra-exporter.fullname" . }}"}
-  #    - kube_statefulset_status_replicas{namespace="{{ .Release.Namespace }}",statefulset="{{ include "prometheus-cassandra-exporter.fullname" . }}"}
-  #    != 0
-  #  for: 5m
-  #  labels:
-  #    severity: critical
-  #  annotations:
-  #    description: The service of cassandra is not available.

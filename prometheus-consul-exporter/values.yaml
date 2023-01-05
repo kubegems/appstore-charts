@@ -107,6 +107,3 @@ extraVolumes: []
 extraVolumeMounts: []
 # - name: example
 #   mountPath: /example
-
-alerts:
-  enabled: true

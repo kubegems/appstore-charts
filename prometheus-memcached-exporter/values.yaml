@@ -74,10 +74,3 @@ serviceMonitor:
   labels: {}
   # Set timeout for scrape
   timeout: 10s
-  
-alerts:
-  ## If true, a PrometheusRule CRD is created for a prometheus operator
-  ## https://github.com/coreos/prometheus-operator
-  ##
-  ## The rules will be processed as Helm template, allowing to set variables in them.
-  enabled: true

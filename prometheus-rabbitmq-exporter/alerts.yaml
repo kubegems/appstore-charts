@@ -1,6 +1,6 @@
 # used for generate prometheusrule and alertmanagerconfig
-- name: RabbitmqNodeDown
-  namespace: __namespace__
+- name: rabbitmq-node-down
+  alertType: monitor
   expr: rabbitmq_running{service="__fullname__",namespace="__namespace__"}
   message: Rabbitmq [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] node {{ $labels.node }} down
   for: 5m
@@ -9,11 +9,10 @@
       compareValue: "0"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: RabbitmqClusterDown
-  namespace: __namespace__
+- name: rabbitmq-cluster-down
+  alertType: monitor
   expr: rabbitmq_up{service="__fullname__",namespace="__namespace__"}
   message: The Rabbitmq cluster [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] is maybe down.
   for: 0m
@@ -22,11 +21,10 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: RabbitMQClusterPartition
-  namespace: __namespace__
+- name: rabbit-mq-cluster-partition
+  alertType: monitor
   expr: rabbitmq_partitions{service="__fullname__",namespace="__namespace__"}
   message: Rabbitmq cluster partition in Rabbitmq cluster was detected [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] [node {{ $labels.node }}]
   for: 5m
@@ -35,11 +33,10 @@
       compareValue: "0"
       severity: critical
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: RabbitmqOutOfMemory
-  namespace: __namespace__
+- name: rabbitmq-out-of-memory
+  alertType: monitor
   expr: rabbitmq_node_mem_used{service="__fullname__",namespace="__namespace__"} / rabbitmq_node_mem_limit{service="__fullname__",namespace="__namespace__"} * 100
   message: The Rabbitmq [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] [node {{ $labels.node }}] is Out of memory
   for: 5m
@@ -48,11 +45,10 @@
       compareValue: "90"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m
-- name: RabbitmqTooManyConnections
-  namespace: __namespace__
+- name: rabbitmq-too-many-connections
+  alertType: monitor
   expr: rabbitmq_connectionsTotal{service="__fullname__",namespace="__namespace__"}
   message: Too many connections to the Rabbitmq cluster [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 5m
@@ -61,6 +57,5 @@
       compareValue: "1000"
       severity: error
   receivers:
-    - alertChannel:
-        id: 1
+    - alertChannelID: 1
       interval: 10m

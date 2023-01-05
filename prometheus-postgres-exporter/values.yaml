@@ -46,9 +46,6 @@ serviceMonitor:
   # Set relabel_configs as per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
   # relabelings: []
 
-alerts:
-  enabled: true
-  additionalLabels: {}
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

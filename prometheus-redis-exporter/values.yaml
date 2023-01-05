@@ -87,11 +87,7 @@ serviceMonitor:
   # Set of labels to transfer on the Kubernetes Service onto the target.
   # targetLabels: []
   # metricRelabelings: []
-  additionalLabels: {}
-
-# include prometheusrule groups and alertmanagerconfig routes
-alerts:
-  enabled: true  
+  additionalLabels: {} 
 
 # Used to mount a LUA-Script via config map and use it for metrics-collection
 # script:

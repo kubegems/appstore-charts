@@ -61,19 +61,6 @@
           }
         }
       }
-    },
-    "alerts": {
-      "type": "object",
-      "title": "Cassandra 告警设置(需Prometheus Operator支持)",
-      "form": true,
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "title": "启用平台内置 Cassandra 告警规则",
-          "default": false,
-          "form": true
-        }
-      }
     }
   }
 }

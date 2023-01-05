@@ -20,6 +20,3 @@ init-chartmuseum:
 apply:
 	#kubectl delete job appstore-charts
 	kubectl create job appstore-charts --image=$(CHARTS_UPLOADER)
-
-generate:
-	bash generate_alerts.sh

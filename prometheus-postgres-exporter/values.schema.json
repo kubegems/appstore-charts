@@ -80,19 +80,6 @@
           }
         }
       }
-    },
-    "alerts": {
-      "type": "object",
-      "title": "PostgreSQL 告警设置(需Prometheus Operator支持)",
-      "form": true,
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "title": "启用平台内置 PostgreSQL 告警规则",
-          "default": true,
-          "form": true
-        }
-      }
     }
   }
 }
