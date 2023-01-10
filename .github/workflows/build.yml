@@ -73,7 +73,7 @@ jobs:
         uses: helm/kind-action@v1.2.0
         with:
           cluster_name: kubegems-installer-test
-          node_image: kindest/node:v1.18.19
+          node_image: kindest/node:v1.23.13
 
       - name: Install required crds
         run: |

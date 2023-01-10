@@ -1,4 +1,0 @@
-mongodb:
-  uri: "mongodb://rdp-mongodb:27017/admin?"
-serviceMonitor:
-  enabled: true
