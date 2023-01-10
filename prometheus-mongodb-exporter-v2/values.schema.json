@@ -4,22 +4,22 @@
   "properties": {
     "nameOverride": {
       "type": "string",
-      "title": "MongoDB exporter名称",
+      "title": "MongoDB exporter 名称",
       "form": true
     },
     "fullnameOverride": {
       "type": "string",
-      "title": "MongoDB Exporter服务名",
+      "title": "MongoDB Exporter 服务名",
       "form": true
     },
     "mongodb": {
       "type": "object",
-      "title": "MongoDB 设置，支持MongoDB 4.0以下版本，更高版本请使用v2",
+      "title": "MongoDB 设置",
       "form": true,
       "properties": {
         "uri": {
           "type": "string",
-          "title": "MongoDB 连接信息",
+          "title": "MongoDB 连接信息，参考: [mongodb[+srv]://][user:pass@]host1[:port1][,host2[:port2],...][/database][?options]",
           "form": true,
           "default": "mongodb://[user:pass@]host[:port]/admin?"
         }
