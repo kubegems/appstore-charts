@@ -1,25 +1,21 @@
 # used for generate prometheusrule and alertmanagerconfig
 - name: memcached-down
   alertType: monitor
-  expr: memcached_up{service="__fullname__",namespace="__namespace__"}
+  expr: memcached_up{service="__fullname__",namespace="__namespace__"} == 0
   message: Memcached [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] down
   for: 0m
   alertLevels:
-    - compareOp: "=="
-      compareValue: "0"
-      severity: critical
+    - severity: critical
   receivers:
     - alertChannelID: 1
       interval: 10m
 - name: memcached-low-avalible-connections
   alertType: monitor
-  expr: memcached_current_connections{service="__fullname__",namespace="__namespace__"} / memcached_max_connections{service="__fullname__",namespace="__namespace__"} * 100
+  expr: memcached_current_connections{service="__fullname__",namespace="__namespace__"} / memcached_max_connections{service="__fullname__",namespace="__namespace__"} * 100 > 90
   message: memcached few available connections [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}]
   for: 0m
   alertLevels:
-    - compareOp: ">"
-      compareValue: "90"
-      severity: error
+    - severity: error
   receivers:
     - alertChannelID: 1
       interval: 10m

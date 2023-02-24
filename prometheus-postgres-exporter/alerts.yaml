@@ -1,37 +1,31 @@
 # used for generate prometheusrule and alertmanagerconfig
 - name: postgresql-down
   alertType: monitor
-  expr: pg_up{service="__fullname__",namespace="__namespace__"}
+  expr: pg_up{service="__fullname__",namespace="__namespace__"} == 0
   message: Postgresql [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] node {{ $labels.node }} down
   for: 0m
   alertLevels:
-    - compareOp: "=="
-      compareValue: "0"
-      severity: critical
+    - severity: critical
   receivers:
     - alertChannelID: 1
       interval: 10m
 - name: postgresql-restarted
   alertType: monitor
-  expr: time() - pg_postmaster_start_time_seconds{service="__fullname__",namespace="__namespace__"}
+  expr: time() - pg_postmaster_start_time_seconds{service="__fullname__",namespace="__namespace__"} < 60
   message: Postgresql restarted [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}].
   for: 0m
   alertLevels:
-    - compareOp: "<"
-      compareValue: "60"
-      severity: critical
+    - severity: critical
   receivers:
     - alertChannelID: 1
       interval: 10m
 - name: postgresql-too-many-connections
   alertType: monitor
-  expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres",service="__fullname__",namespace="__namespace__"})
+  expr: sum by (datname) (pg_stat_activity_count{datname!~"template.*|postgres",service="__fullname__",namespace="__namespace__"}) > pg_settings_max_connections{service="__fullname__",namespace="__namespace__"} * 0.8
   message: Postgresql too many connections [namespace {{ $labels.namespace }}] [service {{ $labels.service }}] [instance {{ $labels.instance }}] [node {{ $labels.node }}],now {{ $value }}
   for: 2m
   alertLevels:
-    - compareOp: ">"
-      compareValue: 'pg_settings_max_connections{service="__fullname__",namespace="__namespace__"} * 0.8'
-      severity: error
+    - severity: error
   receivers:
     - alertChannelID: 1
       interval: 10m

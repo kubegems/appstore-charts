@@ -15,4 +15,4 @@ name: prometheus-postgres-exporter
 sources:
   - https://github.com/prometheus-community/postgres_exporter
 type: application
-version: 3.0.4
+version: 3.0.5

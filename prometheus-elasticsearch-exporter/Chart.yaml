@@ -15,4 +15,4 @@ maintainers:
 name: prometheus-elasticsearch-exporter
 sources:
   - https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-elasticsearch-exporter
-version: 4.12.2
+version: 4.12.3

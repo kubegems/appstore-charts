@@ -3,13 +3,13 @@ appVersion: 0.31.0
 description: A Prometheus exporter for MongoDB metrics
 home: https://github.com/percona/mongodb_exporter
 keywords:
-- exporter
+  - exporter
 maintainers:
-- email: ssheehy@firescope.com
-  name: steven-sheehy
-- email: support@kubegems.io
-  name: KubeGems
+  - email: ssheehy@firescope.com
+    name: steven-sheehy
+  - email: support@kubegems.io
+    name: KubeGems
 name: prometheus-mongodb-exporter-v2
 sources:
-- https://github.com/percona/mongodb_exporter
-version: 3.1.2
+  - https://github.com/percona/mongodb_exporter
+version: 3.1.3

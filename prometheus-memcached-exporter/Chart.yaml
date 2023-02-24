@@ -3,7 +3,7 @@ name: prometheus-memcached-exporter
 description: A Helm chart for Memecached Exporter
 keywords:
   - exporter
-version: 0.7.2
+version: 0.7.3
 appVersion: "0.6.0"
 maintainers:
   - email: support@kubernetes.io
