@@ -1,0 +1,13 @@
+nameOverride: xiaoshi-redis
+fullnameOverride: xiaoshi-redis
+architecture: standalone
+auth:
+  enabled: true
+  sentinel: true
+  password: "demo!@#redis"
+master:
+  resourcesPreset: large
+  persistence:
+    enabled: true 
+    storageClass: local-path
+    size: 5Gi

@@ -1,0 +1,19 @@
+nameOverride: xiaoshi-redis
+fullnameOverride: xiaoshi-redis
+architecture: replication
+auth:
+  enabled: false
+  sentinel: false
+  password: "demo!@#redis"
+master:
+  resourcesPreset: large
+  persistence:
+    enabled: true 
+    storageClass: local-path
+    size: 5Gi
+replica:
+  replicaCount: 3
+  persistence:
+    enabled: true 
+    storageClass: juicefs-tenant-default
+    size: 5Gi 

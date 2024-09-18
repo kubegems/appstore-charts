@@ -1,0 +1,145 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "nameOverride": {
+            "type": "string",
+            "title": "Redis instance name",
+            "form": true,
+            "default": "redis"
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "title": "Redis service name",
+            "form": true,
+            "default": "redis"
+        },
+        "architecture": {
+            "type": "string",
+            "title": "Redis architecture",
+            "description": "Allowed values: `standalone` or `replication`",
+            "default": "standalone",
+            "enum": [
+                "standalone",
+                "replication"
+            ]
+        },
+        "auth": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Enable password authentication",
+                    "default": false
+                },
+                "sentinel": {
+                    "type": "boolean",
+                    "description": "Enable password authentication on sentinels too",
+                    "default": false,
+                    "hidden": {
+                        "value": false,
+                        "path": "auth/enabled"
+                    }
+                },
+                "password": {
+                    "type": "string",
+                    "title": "Redis admin password",
+                    "default": "demo!@#redis",
+                    "hidden": {
+                        "value": false,
+                        "path": "auth/enabled"
+                    }
+                }
+            }
+        },
+        "master": {
+            "type": "object",
+            "properties": {
+                "resourcesPreset": {
+                    "type": "string",
+                    "title": "Redis instance resource",
+                    "description": "medium/1c1g,large/1c2g,xlarge/2c2g",
+                    "default": "medium",
+                    "enum": [
+                        "medium",
+                        "large",
+                        "xlarge"
+                    ]
+                },
+                "persistence": {
+                    "type": "object",
+                    "title": "Redis Data Setting",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "title": "Enable persistence on Redis",
+                            "default": true
+                        },
+                        "storageClass": {
+                            "type": "string",
+                            "title": "Redis Storage type",
+                            "default": "",
+                            "hidden": {
+                                "value": false,
+                                "path": "master/persistence/enabled"
+                            }
+                        },
+                        "size": {
+                            "type": "string",
+                            "title": "Persistent Volume size",
+                            "default": "5Gi",
+                            "hidden": {
+                                "value": false,
+                                "path": "master/persistence/enabled"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "replica": {
+            "type": "object",
+            "title": "Redis Replicaset Setting",
+            "hidden": {
+                "value": "standalone",
+                "path": "architecture"
+            },
+            "properties": {
+                "replicaCount": {
+                    "type": "number",
+                    "title": "Number of Redis replicas to deploy",
+                    "default": 3
+                },
+                "persistence": {
+                    "type": "object",
+                    "title": "Redis Replicaset Data Setting",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "title": "Enable persistence on Redis Replicaset",
+                            "default": true
+                        },
+                        "storageClass": {
+                            "type": "string",
+                            "title": "Redis Replicaset Storage type",
+                            "default": "",
+                            "hidden": {
+                                "value": false,
+                                "path": "replica/persistence/enabled"
+                            }
+                        },
+                        "size": {
+                            "type": "string",
+                            "title": "Persistent Volume size",
+                            "default": "5Gi",
+                            "hidden": {
+                                "value": false,
+                                "path": "replica/persistence/enabled"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
