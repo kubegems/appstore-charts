@@ -1,0 +1,15 @@
+nameOverride: xiaoshi-mongodb
+fullnameOverride: xiaoshi-mongodb
+architecture: replicaset
+auth:
+  enabled: true
+  rootUser: root
+  rootPassword: "demo!@#mongodb"
+  database: xiaoshiai
+  username: xiaoshiai
+  password: "xiaoshi@2023"
+replicaCount: 2
+persistence:
+  enabled:  true
+  storageClass: local-path
+  size: 10Gi

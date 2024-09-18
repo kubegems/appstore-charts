@@ -1,0 +1,14 @@
+nameOverride: xiaoshi-mongodb
+fullnameOverride: xiaoshi-mongodb
+architecture: standalone
+auth:
+  enabled: true
+  rootUser: root
+  rootPassword: "demo!@#mongodb"
+  database: xiaoshiai
+  username: xiaoshiai
+  password: "xiaoshi@2023"
+persistence:
+  enabled:  true
+  storageClass: local-path
+  size: 10Gi
