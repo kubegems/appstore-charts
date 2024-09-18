@@ -1,0 +1,18 @@
+nameOverride: xiaoshiai-mysql
+fullnameOverride: xiaoshiai-mysql
+architecture: replication
+auth:
+  rootPassword: "demo!@#admin"
+  database: xiaoshiai
+  user: xiaoshiai
+  password: "xiaoshiai@2023"
+primary:
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 10Gi
+secondary:
+    persistence:
+      enabled: true
+      storageClass: juicefs-tenant-default
+      size: 20Gi

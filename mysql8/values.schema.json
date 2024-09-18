@@ -1,0 +1,161 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "nameOverride": {
+            "type": "string",
+            "title": "MySQL instance name",
+            "default": "mysql",
+            "form": true
+        },
+        "fullnameOverride": {
+            "type": "string",
+            "title": "MySQL service name",
+            "default": "mysql",
+            "form": true
+        },
+        "architecture": {
+            "type": "string",
+            "title": "MySQL architecture",
+            "form": true,
+            "default": "standalone",
+            "enum": [
+                "standalone",
+                "replication"
+            ]
+        },
+        "auth": {
+            "type": "object",
+            "title": "Authentication configuration",
+            "form": true,
+            "properties": {
+                "rootPassword": {
+                    "type": "string",
+                    "title": "MySQL root password",
+                    "description": "Defaults to a random 10-character alphanumeric string if not set",
+                    "default": "admin!@#mysql"
+                },
+                "database": {
+                    "type": "string",
+                    "title": "MySQL custom database name",
+                    "maxLength": 64
+                },
+                "username": {
+                    "type": "string",
+                    "title": "MySQL custom username",
+                    "default": "xiaoshiai"
+                },
+                "password": {
+                    "type": "string",
+                    "title": "MySQL custom password",
+                    "default": "xiaoshi@2023"
+                },
+                "replicationUser": {
+                    "type": "string",
+                    "title": "MySQL replication username",
+                    "default": "replicator",
+                    "hidden": {
+                        "value": "standalone",
+                        "path": "architecture"
+                    }
+                },
+                "replicationPassword": {
+                    "type": "string",
+                    "title": "MySQL replication user password",
+                    "default": "xiaoshi_rep@2023",
+                    "hidden": {
+                        "value": "standalone",
+                        "path": "architecture"
+                    }
+                }
+            }
+        },
+        "primary": {
+            "type": "object",
+            "title": "Primary database configuration",
+            "form": true,
+            "properties": {
+                "resourcesPreset": {
+                    "title": "MySQL Resource Template",
+                    "description": "medium(1c2g),large(2c4g),xlarge(4c8g)",
+                    "type": "string",
+                    "default": "large",
+                    "enum": [
+                        "medium",
+                        "large",
+                        "xlarge"
+                    ]
+                },
+                "persistence": {
+                    "type": "object",
+                    "title": "Enable persistence using Persistent Volume Claims",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true,
+                            "title": "If true, use a Persistent Volume Claim, If false, use emptyDir"
+                        },
+                        "storageClass": {
+                            "type": "string",
+                            "title": "Storage Type",
+                            "hidden": {
+                                "value": false,
+                                "path": "primary/persistence/enabled"
+                            }
+                        },
+                        "size": {
+                            "type": "string",
+                            "title": "Persistent Volume Size",
+                            "form": true,
+                            "default": "5Gi",
+                            "hidden": {
+                                "value": false,
+                                "path": "primary/persistence/enabled"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "secondary": {
+            "type": "object",
+            "title": "Secondary database configuration",
+            "form": true,
+            "hidden": {
+                "value": "standalone",
+                "path": "architecture"
+            },
+            "properties": {
+                "persistence": {
+                    "type": "object",
+                    "title": "Enable persistence using Persistent Volume Claims",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true,
+                            "title": "If true, use a Persistent Volume Claim, If false, use emptyDir"
+                        },
+                        "storageClass": {
+                            "type": "string",
+                            "title": "Storage Type",
+                            "hidden": {
+                                "value": false,
+                                "path": "primary/persistence/enabled"
+                            }
+                        },
+                        "size": {
+                            "type": "string",
+                            "title": "Persistent Volume Size",
+                            "form": true,
+                            "default": "5Gi",
+                            "hidden": {
+                                "value": false,
+                                "path": "primary/persistence/enabled"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

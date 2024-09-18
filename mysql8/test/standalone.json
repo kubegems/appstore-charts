@@ -1,0 +1,13 @@
+nameOverride: xiaoshiai-mysql
+fullnameOverride: xiaoshiai-mysql
+architecture: standalone
+auth:
+  rootPassword: "demo!@#admin"
+  database: xiaoshiai
+  user: xiaoshiai
+  password: "xiaoshiai@2023"
+primary:
+  persistence:
+    enabled: true
+    storageClass: local-path
+    size: 10Gi
