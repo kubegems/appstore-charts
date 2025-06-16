@@ -1,21 +1,19 @@
-CHARTS_UPLOADER ?= docker.io/kubegems/appstore-charts:latest
+CHARTS_UPLOADER ?= registry.cn-beijing.aliyuncs.com/kubegems/appstore-charts:latest
+
+all: package release
 
 package:
-	 rm -rf charts/*.tgz
-	 bash generate_repo.sh
+	rm -rf charts/*.tgz
+	bash generate_repo.sh
 
 dry-run:
-	 bash helm_dry_run.sh
+	bash helm_dry_run.sh
 
-build:
-	 docker build -t $(CHARTS_UPLOADER) -f Dockerfile .
-
-build-push:
-	 docker build -t $(CHARTS_UPLOADER) -f Dockerfile .
-	 docker push $(CHARTS_UPLOADER)
+release:
+	docker buildx build -t $(CHARTS_UPLOADER) --push  --platform=linux/amd64,linux/arm64 -f Dockerfile ./charts
 
 init-chartmuseum:
-	 bash init_chartmuseum.sh
+	bash init_chartmuseum.sh
 
 apply:
 	#kubectl delete job appstore-charts
