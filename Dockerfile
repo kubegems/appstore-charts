@@ -3,5 +3,6 @@ FROM alpine:latest
 ARG TARGETOS TARGETARCH 
 RUN apk add curl
 WORKDIR /uploader
-COPY . /uploader/charts/
+COPY ./charts /uploader/charts/
+COPY ./upload.sh /uploader/upload.sh
 ENTRYPOINT ["./upload.sh"]

@@ -13,7 +13,15 @@ SCRIPTS_DIR="scripts"
 ROOTDIR='.'
 
 # 打包
-charts=$(find ${ROOTDIR} -maxdepth 1 -mindepth 1 -type d -not -name '.*' -not -name ${CHARTS_DIR} -not -name ${SCRIPTS_DIR} -printf '%f\n')
+# charts=$(find ${ROOTDIR} -maxdepth 1 -mindepth 1 -type d -not -name '.*' -not -name ${CHARTS_DIR} -not -name ${SCRIPTS_DIR} -printf '%f\n')
+# 兼容 mac 下的find
+charts=$(
+  find "${ROOTDIR}" -maxdepth 1 -mindepth 1 -type d \
+      -not -name '.*' \
+      -not -name "${CHARTS_DIR}" \
+      -not -name "${SCRIPTS_DIR}" \
+  | xargs -I{} basename "{}"
+)
 for chart in $charts; do
   green "打包 $chart"
   helm package -d $CHARTS_DIR $chart

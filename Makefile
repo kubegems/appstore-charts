@@ -10,7 +10,7 @@ dry-run:
 	bash helm_dry_run.sh
 
 release:
-	docker buildx build -t $(CHARTS_UPLOADER) --push  --platform=linux/amd64,linux/arm64 -f Dockerfile ./charts
+	docker buildx build -t $(CHARTS_UPLOADER) --push  --platform=linux/amd64,linux/arm64 -f Dockerfile .
 
 init-chartmuseum:
 	bash init_chartmuseum.sh
